@@ -1,8 +1,10 @@
 package com.glume.glumemall.ware;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@MapperScan("com.glume.glumemall.ware.dao")
 @SpringBootApplication
 public class GlumeWareApplication {
 

@@ -1,0 +1,17 @@
+server:
+  port: 7000
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/glumemall_sms
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: localhost:8848
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto #主键自增

@@ -30,6 +30,8 @@ public class CategoryBoundsController {
     @Autowired
     private CategoryBoundsService categoryBoundsService;
 
+
+
     /**
      * 列表
      */

@@ -1,15 +1,19 @@
 server:
   port: 7000
 spring:
+  profiles:
+    active: dev
+  application:
+    name: glume-coupon
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/glumemall_sms
-#  cloud:
-#    nacos:
-#      discovery:
-#        server-addr: localhost:8848
+    url: jdbc:mysql://localhost:3306/glumemall_sms?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

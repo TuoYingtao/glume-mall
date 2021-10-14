@@ -3,25 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <artifactId>glume</artifactId>
+        <groupId>com.glume.glumemall</groupId>
+        <version>1.0.0</version>
     </parent>
-    <groupId>com.glume.glumemall</groupId>
     <artifactId>glume-ware</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>glume-ware</name>
     <description>glume-mall 的商品服务</description>
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>2020.0.4</spring-cloud.version>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.glume.glumemall</groupId>
             <artifactId>glume-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
@@ -31,6 +24,10 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <dependency>

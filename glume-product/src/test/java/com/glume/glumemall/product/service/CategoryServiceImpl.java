@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author tuoyingtao
@@ -38,7 +39,17 @@ public class CategoryServiceImpl {
     }
     /* 递归查找所有菜单的子菜单 */
     public List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all) {
-        System.out.println(root);
-        return null;
+        Stream<CategoryEntity> categoryEntityStream = all.stream().filter(categoryEntity -> {
+            System.out.println(root);
+            System.out.println(categoryEntity.getParentCid() + "---" + root.getCatId());
+            return categoryEntity.getParentCid().equals(root.getCatId());
+        });
+        Stream<CategoryEntity> entityStream = categoryEntityStream.map(menu -> {
+            menu.setChildren(getChildrens(menu, all));
+            return menu;
+        });
+        Stream<CategoryEntity> sorted = entityStream.sorted((menu1, menu2) -> (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
+        List<CategoryEntity> collect = sorted.collect(Collectors.toList());
+        return collect;
     }
 }

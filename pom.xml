@@ -30,6 +30,7 @@
         <springcloud.version>Hoxton.SR1</springcloud.version>
         <springcloudalibaba.version>2.1.0.RELEASE</springcloudalibaba.version>
         <mybatisplus.version>3.3.1</mybatisplus.version>
+        <swagger.version>2.7.0</swagger.version>
         <lombok.version>1.18.20</lombok.version>
         <mysql.version>8.0.25</mysql.version>
     </properties>
@@ -66,7 +67,18 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatisplus.version}</version>
             </dependency>
-
+            <!-- swagger2 版本 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!-- lombok 版本 -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

@@ -1,0 +1,34 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: glume-admin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/glumemall_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  security:
+    user:
+      name: user
+      password: user
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  mapper-locations: classpath:/mapper/**/*.xml
+jwt:
+  #JWT存储的请求头
+  tokenHeader: Authorization
+  #JWT加解密使用的密钥
+  secret: ketech-pharos
+  #JWT的超期限时间(60*60*24*7)
+  expiration: 604800
+  #JWT负载中拿到开头
+  tokenHead: 'Bearer '
+swagger:
+  enabled: false

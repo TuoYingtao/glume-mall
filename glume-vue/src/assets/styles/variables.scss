@@ -1,0 +1,37 @@
+// 基本 颜色
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+// 侧边栏
+$menuText:#bfcbd9; // 菜单文字颜色
+$menuActiveText:#409EFF; // 菜单选择文字颜色
+$subMenuActiveText:#f4f4f5; // https://github.com/ElemeFE/element/issues/12951
+
+//$menuBg:#4F4F4F;  // 一级菜单颜色
+$menuBg: #304156;  // 一级菜单颜色
+$menuHover:#292929; // 一级菜单选中颜色
+
+$subMenuBg:#001528; // 二级菜单颜色
+$subMenuHover:#292929; // 二级菜单选中颜色
+
+$sideBarWidth: 200px;
+
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  /* 菜单的文字颜色 */
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  /* 菜单的背景色 */
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+}

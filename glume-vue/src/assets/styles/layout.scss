@@ -1,0 +1,157 @@
+/** 通用设置 */
+.min-h2 {
+  min-height: 200px
+}
+
+.min-h4 {
+  min-height: 400px
+}
+
+.min-h6 {
+  min-height: 600px
+}
+
+.min-h8 {
+  min-height: 800px
+}
+
+.w1 {
+  width: 10% !important;
+}
+
+.w2 {
+  width: 20% !important;
+}
+
+.w3 {
+  width: 30% !important;
+}
+
+.w4 {
+  width: 40% !important;
+}
+
+.w5 {
+  width: 50% !important;
+}
+
+.w6 {
+  width: 60% !important;
+}
+
+.w7 {
+  width: 70% !important;
+}
+
+.w8 {
+  width: 80% !important;
+}
+
+.w9 {
+  width: 90% !important;
+}
+
+.w10 {
+  width: 100% !important;
+}
+
+/** 头部栏样式 */
+.navbar-herder {
+  background: #394c63 !important;
+}
+
+.tags-view-wrapper {
+  background: #394c63 !important;
+  border: 1px solid #394c63 !important;
+}
+
+/** 头部栏文字样式 */
+.app-breadcrumb span, a {
+  color: #EEEEE0 !important;
+}
+
+/* 顶部搜索设置图标 */
+.search-icon,
+.el-icon-s-tools {
+  color: #FFF;
+}
+
+/* 侧边栏LOGO样式 */
+.sidebar-logo-container {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #304156 !important;
+  text-align: center;
+  overflow: hidden;
+
+  & .sidebar-logo-link {
+    height: 100%;
+    width: 100%;
+
+    & .sidebar-logo {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 12px;
+    }
+
+    & .sidebar-title {
+      display: inline-block;
+      margin: 0;
+      color: #fff;
+      font-weight: 600;
+      line-height: 50px;
+      font-size: 14px;
+      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      vertical-align: middle;
+    }
+  }
+
+  &.collapse {
+    .sidebar-logo {
+      margin-right: 0px;
+    }
+  }
+}
+
+/** 模块卡片 */
+.box-card {
+  padding: 0;
+  margin-bottom: 20px;
+  box-shadow: 0 0.3px 0.7px rgba(201, 201, 201, 0.1), 0 0.9px 1.7px rgba(201, 201, 201, 0.1),
+  0 1.8px 3.5px rgba(201, 201, 201, 0.2), 0 3.7px 7.3px rgba(201, 201, 201, 0.2),
+  0 5px 15px rgba(201, 201, 201, 0.1) !important;
+  //-webkit-box-shadow: 0 0.3px 0.7px rgba(0, 0, 0, 0.126), 0 0.9px 1.7px rgba(0, 0, 0, 0.179),
+  //0 1.8px 3.5px rgba(0, 0, 0, 0.224), 0 3.7px 7.3px rgba(0, 0, 0, 0.277),
+  //0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.el-form-item {
+  margin: 0 !important;
+  padding: 10px;
+}
+
+/* 输入框字体颜色 */
+.money-input {
+  width: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  padding-right: 5px;
+  -webkit-text-fill-color: red;
+}
+
+/* 已出价 tag 样式 */
+.out-price  {
+  background-color: #d4ffff !important;
+  border-color: #96ffff !important;
+  color: #00a6a7 !important;
+}
+/* 带打款 tag 样式 */
+.remit  {
+  background-color: #f1ffdd !important;
+  border-color: #bfff65 !important;
+  color: #62a700 !important;
+}
+

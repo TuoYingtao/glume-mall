@@ -16,5 +16,7 @@ import java.util.Map;
 public interface RoleMenuService extends IService<RoleMenuEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    String getUserAuthorityInfo(Long userId);
 }
 

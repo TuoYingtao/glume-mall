@@ -1,25 +1,31 @@
 package com.glume.glumemall.admin.util;
 
 import io.jsonwebtoken.*;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
+ * JWT 工具类
  * @author tuoyingtao
  * @create 2021-10-18 11:03
  */
+@Data
 @Component
+@ConfigurationProperties(prefix = "markerhub.jwt")
 public class JwtUtils {
 
     /* JWT加解密使用的密钥 */
-    @Value("${jwt.secret}")
     private String secret;
 
     /* JWT的超期限时间(60*60*24*7) */
-    @Value("${jwt.expiration}")
     private Long expiration;
+
+    /* JWT 名称 */
+    private String header;
 
     /**
      * 创建Token
@@ -28,10 +34,11 @@ public class JwtUtils {
      */
     public String generateToken(String username) {
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS512,secret)
+                .setHeaderParam("typ","JWT")
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .signWith(SignatureAlgorithm.HS512,secret)
                 .compact();
     }
 
@@ -44,7 +51,7 @@ public class JwtUtils {
         return getTokenBody(token).getSubject();
     }
 
-    public Claims getTokenBody(String token) {
+    private Claims getTokenBody(String token) {
         Claims body = null;
         try {
             body = Jwts.parser()

@@ -46,6 +46,10 @@ public class UserController {
     public R captcha() throws IOException {
         String key = UUID.randomUUID().toString();
         String code = producer.createText();
+
+        key = "123123";
+        code = "12345";
+
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image,"jpg",outputStream);

@@ -3,7 +3,6 @@ package com.glume.glumemall.admin.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +11,7 @@ import cn.hutool.core.lang.UUID;
 import com.glume.glumemall.admin.util.RedisUtils;
 import com.google.code.kaptcha.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.UserEntity;
@@ -42,6 +42,9 @@ public class UserController {
     @Autowired
     private RedisUtils redisUtils;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping("/captcha")
     public R captcha() throws IOException {
         String key = UUID.randomUUID().toString();
@@ -63,6 +66,18 @@ public class UserController {
         return R.ok()
                 .put("code",200)
                 .put("data",map);
+    }
+
+    @GetMapping("/test/password")
+    public R createdPassword() {
+        String password = bCryptPasswordEncoder.encode("admin123..");
+        boolean matches = bCryptPasswordEncoder.matches("admin123..", password);
+        System.out.println("密码匹配结果：" + matches);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("password",password);
+        return R.ok()
+                .put("data",map)
+                .put("code",200);
     }
 
     /**

@@ -24,11 +24,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=UTF-8");
-        httpServletResponse.setStatus(501);
+        httpServletResponse.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         R result = R.error()
-                .put("code",501)
-                .put("msg", e.getMessage());
+                .put("code",HttpServletResponse.SC_NOT_IMPLEMENTED)
+                .put("msg", "用户名或密码错误！");
         outputStream.write(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();

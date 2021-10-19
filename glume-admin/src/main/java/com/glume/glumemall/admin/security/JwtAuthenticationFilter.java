@@ -44,6 +44,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         if (jwtUtils.isExpiration(token)) {
             throw new JwtException("token已过期");
         }
+        // 设置权限主体
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(userNameFromToken,null,null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

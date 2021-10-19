@@ -2,7 +2,6 @@ package com.glume.glumemall.admin.util;
 
 import io.jsonwebtoken.*;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "markerhub.jwt")
+@ConfigurationProperties(prefix = "jwt")
 public class JwtUtils {
 
     /* JWT加解密使用的密钥 */

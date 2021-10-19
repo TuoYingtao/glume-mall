@@ -34,7 +34,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         //生成 JWT,
         String token = jwtUtils.generateToken(authentication.getName());
         R result = R.ok()
-                .put("data",new HashMap<String,Object>().put("token",token))
+                .put("data",new HashMap<String,Object>(){{put("token",token);}})
                 .put("code",200);
         outputStream.write(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
         outputStream.flush();

@@ -2,21 +2,21 @@ package com.glume.glumemall.admin.config;
 
 import com.glume.glumemall.admin.exception.JwtAccessDeniedHandler;
 import com.glume.glumemall.admin.exception.JwtAuthenticationEntryPoint;
-import com.glume.glumemall.admin.security.CaptchaFilter;
-import com.glume.glumemall.admin.security.JwtAuthenticationFilter;
-import com.glume.glumemall.admin.security.LoginFailureHandler;
-import com.glume.glumemall.admin.security.LoginSuccessHandler;
+import com.glume.glumemall.admin.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * Security 配置
  * @author tuoyingtao
  * @create 2021-10-18 9:59
  */
@@ -36,19 +36,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** 自定义的过滤器 */
     @Autowired
     CaptchaFilter captchaFilter;
-
     @Autowired
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
     @Autowired
     JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
+    /** 用户名密码验证，获取用户信息 */
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
+    /** 定义白名单 */
     private static final String[] URL_WHITELIST = {
         "/admin/user/login",
         "/logout",
         "/admin/user/captcha",
         "/favicon.ico"
     };
+
+    @Bean
+    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+        return jwtAuthenticationFilter;
+    }
+
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -81,9 +95,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
-    @Bean
-    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
-        return jwtAuthenticationFilter;
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
 }

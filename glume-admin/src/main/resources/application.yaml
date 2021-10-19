@@ -12,24 +12,19 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-  security:
-    user:
-      name: user
-      password: user
 mybatis-plus:
   global-config:
     db-config:
       id-type: auto
   mapper-locations: classpath:/mapper/**/*.xml
-markerhub:
-  jwt:
-    #JWT存储的请求头
-    header: Authorization
-    #JWT加解密使用的密钥
-    secret: ketech-pharos
-    #JWT的超期限时间(60*60*24*7) 7天
-    expiration: 604800
-    #JWT负载中拿到开头
-    tokenHead: 'Bearer '
+jwt:
+  #JWT存储的请求头
+  header: Authorization
+  #JWT加解密使用的密钥
+  secret: ketech-pharos
+  #JWT的超期限时间(60*60*24*7) 7天
+  expiration: 604800
+  #JWT负载中拿到开头
+  tokenHead: 'Bearer '
 swagger:
   enabled: false

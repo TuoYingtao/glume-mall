@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.glumemall.admin.dao.UserDao;
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.service.RoleMenuService;
+import com.glume.glumemall.admin.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -23,7 +24,7 @@ import java.util.List;
 public class UserDetailsServiceImpl extends ServiceImpl<UserDao,UserEntity> implements UserDetailsService {
 
     @Autowired
-    RoleMenuService roleMenuService;
+    UserRoleService userRoleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,7 +44,7 @@ public class UserDetailsServiceImpl extends ServiceImpl<UserDao,UserEntity> impl
      */
     public List<GrantedAuthority> getUserAuthority(Long userId) {
         //角色菜单权限
-        String userAuthorityInfo = roleMenuService.getUserAuthorityInfo(userId);
+        String userAuthorityInfo = userRoleService.getUserAuthorityInfo(userId);
         List<GrantedAuthority> role = AuthorityUtils.commaSeparatedStringToAuthorityList(userAuthorityInfo);
         return role;
     }

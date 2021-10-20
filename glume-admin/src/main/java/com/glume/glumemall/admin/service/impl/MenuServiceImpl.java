@@ -26,4 +26,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         return new PageUtils(page);
     }
 
+    /**
+     * 获取菜单项
+     * @param menuId
+     * @return
+     */
+    @Override
+    public MenuEntity getMenuDetail(Long menuId) {
+        MenuEntity menuEntity = baseMapper.selectById(menuId);
+        return menuEntity;
+    }
+
 }

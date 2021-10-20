@@ -26,4 +26,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
         return new PageUtils(page);
     }
 
+    // 获取角色信息
+    @Override
+    public RoleEntity getRoleDetail(Long role_id) {
+        RoleEntity roleEntity = baseMapper.selectById(role_id);
+        return roleEntity;
+    }
+
 }

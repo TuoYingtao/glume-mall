@@ -16,5 +16,7 @@ import java.util.Map;
 public interface RoleService extends IService<RoleEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    RoleEntity getRoleDetail(Long role_id);
 }
 

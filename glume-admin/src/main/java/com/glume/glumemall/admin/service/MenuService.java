@@ -16,5 +16,7 @@ import java.util.Map;
 public interface MenuService extends IService<MenuEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    MenuEntity getMenuDetail(Long menuId);
 }
 

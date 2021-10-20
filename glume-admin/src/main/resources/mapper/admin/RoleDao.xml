@@ -7,6 +7,7 @@
     <resultMap type="com.glume.glumemall.admin.entity.RoleEntity" id="roleMap">
         <result property="roleId" column="role_id"/>
         <result property="roleName" column="role_name"/>
+        <result property="roleTag" column="role_tag"/>
         <result property="remark" column="remark"/>
         <result property="createUserId" column="create_user_id"/>
         <result property="createTime" column="create_time"/>

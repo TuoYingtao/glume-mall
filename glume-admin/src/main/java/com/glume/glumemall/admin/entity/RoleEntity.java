@@ -29,6 +29,10 @@ public class RoleEntity implements Serializable {
 	 */
 	private String roleName;
 	/**
+	 * 角色标签
+	 */
+	private String roleTag;
+	/**
 	 * 备注
 	 */
 	private String remark;

@@ -28,7 +28,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         ServletOutputStream outputStream = httpServletResponse.getOutputStream();
         R result = R.error()
                 .put("code",HttpServletResponse.SC_NOT_IMPLEMENTED)
-                .put("msg", "用户名或密码错误！");
+                .put("msg", e.getMessage());
         outputStream.write(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();

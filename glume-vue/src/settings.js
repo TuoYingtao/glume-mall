@@ -1,5 +1,5 @@
 module.exports = {
-  title: '果快回收系统',
+  title: 'glumemall系统',
 
   /** 是否系统布局配置 */
   showSettings: false,
@@ -23,16 +23,16 @@ module.exports = {
   targetCunt: 99,
 
   /** 账号 */
-  login_name: "rolerecycleSystem_name",
+  login_name: "glumeSystem_name",
 
   /** 密码 */
-  login_password: "rolerecycleSystem_password",
+  login_password: "glumeSystem_password",
 
   /** 是否记住密码 */
-  login_rememberMe: "rolerecycleSystem_rememberMe",
+  login_rememberMe: "glumeSystem_rememberMe",
 
   /** token 凭证 */
-  login_token: "rolerecycleSystem_token",
+  login_token: "glumeSystem_token",
 
   /**
    * @type {string | array} 'production' | ['production', 'development']

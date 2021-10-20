@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 15/10/2021 17:48:14
+ Date: 20/10/2021 18:14:25
 */
 
 SET NAMES utf8mb4;
@@ -295,7 +295,7 @@ CREATE TABLE `schedule_job_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -363,7 +363,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -389,11 +389,11 @@ CREATE TABLE `sys_menu`  (
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', NULL, NULL, 0, 'system', 0);
-INSERT INTO `sys_menu` VALUES (2, 1, '管理员列表', 'sys/user', NULL, 1, 'admin', 1);
-INSERT INTO `sys_menu` VALUES (3, 1, '角色管理', 'sys/role', NULL, 1, 'role', 2);
-INSERT INTO `sys_menu` VALUES (4, 1, '菜单管理', 'sys/menu', NULL, 1, 'menu', 3);
-INSERT INTO `sys_menu` VALUES (5, 1, 'SQL监控', 'http://localhost:8080/renren-fast/druid/sql.html', NULL, 1, 'sql', 4);
-INSERT INTO `sys_menu` VALUES (6, 1, '定时任务', 'job/schedule', NULL, 1, 'job', 5);
+INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', NULL, 1, 'admin', 1);
+INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', 'sys/role', NULL, 1, 'role', 2);
+INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', 'sys/menu', NULL, 1, 'menu', 3);
+INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/renren-fast/druid/sql.html', NULL, 1, 'sql', 4);
+INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', NULL, 1, 'job', 5);
 INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, 'sys:schedule:list,sys:schedule:info', 2, NULL, 0);
 INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, 'sys:schedule:save', 2, NULL, 0);
 INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, 'sys:schedule:update', 2, NULL, 0);
@@ -427,7 +427,7 @@ CREATE TABLE `sys_oss`  (
   `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oss
@@ -443,12 +443,15 @@ CREATE TABLE `sys_role`  (
   `remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_user_id` bigint NULL DEFAULT NULL COMMENT '创建者ID',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `role_tag` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色标签',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
+INSERT INTO `sys_role` VALUES (2001, '超级管理员', 'admin', 1001, '2021-10-15 22:09:44', 'admin');
+INSERT INTO `sys_role` VALUES (2002, '普通用户', '普通用户', 1001, '2021-10-15 22:09:44', 'common');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -459,11 +462,49 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES (1, 2001, 1);
+INSERT INTO `sys_role_menu` VALUES (2, 2001, 2);
+INSERT INTO `sys_role_menu` VALUES (3, 2001, 3);
+INSERT INTO `sys_role_menu` VALUES (4, 2001, 4);
+INSERT INTO `sys_role_menu` VALUES (5, 2001, 5);
+INSERT INTO `sys_role_menu` VALUES (6, 2001, 6);
+INSERT INTO `sys_role_menu` VALUES (7, 2001, 7);
+INSERT INTO `sys_role_menu` VALUES (8, 2001, 8);
+INSERT INTO `sys_role_menu` VALUES (9, 2001, 9);
+INSERT INTO `sys_role_menu` VALUES (10, 2001, 10);
+INSERT INTO `sys_role_menu` VALUES (11, 2001, 11);
+INSERT INTO `sys_role_menu` VALUES (12, 2001, 12);
+INSERT INTO `sys_role_menu` VALUES (13, 2001, 13);
+INSERT INTO `sys_role_menu` VALUES (14, 2001, 14);
+INSERT INTO `sys_role_menu` VALUES (15, 2001, 15);
+INSERT INTO `sys_role_menu` VALUES (16, 2001, 16);
+INSERT INTO `sys_role_menu` VALUES (17, 2001, 17);
+INSERT INTO `sys_role_menu` VALUES (18, 2001, 18);
+INSERT INTO `sys_role_menu` VALUES (19, 2001, 19);
+INSERT INTO `sys_role_menu` VALUES (20, 2001, 20);
+INSERT INTO `sys_role_menu` VALUES (21, 2001, 21);
+INSERT INTO `sys_role_menu` VALUES (22, 2001, 22);
+INSERT INTO `sys_role_menu` VALUES (23, 2001, 23);
+INSERT INTO `sys_role_menu` VALUES (24, 2001, 24);
+INSERT INTO `sys_role_menu` VALUES (25, 2001, 25);
+INSERT INTO `sys_role_menu` VALUES (26, 2001, 26);
+INSERT INTO `sys_role_menu` VALUES (27, 2001, 27);
+INSERT INTO `sys_role_menu` VALUES (29, 2001, 29);
+INSERT INTO `sys_role_menu` VALUES (30, 2001, 30);
+INSERT INTO `sys_role_menu` VALUES (31, 2002, 1);
+INSERT INTO `sys_role_menu` VALUES (32, 2002, 2);
+INSERT INTO `sys_role_menu` VALUES (33, 2002, 3);
+INSERT INTO `sys_role_menu` VALUES (34, 2002, 4);
+INSERT INTO `sys_role_menu` VALUES (35, 2002, 5);
+INSERT INTO `sys_role_menu` VALUES (36, 2002, 6);
+INSERT INTO `sys_role_menu` VALUES (37, 2002, 27);
+INSERT INTO `sys_role_menu` VALUES (38, 2002, 29);
+INSERT INTO `sys_role_menu` VALUES (39, 2002, 30);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -481,12 +522,12 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', '9ec9750e709431dad22365cabc5c625482e574c74adaebba7dd02f1129e4ce1d', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 1, 1, '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES (1001, 'admin', '$2a$10$Ltu1hFd4Qg0P4uZ.CQ3b.ua22eBo3cOP2z36uiXN1SgvV9Klv.CaS', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 1, 1, '2016-11-11 11:11:11');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -497,11 +538,13 @@ CREATE TABLE `sys_user_role`  (
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+INSERT INTO `sys_user_role` VALUES (1, 1001, 2001);
+INSERT INTO `sys_user_role` VALUES (2, 1001, 2002);
 
 -- ----------------------------
 -- Table structure for sys_user_token

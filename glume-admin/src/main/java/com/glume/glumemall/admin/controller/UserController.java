@@ -69,12 +69,12 @@ public class UserController {
     }
 
     @GetMapping("/test/password")
-    public R createdPassword() {
-        String password = bCryptPasswordEncoder.encode("admin123..");
-        boolean matches = bCryptPasswordEncoder.matches("admin123..", password);
+    public R createdPassword(@RequestParam("password") String password) {
+        String paw = bCryptPasswordEncoder.encode(password);
+        boolean matches = bCryptPasswordEncoder.matches(password,paw);
         System.out.println("密码匹配结果：" + matches);
         HashMap<String, Object> map = new HashMap<>();
-        map.put("password",password);
+        map.put("password",paw);
         return R.ok()
                 .put("data",map)
                 .put("code",200);

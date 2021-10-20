@@ -3,7 +3,9 @@ package com.glume.glumemall.admin;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan({"com.glume.glumemall.admin","com.glume.glumemall.common.config"})
 @EnableDiscoveryClient
 @SpringBootApplication
 public class GlumeAdminApplication {

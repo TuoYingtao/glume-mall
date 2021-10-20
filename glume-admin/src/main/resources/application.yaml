@@ -27,4 +27,4 @@ jwt:
   #JWT负载中拿到开头
   tokenHead: 'Bearer '
 swagger:
-  enabled: false
+  enabled: true

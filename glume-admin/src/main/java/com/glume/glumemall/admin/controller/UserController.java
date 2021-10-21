@@ -11,6 +11,7 @@ import cn.hutool.core.lang.UUID;
 import com.glume.glumemall.admin.util.RedisUtils;
 import com.google.code.kaptcha.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,6 +84,7 @@ public class UserController {
     /**
      * 列表
      */
+    @PreAuthorize("hasRole('admin')")
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = userService.queryPage(params);

@@ -26,4 +26,17 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         return new PageUtils(page);
     }
 
+    /**
+     * 通过用户名获取用户信息
+     * @param username 用户名
+     * @return
+     */
+    @Override
+    public UserEntity getByUserDetail(String username) {
+        QueryWrapper<UserEntity> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("username",username);
+        UserEntity userEntity = baseMapper.selectOne(objectQueryWrapper);
+        return userEntity;
+    }
+
 }

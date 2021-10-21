@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
 
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * 角色与菜单对应关系
@@ -18,6 +18,6 @@ public interface RoleMenuService extends IService<RoleMenuEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    Stream<String> getRoleAuthorityInfo(Long roleId);
+    List<String> getRoleAuthorityInfo(Long roleId);
 }
 

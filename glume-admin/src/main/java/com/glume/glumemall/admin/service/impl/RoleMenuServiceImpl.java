@@ -1,14 +1,14 @@
 package com.glume.glumemall.admin.service.impl;
-import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.service.MenuService;
 import com.glume.glumemall.admin.service.UserRoleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -23,6 +23,8 @@ import com.glume.glumemall.admin.service.RoleMenuService;
 
 @Service("roleMenuService")
 public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity> implements RoleMenuService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoleMenuServiceImpl.class);
 
     @Autowired
     UserRoleService userRoleService;
@@ -45,12 +47,13 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
      * @return
      */
     @Override
-    public Stream<String> getRoleAuthorityInfo(Long roleId) {
-        Stream<String> authentication = null;
+    public List<String> getRoleAuthorityInfo(Long roleId) {
+        List<String> authentication = null;
         List<RoleMenuEntity> menus = baseMapper.selectList(new QueryWrapper<RoleMenuEntity>()
                 .inSql("menu_id","select menu_id from sys_user_role where role_id = " + roleId));
         if (menus.size() > 0) {
-            Stream<String> menu = menus.stream().map(menuItem -> menuService.getMenuDetail(menuItem.getMenuId()).getPerms()).distinct();
+            List<String> menu = menus.stream().map(menuItem -> menuService.getMenuDetail(menuItem.getMenuId()).getPerms())
+                    .filter(element -> element != null).collect(Collectors.toList());
             authentication = menu;
         }
         return authentication;

@@ -6,10 +6,10 @@ import com.glume.glumemall.admin.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -49,16 +49,18 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
     @Override
     public String getUserAuthorityInfo(Long userId) {
         String authority = "";
+        List<String> list = new ArrayList<>();
         // 获取角色
         List<UserRoleEntity> roles = baseMapper.selectList(new QueryWrapper<UserRoleEntity>()
                 .inSql("role_id", "select role_id from sys_user_role where user_id = " + userId));
         if (roles.size() > 0) {
-            String authentication = roles.stream().map(userRoleEntity -> {
+            List<String> roleList = roles.stream().map(userRoleEntity -> {
                 RoleEntity roleDetail = roleService.getRoleDetail(userRoleEntity.getRoleId());
-                Stream<String> menuAuthentication = roleMenuService.getRoleAuthorityInfo(userRoleEntity.getRoleId());
-                return "ROLE_" + roleDetail.getRoleTag() + "," + menuAuthentication;
-            }).distinct().collect(Collectors.joining(","));
-            authority = authentication;
+                list.addAll(roleMenuService.getRoleAuthorityInfo(userRoleEntity.getRoleId()));
+                return "ROLE_" + roleDetail.getRoleTag();
+            }).distinct().collect(Collectors.toList());
+            list.addAll(roleList);
+            authority = list.stream().distinct().collect(Collectors.joining(","));
         }
         return authority;
     }

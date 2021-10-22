@@ -9,7 +9,10 @@ import java.util.Map;
 
 import cn.hutool.core.lang.UUID;
 import com.glume.glumemall.admin.util.RedisUtils;
+import com.glume.glumemall.common.constant.RedisConstant;
 import com.google.code.kaptcha.Producer;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,6 +49,7 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @ApiOperation(value = "登录验证码",notes = "")
     @GetMapping("/captcha")
     public R captcha() throws IOException {
         String key = UUID.randomUUID().toString();
@@ -60,7 +64,7 @@ public class UserController {
         BASE64Encoder encoder = new BASE64Encoder();
         String str = "data:image/jpeg;base64,";
         String base64Img = str + encoder.encode(outputStream.toByteArray());
-        redisUtils.hset("captcha",key,code,120);
+        redisUtils.hset(RedisConstant.CAPTCHA_KEY,key,code,120);
         HashMap<String, Object> map = new HashMap<>();
         map.put("key",key);
         map.put("image",base64Img);
@@ -69,6 +73,8 @@ public class UserController {
                 .put("data",map);
     }
 
+    @ApiOperation(value = "测试密码加密",notes = "开发测试")
+    @ApiImplicitParam(name = "password",value = "测试密码",required = true,dataType = "String")
     @GetMapping("/test/password")
     public R createdPassword(@RequestParam("password") String password) {
         String paw = bCryptPasswordEncoder.encode(password);

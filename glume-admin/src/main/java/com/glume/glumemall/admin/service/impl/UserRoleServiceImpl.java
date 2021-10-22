@@ -51,6 +51,19 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
     }
 
     /**
+     * 获取用户角色
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<UserRoleEntity> getUserRoleId(Long userId) {
+        QueryWrapper<UserRoleEntity> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("user_id",userId);
+        return baseMapper.selectList(objectQueryWrapper);
+    }
+
+
+    /**
      * 获取用户角色菜单权限
      * @param userId 用户ID
      * @return

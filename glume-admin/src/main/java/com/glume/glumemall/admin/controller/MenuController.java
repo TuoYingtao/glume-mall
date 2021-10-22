@@ -1,14 +1,11 @@
 package com.glume.glumemall.admin.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.service.MenuService;
@@ -29,6 +26,17 @@ import com.glume.glumemall.common.utils.R;
 public class MenuController {
     @Autowired
     private MenuService menuService;
+
+    @GetMapping("/menu/{userId}")
+    @ApiOperation(value = "获取用户菜单",notes = "")
+    @ApiImplicitParam(name = "userId",value = "用户ID",required = true,dataType = "Long")
+    public R getMenuDetail(@PathVariable("userId") Long userId) {
+        List<MenuEntity> menuList = menuService.getMenuList(userId);
+        HashMap<String, List<MenuEntity>> map = new HashMap<>();
+        map.put("menus",menuList);
+        return R.ok().put("code",200)
+                .put("data",map);
+    }
 
     /**
      * 列表

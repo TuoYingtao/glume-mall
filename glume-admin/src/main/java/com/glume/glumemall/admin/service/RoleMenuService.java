@@ -18,6 +18,8 @@ public interface RoleMenuService extends IService<RoleMenuEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    List<RoleMenuEntity> getRoleMenuEntity(Long roleId);
+
     List<String> getRoleAuthorityInfo(Long roleId);
 }
 

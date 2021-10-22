@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.admin.entity.MenuEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +19,7 @@ public interface MenuService extends IService<MenuEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     MenuEntity getMenuDetail(Long menuId);
+
+    List<MenuEntity> getMenuList(Long userId);
 }
 

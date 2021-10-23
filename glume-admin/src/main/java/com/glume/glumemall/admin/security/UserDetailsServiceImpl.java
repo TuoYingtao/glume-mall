@@ -3,6 +3,9 @@ package com.glume.glumemall.admin.security;
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.admin.service.UserService;
+import com.glume.glumemall.common.enums.UserStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,6 +22,7 @@ import java.util.List;
  */
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Autowired
     UserRoleService userRoleService;
@@ -29,8 +33,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userService.getByUserDetail(username);
-        if (userEntity.getUsername() == null) {
-            throw new UsernameNotFoundException("用户不存在！");
+        if (userEntity == null) {
+            LOGGER.info("登录用户：{} 不存在.", username);
+            throw new UsernameNotFoundException("登录用户：不存在！");
+        } else if (UserStatus.DELETED.getCode().equals(userEntity.getStatus())){
+            LOGGER.info("登录用户：{} 已被删除.", username);
+        } else if (UserStatus.DISABLE.getCode().equals(userEntity.getStatus())) {
+            LOGGER.info("登录用户：{} 已被停用.", username);
         }
         return new AccountUser(userEntity.getUsername(), userEntity.getPassword(),getUserAuthority(userEntity.getUserId()));
     }

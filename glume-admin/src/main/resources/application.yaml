@@ -8,15 +8,45 @@ spring:
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/glumemall_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+  # nacos 配置
   cloud:
     nacos:
       discovery:
+        # 地址
         server-addr: localhost:8848
+#  # redis 配置
+#  redis:
+#    # 地址
+#    host: localhost
+#    # 端口，默认为6379
+#    port: 6379
+#    # 数据库索引
+#    database: 0
+#    # 密码
+#    password:
+#    # 连接超时时间
+#    timeout: 10s
+#    lettuce:
+#      pool:
+#        # 连接池中的最小空闲连接
+#        min-idle: 0
+#        # 连接池中的最大空闲连接
+#        max-idle: 8
+#        # 连接池的最大数据库连接数
+#        max-active: 8
+#        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+#        max-wait: -1ms
+
+# mybatis-plus配置
 mybatis-plus:
   global-config:
     db-config:
+      # 主键自动增长
       id-type: auto
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapper-locations: classpath:/mapper/**/*.xml
+
+# JWT配置
 jwt:
   #JWT存储的请求头
   header: Authorization
@@ -26,5 +56,8 @@ jwt:
   expiration: 604800
   #JWT负载中拿到开头
   tokenHead: 'Bearer '
+
+# Swagger配置
 swagger:
+  # 是否开启swagger
   enabled: true

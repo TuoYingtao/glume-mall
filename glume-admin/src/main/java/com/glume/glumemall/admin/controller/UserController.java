@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.hutool.core.lang.UUID;
+import com.glume.glumemall.admin.util.JwtUtils;
 import com.glume.glumemall.admin.util.RedisUtils;
 import com.glume.glumemall.common.constant.RedisConstant;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ import com.glume.glumemall.common.utils.R;
 import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -37,17 +40,30 @@ import javax.imageio.ImageIO;
 @RestController
 @RequestMapping("admin/user")
 public class UserController {
+
+    @Value("${jwt.header}")
+    private String headerToken;
+    @Autowired
+    private JwtUtils jwtUtils;
     @Autowired
     private UserService userService;
-
     @Autowired
     private Producer producer;
-
     @Autowired
     private RedisUtils redisUtils;
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @ApiOperation(value = "用户信息")
+    @GetMapping("/info")
+    public R userInfo(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader(headerToken);
+        String userName = jwtUtils.getUserNameFromToken(token);
+        HashMap<String, Object> byUserDetail = new HashMap<>();
+        byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
+        return R.ok().put("code",200)
+                .put("data",byUserDetail);
+    }
 
     @ApiOperation(value = "登录验证码",notes = "")
     @GetMapping("/captcha")

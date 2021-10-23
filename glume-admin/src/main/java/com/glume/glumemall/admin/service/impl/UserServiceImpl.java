@@ -1,6 +1,12 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.glume.glumemall.admin.entity.MenuEntity;
+import com.glume.glumemall.admin.service.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +22,9 @@ import com.glume.glumemall.admin.service.UserService;
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements UserService {
 
+    @Autowired
+    MenuService menuService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<UserEntity> page = this.page(
@@ -24,6 +33,23 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         );
 
         return new PageUtils(page);
+    }
+
+    /**
+     * 获取用户信息以及它的菜单
+     * @param username
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> getByUserInfoAndMenu(String username) {
+        QueryWrapper<UserEntity> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("username",username);
+        UserEntity userEntity = baseMapper.selectOne(objectQueryWrapper);
+        List<MenuEntity> menuList = menuService.getMenuList(userEntity.getUserId());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("info",userEntity);
+        map.put("menus",menuList);
+        return map;
     }
 
     /**

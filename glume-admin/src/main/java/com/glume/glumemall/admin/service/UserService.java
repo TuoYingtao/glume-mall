@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +17,8 @@ import java.util.Map;
 public interface UserService extends IService<UserEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    HashMap<String,Object> getByUserInfoAndMenu(String username);
 
     UserEntity getByUserDetail(String username);
 }

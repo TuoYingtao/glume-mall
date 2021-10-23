@@ -1,19 +1,17 @@
 package com.glume.glumemall.admin.security;
 
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.glume.glumemall.admin.util.JwtUtils;
+import com.glume.glumemall.common.constant.HttpStatus;
 import com.glume.glumemall.common.utils.R;
+import com.glume.glumemall.common.utils.ServletUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -28,16 +26,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private JwtUtils jwtUtils;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        httpServletResponse.setContentType("application/json;charset=UTF-8");
-        ServletOutputStream outputStream = httpServletResponse.getOutputStream();
+    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
         //生成 JWT,
         String token = jwtUtils.generateToken(authentication.getName());
         R result = R.ok()
                 .put("data",new HashMap<String,Object>(){{put("token",token);}})
-                .put("code",200);
-        outputStream.write(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
-        outputStream.flush();
-        outputStream.close();
+                .put("code", HttpStatus.SUCCESS);
+        ServletUtils.renderString(httpServletResponse, JSON.toJSONString(result));
     }
 }

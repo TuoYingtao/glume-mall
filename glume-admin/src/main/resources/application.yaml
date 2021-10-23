@@ -61,3 +61,8 @@ jwt:
 swagger:
   # 是否开启swagger
   enabled: true
+
+# 日志配置
+logging:
+  file:
+    name: Lab.log

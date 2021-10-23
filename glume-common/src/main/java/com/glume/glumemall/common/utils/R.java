@@ -20,10 +20,19 @@ import java.util.Map;
  */
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
-	
+
+	/** 状态码 */
+	public static final String CODE_TAG = "code";
+
+	/** 返回内容 */
+	public static final String MSG_TAG = "msg";
+
+	/** 数据对象 */
+	public static final String DATA_TAG = "data";
+
 	public R() {
-		put("code", 0);
-		put("msg", "success");
+		put(CODE_TAG, 0);
+		put(MSG_TAG, "success");
 	}
 	
 	public static R error() {
@@ -36,14 +45,14 @@ public class R extends HashMap<String, Object> {
 	
 	public static R error(int code, String msg) {
 		R r = new R();
-		r.put("code", code);
-		r.put("msg", msg);
+		r.put(CODE_TAG, code);
+		r.put(MSG_TAG, msg);
 		return r;
 	}
 
 	public static R ok(String msg) {
 		R r = new R();
-		r.put("msg", msg);
+		r.put(MSG_TAG, msg);
 		return r;
 	}
 	

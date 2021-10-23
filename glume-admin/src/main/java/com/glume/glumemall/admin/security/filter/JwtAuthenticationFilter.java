@@ -1,7 +1,8 @@
-package com.glume.glumemall.admin.security;
+package com.glume.glumemall.admin.security.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.glume.glumemall.admin.entity.UserEntity;
+import com.glume.glumemall.admin.security.UserDetailsServiceImpl;
 import com.glume.glumemall.admin.service.impl.UserServiceImpl;
 import com.glume.glumemall.admin.util.JwtUtils;
 import io.jsonwebtoken.JwtException;

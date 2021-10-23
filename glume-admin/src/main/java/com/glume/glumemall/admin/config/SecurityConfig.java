@@ -1,8 +1,12 @@
 package com.glume.glumemall.admin.config;
 
-import com.glume.glumemall.admin.exception.JwtAccessDeniedHandler;
-import com.glume.glumemall.admin.exception.JwtAuthenticationEntryPoint;
+import com.glume.glumemall.admin.security.handler.JwtAccessDeniedHandler;
+import com.glume.glumemall.admin.security.handler.JwtAuthenticationEntryPoint;
 import com.glume.glumemall.admin.security.*;
+import com.glume.glumemall.admin.security.filter.CaptchaFilter;
+import com.glume.glumemall.admin.security.filter.JwtAuthenticationFilter;
+import com.glume.glumemall.admin.security.handler.LoginFailureHandler;
+import com.glume.glumemall.admin.security.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

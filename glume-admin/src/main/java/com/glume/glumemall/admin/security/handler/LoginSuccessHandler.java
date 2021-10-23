@@ -1,4 +1,4 @@
-package com.glume.glumemall.admin.security;
+package com.glume.glumemall.admin.security.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.glume.glumemall.admin.util.JwtUtils;

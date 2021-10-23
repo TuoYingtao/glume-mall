@@ -1,6 +1,7 @@
 package com.glume.glumemall.admin.security;
 
 import com.glume.glumemall.admin.entity.UserEntity;
+import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.admin.service.UserService;
 import com.glume.glumemall.common.enums.UserStatus;
@@ -38,8 +39,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("登录用户：不存在！");
         } else if (UserStatus.DELETED.getCode().equals(userEntity.getStatus())){
             LOGGER.info("登录用户：{} 已被删除.", username);
+            throw new ServiceException("对不起，您的账号：" + username + " 已被删除");
         } else if (UserStatus.DISABLE.getCode().equals(userEntity.getStatus())) {
             LOGGER.info("登录用户：{} 已被停用.", username);
+            throw new ServiceException("对不起，您的账号：" + username + " 已停用");
         }
         return new AccountUser(userEntity.getUsername(), userEntity.getPassword(),getUserAuthority(userEntity.getUserId()));
     }

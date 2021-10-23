@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 21/10/2021 13:48:21
+ Date: 23/10/2021 18:07:44
 */
 
 SET NAMES utf8mb4;
@@ -517,18 +517,18 @@ CREATE TABLE `sys_user`  (
   `salt` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '盐',
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
-  `status` tinyint NULL DEFAULT NULL COMMENT '状态  0：禁用   1：正常',
+  `status` tinyint NULL DEFAULT 0 COMMENT '状态  0：启用   1：禁用   2：删除',
   `create_user_id` bigint NULL DEFAULT NULL COMMENT '创建者ID',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1001, 'admin', '$2a$10$Ltu1hFd4Qg0P4uZ.CQ3b.ua22eBo3cOP2z36uiXN1SgvV9Klv.CaS', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 1, 1, '2016-11-11 11:11:11');
-INSERT INTO `sys_user` VALUES (1002, 'user', '$2a$10$Ltu1hFd4Qg0P4uZ.CQ3b.ua22eBo3cOP2z36uiXN1SgvV9Klv.CaS', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 1, 1, '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES (1001, 'admin', '$2a$10$Ltu1hFd4Qg0P4uZ.CQ3b.ua22eBo3cOP2z36uiXN1SgvV9Klv.CaS', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 0, 1, '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES (1002, 'user', '$2a$10$Ltu1hFd4Qg0P4uZ.CQ3b.ua22eBo3cOP2z36uiXN1SgvV9Klv.CaS', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 0, 1, '2016-11-11 11:11:11');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -539,7 +539,7 @@ CREATE TABLE `sys_user_role`  (
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role

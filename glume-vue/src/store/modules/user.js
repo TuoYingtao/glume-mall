@@ -6,7 +6,7 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: {},
+    roles: [],
     permissions: [],
   },
 
@@ -42,7 +42,7 @@ const user = {
           if(res.code == 200) {
             commit('SET_AVATAR', res.data.avatar)
             commit('SET_NAME', res.data.name)
-            commit('SET_ROLES', res.data)
+            commit('SET_ROLES', ["admin"])
             resolve(res)
           }
         }).catch(error => {

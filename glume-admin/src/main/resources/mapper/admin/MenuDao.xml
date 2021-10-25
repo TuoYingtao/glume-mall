@@ -8,11 +8,20 @@
         <result property="menuId" column="menu_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="name" column="name"/>
-        <result property="url" column="url"/>
+        <result property="path" column="path"/>
+        <result property="component" column="component"/>
+        <result property="query" column="query"/>
+        <result property="visible" column="visible"/>
+        <result property="status" column="status"/>
         <result property="perms" column="perms"/>
-        <result property="type" column="type"/>
+        <result property="menuType" column="menu_type"/>
         <result property="icon" column="icon"/>
         <result property="orderNum" column="order_num"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
     </resultMap>
 
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -35,17 +36,33 @@ public class MenuEntity implements Serializable {
 	 */
 	private String name;
 	/**
-	 * 菜单URL
+	 * 菜单path
 	 */
-	private String url;
+	private String path;
+	/**
+	 * 菜单路径
+	 */
+	private String component;
+	/**
+	 * 路由参数
+	 */
+	private String query;
+	/**
+	 * 菜单状态（0显示 1隐藏）
+	 */
+	private Character visible;
+	/**
+	 * 菜单状态（0正常 1停用）
+	 */
+	private Character status;
 	/**
 	 * 授权(多个用逗号分隔，如：user:list,user:create)
 	 */
 	private String perms;
 	/**
-	 * 类型   0：目录   1：菜单   2：按钮
+	 * 菜单类型（M目录 C菜单 F按钮）
 	 */
-	private Integer type;
+	private Character menuType;
 	/**
 	 * 菜单图标
 	 */
@@ -54,6 +71,26 @@ public class MenuEntity implements Serializable {
 	 * 排序
 	 */
 	private Integer orderNum;
+	/**
+	 * 创建者
+	 */
+	private String createBy;
+	/**
+	 * 创建时间
+	 */
+	private Date createTime;
+	/**
+	 * 更新者
+	 */
+	private String updateBy;
+	/**
+	 * 更新时间
+	 */
+	private Date updateTime;
+	/**
+	 * 备注
+	 */
+	private String remark;
 
 	/**
 	 * 子级菜单

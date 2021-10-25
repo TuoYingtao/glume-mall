@@ -74,23 +74,23 @@ public class Constants {
         /**
          * 目录
          */
-    	CATALOG(0),
+    	CATALOG('M'),
         /**
          * 菜单
          */
-        MENU(1),
+        MENU('C'),
         /**
          * 按钮
          */
-        BUTTON(2);
+        BUTTON('F');
 
-        private int value;
+        private Character value;
 
-        MenuType(int value) {
+        MenuType(Character value) {
             this.value = value;
         }
 
-        public int getValue() {
+        public Character getValue() {
             return value;
         }
     }

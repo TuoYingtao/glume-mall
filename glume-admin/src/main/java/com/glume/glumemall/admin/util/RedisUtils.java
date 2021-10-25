@@ -1,5 +1,6 @@
 package com.glume.glumemall.admin.util;
 
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -165,8 +166,9 @@ public final class RedisUtils {
      * @param key  键 不能为null
      * @param item 项 不能为null
      */
-    public Object hget(String key, String item) {
-        return redisTemplate.opsForHash().get(key, item);
+    public <T> T hget(final String key,final String item) {
+        HashOperations<String, Object, T> hash = redisTemplate.opsForHash();
+        return hash.get(key, item);
     }
 
     /**

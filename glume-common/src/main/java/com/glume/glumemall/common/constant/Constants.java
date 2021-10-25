@@ -13,29 +13,56 @@ package com.glume.glumemall.common.constant;
  *
  * @author Mark sunlightcs@gmail.com
  */
-public class Constant {
+public class Constants {
+
 	/** 超级管理员ID */
 	public static final int SUPER_ADMIN = 1;
+
+    /**
+     * UTF-8 字符集
+     */
+    public static final String UTF8 = "UTF-8";
+
+    /**
+     * GBK 字符集
+     */
+    public static final String GBK = "GBK";
+
+    /**
+     * http请求
+     */
+    public static final String HTTP = "http://";
+
+    /**
+     * https请求
+     */
+    public static final String HTTPS = "https://";
+
     /**
      * 当前页码
      */
     public static final String PAGE = "page";
+
     /**
      * 每页显示记录数
      */
     public static final String LIMIT = "limit";
+
     /**
      * 排序字段
      */
     public static final String ORDER_FIELD = "sidx";
+
     /**
      * 排序方式
      */
     public static final String ORDER = "order";
+
     /**
      *  升序
      */
     public static final String ASC = "asc";
+
 	/**
 	 * 菜单类型
 	 * 

@@ -16,3 +16,10 @@ export function captcha() {
     method: 'GET',
   })
 }
+// 用户信息
+export function getInfo () {
+  return request({
+    url: '/user/info',
+    method: 'GET'
+  })
+}

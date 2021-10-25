@@ -4,6 +4,7 @@ import com.glume.glumemall.admin.entity.RoleMenuEntity;
 import com.glume.glumemall.admin.entity.UserRoleEntity;
 import com.glume.glumemall.admin.service.RoleMenuService;
 import com.glume.glumemall.admin.service.UserRoleService;
+import com.glume.glumemall.common.constant.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
 
             /* 拼接数据结构 */
             // 过滤按钮项
-            List<MenuEntity> list = menuList.stream().filter(menuEntity -> menuEntity.getType() != 2).collect(Collectors.toList());
+            List<MenuEntity> list = menuList.stream().filter(menuEntity -> menuEntity.getMenuType().compareTo(Constants.MenuType.BUTTON.getValue()) == 0 ? false : true ).collect(Collectors.toList());
             return list.stream().filter(menuEntity -> menuEntity.getParentId() == 0)
                     .map(menuEntity -> {
                         menuEntity.setChildren(getChildrens(menuEntity, list));

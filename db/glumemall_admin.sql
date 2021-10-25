@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 23/10/2021 18:07:44
+ Date: 25/10/2021 17:16:51
 */
 
 SET NAMES utf8mb4;
@@ -377,46 +377,55 @@ CREATE TABLE `sys_menu`  (
   `menu_id` bigint NOT NULL AUTO_INCREMENT,
   `parent_id` bigint NULL DEFAULT NULL COMMENT '父菜单ID，一级菜单为0',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单名称',
-  `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单URL',
+  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单地址',
+  `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单路径',
+  `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '路由参数',
+  `visible` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
   `perms` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
-  `type` int NULL DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
-  `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单图标',
+  `menu_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '菜单类型（M目录 C菜单 F按钮）',
+  `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '#' COMMENT '菜单图标',
   `order_num` int NULL DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', NULL, NULL, 0, 'system', 0);
-INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', NULL, 1, 'admin', 1);
-INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', 'sys/role', NULL, 1, 'role', 2);
-INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', 'sys/menu', NULL, 1, 'menu', 3);
-INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/renren-fast/druid/sql.html', NULL, 1, 'sql', 4);
-INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', NULL, 1, 'job', 5);
-INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, 'sys:schedule:list,sys:schedule:info', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, 'sys:schedule:save', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, 'sys:schedule:update', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (10, 6, '删除', NULL, 'sys:schedule:delete', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (11, 6, '暂停', NULL, 'sys:schedule:pause', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (12, 6, '恢复', NULL, 'sys:schedule:resume', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (13, 6, '立即执行', NULL, 'sys:schedule:run', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (14, 6, '日志列表', NULL, 'sys:schedule:log', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (15, 2, '查看', NULL, 'sys:user:list,sys:user:info', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (16, 2, '新增', NULL, 'sys:user:save,sys:role:select', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (17, 2, '修改', NULL, 'sys:user:update,sys:role:select', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (18, 2, '删除', NULL, 'sys:user:delete', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (19, 3, '查看', NULL, 'sys:role:list,sys:role:info', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (20, 3, '新增', NULL, 'sys:role:save,sys:menu:list', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (21, 3, '修改', NULL, 'sys:role:update,sys:menu:list', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (22, 3, '删除', NULL, 'sys:role:delete', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (23, 4, '查看', NULL, 'sys:menu:list,sys:menu:info', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (24, 4, '新增', NULL, 'sys:menu:save,sys:menu:select', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (25, 4, '修改', NULL, 'sys:menu:update,sys:menu:select', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (26, 4, '删除', NULL, 'sys:menu:delete', 2, NULL, 0);
-INSERT INTO `sys_menu` VALUES (27, 1, '参数管理', 'sys/config', 'sys:config:list,sys:config:info,sys:config:save,sys:config:update,sys:config:delete', 1, 'config', 6);
-INSERT INTO `sys_menu` VALUES (29, 1, '系统日志', 'sys/log', 'sys:log:list', 1, 'log', 7);
-INSERT INTO `sys_menu` VALUES (30, 1, '文件上传', 'oss/oss', 'sys:oss:all', 1, 'oss', 6);
+INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', NULL, NULL, NULL, '0', '0', NULL, 'M', 'system', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', NULL, NULL, '0', '0', NULL, 'M', 'admin', 1, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', 'sys/role', NULL, NULL, '0', '0', NULL, 'M', 'role', 2, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', 'sys/menu', NULL, NULL, '0', '0', NULL, 'M', 'menu', 3, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/renren-fast/druid/sql.html', NULL, NULL, '0', '0', NULL, 'M', 'sql', 4, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', NULL, NULL, '0', '0', NULL, 'M', 'job', 5, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, NULL, NULL, '0', '0', 'sys:schedule:list,sys:schedule:info', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, NULL, NULL, '0', '0', 'sys:schedule:save', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, NULL, NULL, '0', '0', 'sys:schedule:update', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (10, 6, '删除', NULL, NULL, NULL, '0', '0', 'sys:schedule:delete', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (11, 6, '暂停', NULL, NULL, NULL, '0', '0', 'sys:schedule:pause', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (12, 6, '恢复', NULL, NULL, NULL, '0', '0', 'sys:schedule:resume', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (13, 6, '立即执行', NULL, NULL, NULL, '0', '0', 'sys:schedule:run', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (14, 6, '日志列表', NULL, NULL, NULL, '0', '0', 'sys:schedule:log', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (15, 2, '查看', NULL, NULL, NULL, '0', '0', 'sys:user:list,sys:user:info', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (16, 2, '新增', NULL, NULL, NULL, '0', '0', 'sys:user:save,sys:role:select', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (17, 2, '修改', NULL, NULL, NULL, '0', '0', 'sys:user:update,sys:role:select', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (18, 2, '删除', NULL, NULL, NULL, '0', '0', 'sys:user:delete', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (19, 3, '查看', NULL, NULL, NULL, '0', '0', 'sys:role:list,sys:role:info', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (20, 3, '新增', NULL, NULL, NULL, '0', '0', 'sys:role:save,sys:menu:list', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (21, 3, '修改', NULL, NULL, NULL, '0', '0', 'sys:role:update,sys:menu:list', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (22, 3, '删除', NULL, NULL, NULL, '0', '0', 'sys:role:delete', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (23, 4, '查看', NULL, NULL, NULL, '0', '0', 'sys:menu:list,sys:menu:info', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (24, 4, '新增', NULL, NULL, NULL, '0', '0', 'sys:menu:save,sys:menu:select', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (25, 4, '修改', NULL, NULL, NULL, '0', '0', 'sys:menu:update,sys:menu:select', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (26, 4, '删除', NULL, NULL, NULL, '0', '0', 'sys:menu:delete', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (27, 1, '参数管理', 'sys/config', NULL, NULL, '0', '0', 'sys:config:list,sys:config:info,sys:config:save,sys:config:update,sys:config:delete', 'C', 'config', 6, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (29, 1, '系统日志', 'sys/log', NULL, NULL, '0', '0', 'sys:log:list', 'C', 'log', 7, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (30, 1, '文件上传', 'oss/oss', NULL, NULL, '0', '0', 'sys:oss:all', 'C', 'oss', 6, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
 
 -- ----------------------------
 -- Table structure for sys_oss

@@ -11,9 +11,12 @@ import cn.hutool.core.lang.UUID;
 import com.glume.glumemall.admin.util.JwtUtils;
 import com.glume.glumemall.admin.util.RedisUtils;
 import com.glume.glumemall.common.constant.RedisConstant;
+import com.glume.glumemall.common.utils.SpringUtils;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("admin/user")
 public class UserController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Value("${jwt.header}")
     private String headerToken;
@@ -50,8 +54,6 @@ public class UserController {
     @Autowired
     private Producer producer;
     @Autowired
-    private RedisUtils redisUtils;
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "用户信息")
@@ -60,7 +62,16 @@ public class UserController {
         String token = httpServletRequest.getHeader(headerToken);
         String userName = jwtUtils.getUserNameFromToken(token);
         HashMap<String, Object> byUserDetail = new HashMap<>();
-        byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
+        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
+        if (redisUtils.hHasKey(RedisConstant.USER_INFO_AND_MENU,userName)) {
+            Object hget = redisUtils.hget(RedisConstant.USER_INFO_AND_MENU, userName);
+            byUserDetail.putAll((Map<? extends String, ?>) hget);
+            LOGGER.info("Redis中获取用户信息：{}",hget);
+        } else {
+            byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
+            redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail);
+            LOGGER.info("MySQL中获取用户信息");
+        }
         return R.ok().put("code",200)
                 .put("data",byUserDetail);
     }
@@ -70,17 +81,15 @@ public class UserController {
     public R captcha() throws IOException {
         String key = UUID.randomUUID().toString();
         String code = producer.createText();
-
         key = "123123";
         code = "12345";
-
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image,"jpg",outputStream);
         BASE64Encoder encoder = new BASE64Encoder();
         String str = "data:image/jpeg;base64,";
         String base64Img = str + encoder.encode(outputStream.toByteArray());
-        redisUtils.hset(RedisConstant.CAPTCHA_KEY,key,code,120);
+        SpringUtils.getBean(RedisUtils.class).hset(RedisConstant.CAPTCHA_KEY,key,code,120);
         HashMap<String, Object> map = new HashMap<>();
         map.put("key",key);
         map.put("image",base64Img);

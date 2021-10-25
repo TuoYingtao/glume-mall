@@ -5,6 +5,7 @@ import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.admin.service.UserService;
 import com.glume.glumemall.common.enums.UserStatus;
+import com.glume.glumemall.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userService.getByUserDetail(username);
-        if (userEntity == null) {
+        if (StringUtils.isNull(userEntity)) {
             LOGGER.info("登录用户：{} 不存在.", username);
             throw new UsernameNotFoundException("登录用户：不存在！");
         } else if (UserStatus.DELETED.getCode().equals(userEntity.getStatus())){

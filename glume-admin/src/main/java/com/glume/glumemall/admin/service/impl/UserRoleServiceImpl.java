@@ -5,6 +5,7 @@ import com.glume.glumemall.admin.service.RoleMenuService;
 import com.glume.glumemall.admin.service.RoleService;
 import com.glume.glumemall.admin.util.RedisUtils;
 import com.glume.glumemall.common.constant.RedisConstant;
+import com.glume.glumemall.common.utils.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,6 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
     @Autowired
     RoleMenuService roleMenuService;
 
-    @Autowired
-    RedisUtils redisUtils;
-
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<UserRoleEntity> page = this.page(
@@ -71,6 +69,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
     @Override
     public String getUserAuthorityInfo(Long userId) {
         String authority = "";
+        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
         if (redisUtils.hasKey(RedisConstant.REDIS_AUTHORITY_KEY + userId)) {
             authority = (String) redisUtils.get(RedisConstant.REDIS_AUTHORITY_KEY + userId);
             LOGGER.info("获取Redis角色权限：" + authority);

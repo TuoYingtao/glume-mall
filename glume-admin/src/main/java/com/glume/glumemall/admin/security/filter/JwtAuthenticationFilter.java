@@ -5,6 +5,7 @@ import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.security.UserDetailsServiceImpl;
 import com.glume.glumemall.admin.service.impl.UserServiceImpl;
 import com.glume.glumemall.admin.util.JwtUtils;
+import com.glume.glumemall.common.utils.StringUtils;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,7 +48,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             return;
         }
         String userNameFromToken = jwtUtils.getUserNameFromToken(token);
-        if (userNameFromToken == null) {
+        if (StringUtils.isEmpty(userNameFromToken)) {
             throw new JwtException("token 异常");
         }
         if (jwtUtils.isExpiration(token)) {

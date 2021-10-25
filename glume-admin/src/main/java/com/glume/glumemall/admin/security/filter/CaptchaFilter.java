@@ -4,9 +4,10 @@ import com.glume.glumemall.admin.exception.CaptchaException;
 import com.glume.glumemall.admin.security.handler.LoginFailureHandler;
 import com.glume.glumemall.admin.util.RedisUtils;
 import com.glume.glumemall.common.constant.RedisConstant;
+import com.glume.glumemall.common.utils.SpringUtils;
+import com.glume.glumemall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,9 +23,6 @@ import java.io.IOException;
  */
 @Component
 public class CaptchaFilter extends OncePerRequestFilter {
-
-    @Autowired
-    RedisUtils redisUtils;
 
     @Autowired
     LoginFailureHandler loginFailureHandler;
@@ -54,6 +52,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
         if (StringUtils.isEmpty(code) || StringUtils.isEmpty(key)) {
             throw new CaptchaException("key值与验证码不能为空！");
         }
+        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
         if (!code.equals(redisUtils.hget(RedisConstant.CAPTCHA_KEY,key))) {
             throw new CaptchaException("验证码错误");
         }

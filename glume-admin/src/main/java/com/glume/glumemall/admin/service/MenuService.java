@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.admin.entity.MenuEntity;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,6 @@ public interface MenuService extends IService<MenuEntity> {
 
     MenuEntity getMenuDetail(Long menuId);
 
-    List<MenuEntity> getMenuList(Long userId);
+    List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific);
 }
 

@@ -31,7 +31,7 @@ public class MenuController {
     @ApiOperation(value = "获取用户菜单",notes = "")
     @ApiImplicitParam(name = "userId",value = "用户ID",required = true,dataType = "Long")
     public R getMenuDetail(@PathVariable("userId") Long userId) {
-        List<MenuEntity> menuList = menuService.getMenuList(userId);
+        List<MenuEntity> menuList = menuService.getMenuList(userId,false);
         HashMap<String, List<MenuEntity>> map = new HashMap<>();
         map.put("menus",menuList);
         return R.ok().put("code",200)

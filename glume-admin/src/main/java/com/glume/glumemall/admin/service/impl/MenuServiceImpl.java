@@ -23,6 +23,8 @@ import com.glume.glumemall.admin.dao.MenuDao;
 import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.service.MenuService;
 
+import javax.validation.constraints.NotNull;
+
 
 @Service("menuService")
 public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements MenuService {
@@ -60,7 +62,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
      * @return
      */
     @Override
-    public List<MenuEntity> getMenuList(Long userId) {
+    public List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific) {
         List<MenuEntity> menuList = new ArrayList<>();
         List<RoleMenuEntity> menuIdList = new ArrayList<>();
 
@@ -75,18 +77,25 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
                 menuList.add(baseMapper.selectOne(new QueryWrapper<MenuEntity>().eq("menu_id",roleMenuEntity.getMenuId())));
             });
 
-            /* 拼接数据结构 */
-            // 过滤按钮项
-            List<MenuEntity> list = menuList.stream().filter(menuEntity -> menuEntity.getMenuType().compareTo(Constants.MenuType.BUTTON.getValue()) == 0 ? false : true ).collect(Collectors.toList());
-            return list.stream().filter(menuEntity -> menuEntity.getParentId() == 0)
-                    .map(menuEntity -> {
-                        menuEntity.setChildren(getChildrens(menuEntity, list));
-                        return menuEntity;
-                    }).distinct().sorted((menu1, menu2) -> menu1.getOrderNum() - menu2.getOrderNum()).collect(Collectors.toList());
-
+            // 判读是否过滤按钮项
+            if (specific) {
+                List<MenuEntity> list = menuList.stream().filter(menuEntity -> menuEntity.getMenuType().compareTo(Constants.MenuType.BUTTON.getValue()) == 0 ? false : true ).collect(Collectors.toList());
+                return handlerMenus(list);
+            } else {
+                return handlerMenus(menuList);
+            }
         } else {
             return null;
         }
+    }
+
+    /** 拼接数据结构 */
+    private List<MenuEntity> handlerMenus(List<MenuEntity> menuList) {
+        return menuList.stream().filter(menuEntity -> menuEntity.getParentId() == 0)
+                .map(menuEntity -> {
+                    menuEntity.setChildren(getChildrens(menuEntity, menuList));
+                    return menuEntity;
+                }).distinct().sorted((menu1, menu2) -> menu1.getOrderNum() - menu2.getOrderNum()).collect(Collectors.toList());
     }
 
     private List<MenuEntity> getChildrens(MenuEntity root,List<MenuEntity> all) {

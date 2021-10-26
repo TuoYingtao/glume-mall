@@ -43,9 +43,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public HashMap<String, Object> getByUserInfoAndMenu(String username) {
         QueryWrapper<UserEntity> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("username",username);
+        objectQueryWrapper.select("user_id","username","email","mobile","status","create_time")
+                .eq("username",username);
         UserEntity userEntity = baseMapper.selectOne(objectQueryWrapper);
-        List<MenuEntity> menuList = menuService.getMenuList(userEntity.getUserId());
+        List<MenuEntity> menuList = menuService.getMenuList(userEntity.getUserId(),true);
         HashMap<String, Object> map = new HashMap<>();
         map.put("info",userEntity);
         map.put("menus",menuList);
@@ -60,7 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public UserEntity getByUserDetail(String username) {
         QueryWrapper<UserEntity> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("username",username);
+        objectQueryWrapper.select("user_id","username","email","mobile","status","create_time").eq("username",username);
         UserEntity userEntity = baseMapper.selectOne(objectQueryWrapper);
         return userEntity;
     }

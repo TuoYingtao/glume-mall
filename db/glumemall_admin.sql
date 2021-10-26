@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 25/10/2021 17:16:51
+ Date: 26/10/2021 17:20:31
 */
 
 SET NAMES utf8mb4;
@@ -397,11 +397,11 @@ CREATE TABLE `sys_menu`  (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', NULL, NULL, NULL, '0', '0', NULL, 'M', 'system', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', 'sys', NULL, NULL, '0', '0', NULL, 'M', 'system', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', NULL, NULL, '0', '0', NULL, 'M', 'admin', 1, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', 'sys/role', NULL, NULL, '0', '0', NULL, 'M', 'role', 2, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', 'sys/menu', NULL, NULL, '0', '0', NULL, 'M', 'menu', 3, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/renren-fast/druid/sql.html', NULL, NULL, '0', '0', NULL, 'M', 'sql', 4, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', '/roleManage', NULL, NULL, '0', '0', NULL, 'M', 'role', 2, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (4, 1, '菜单管理', '/menuManage', 'menuManage/index', NULL, '0', '0', NULL, 'M', 'menu', 3, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/glume-admin/druid/sql.html', NULL, NULL, '0', '0', NULL, 'M', 'sql', 4, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', NULL, NULL, '0', '0', NULL, 'M', 'job', 5, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, NULL, NULL, '0', '0', 'sys:schedule:list,sys:schedule:info', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, NULL, NULL, '0', '0', 'sys:schedule:save', 'F', '#', 0, '超级管理员', '2016-11-11 11:11:11', '超级管理员', '2016-11-11 11:11:11', NULL);

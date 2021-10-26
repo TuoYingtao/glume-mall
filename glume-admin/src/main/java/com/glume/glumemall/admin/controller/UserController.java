@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,7 +70,8 @@ public class UserController {
             LOGGER.info("Redis中获取用户信息：{}",hget);
         } else {
             byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
-            redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail);
+            Date date = new Date(System.currentTimeMillis() * 1000 + (60 * 60 * 2));
+            redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail,date.getTime());
             LOGGER.info("MySQL中获取用户信息");
         }
         return R.ok().put("code",200)

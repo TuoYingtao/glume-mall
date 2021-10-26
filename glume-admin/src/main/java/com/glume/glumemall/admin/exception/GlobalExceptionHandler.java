@@ -3,6 +3,7 @@ package com.glume.glumemall.admin.exception;
 import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.common.constant.HttpStatus;
 import com.glume.glumemall.common.utils.R;
+import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -29,6 +30,16 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
         return R.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+    }
+
+    /**
+     * Token异常
+     */
+    @ExceptionHandler(JwtException.class)
+    public R handleJwtException(JwtException e,HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        LOGGER.error("请求地址'{}',认证失败'{}'", requestURI, e.getMessage());
+        return R.error(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     /**

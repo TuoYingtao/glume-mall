@@ -6,6 +6,7 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
+    info: {},
     roles: [],
     permissions: [],
   },
@@ -14,6 +15,7 @@ const user = {
     SET_TOKEN: (state, token) => state.token = token,
     SET_NAME: (state, name) => state.name = name,
     SET_AVATAR: (state, avatar) => state.avatar = avatar,
+    SET_INFO: (state, info) => state.info = info,
     SET_ROLES: (state, roles) => state.roles = roles,
   },
 
@@ -40,8 +42,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           if(res.code == 200) {
-            commit('SET_AVATAR', res.data.avatar)
-            commit('SET_NAME', res.data.name)
+            commit('SET_INFO', res.data.info)
             commit('SET_ROLES', ["admin"])
             resolve(res)
           }

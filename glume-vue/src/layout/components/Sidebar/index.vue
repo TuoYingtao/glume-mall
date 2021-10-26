@@ -13,7 +13,7 @@
                 mode="vertical">
               <sidebar-item
                     class="animate__animated animate__backInUp"
-                    v-for="route in permission_routes"
+                    v-for="route in menuRoutes"
                     :key="route.path"
                     :item="route"
                     :base-path="route.path"/>
@@ -27,12 +27,12 @@ import { mapGetters, mapState } from "vuex";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem";
 import variables from "@/assets/styles/variables.scss";
-import { constantRoutes } from '@/router'
+
 export default {
     components: { SidebarItem, Logo },
     computed: {
         ...mapState(["settings"]),
-        ...mapGetters(["sidebar"]),
+        ...mapGetters(["menuRoutes","sidebar"]),
         activeMenu() {
             const route = this.$route;
             const { meta, path } = route;
@@ -41,9 +41,6 @@ export default {
                 return meta.activeMenu;
             }
             return path;
-        },
-        permission_routes() {
-          return constantRoutes
         },
         showLogo() {
             return this.$store.state.settings.sidebarLogo;

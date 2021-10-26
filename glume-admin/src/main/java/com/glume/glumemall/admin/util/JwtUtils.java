@@ -20,7 +20,7 @@ public class JwtUtils {
     /* JWT加解密使用的密钥 */
     private String secret;
 
-    /* JWT的超期限时间(60*60*24*7) */
+    /* JWT的超期限时间 */
     private Long expiration;
 
     /* JWT 名称 */

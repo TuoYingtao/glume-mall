@@ -30,7 +30,6 @@ router.beforeEach((to, from, next) => {
         // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(res => {
           store.dispatch('GenerateRoutes',res.data.menus).then(accessRoutes => {
-            console.log(accessRoutes)
             // 根据roles权限生成可访问的路由表
             router.addRoutes(accessRoutes) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成

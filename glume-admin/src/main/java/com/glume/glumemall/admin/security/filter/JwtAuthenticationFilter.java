@@ -47,8 +47,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request,response);
             return;
         }
-        String userNameFromToken = jwtUtils.getUserNameFromToken(token);
-        if (StringUtils.isEmpty(userNameFromToken)) {
+        String userNameFromToken = null;
+        try {
+            userNameFromToken = jwtUtils.getUserNameFromToken(token);
+        } catch (Exception e) {
             throw new JwtException("token 异常");
         }
         if (jwtUtils.isExpiration(token)) {

@@ -1,6 +1,7 @@
 package com.glume.glumemall.admin.service.impl;
 
 import com.glume.glumemall.admin.entity.MenuEntity;
+import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.admin.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,8 +75,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      * @return
      */
     @Override
-    public Integer updateUserDetail(@NotNull UserEntity userEntity) {
-        return baseMapper.updateById(userEntity);
+    public void updateUserDetail(@NotNull UserEntity userEntity) {
+        Integer row = baseMapper.updateById(userEntity);
+        if (row == 0) {
+            throw new ServiceException("更新失败！");
+        }
     }
 
 }

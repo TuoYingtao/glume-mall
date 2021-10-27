@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.UserEntity;
@@ -160,9 +161,10 @@ public class UserController {
             @ApiImplicitParam(name = "mobile",value = "手机号"),
             @ApiImplicitParam(name = "status",value = "状态"),
     })
-    public R update(@RequestBody UserEntity userEntity){
+    public R update(@Validated UserEntity userEntity){
         userService.updateUserDetail(userEntity);
-        return R.ok();
+        return R.ok().put("code",200)
+                .put("msg","更新成功！");
     }
 
     /**

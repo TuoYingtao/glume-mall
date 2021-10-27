@@ -23,6 +23,6 @@ public interface UserService extends IService<UserEntity> {
 
     UserEntity getByUserDetail(String username);
 
-    Integer updateUserDetail(@NotNull UserEntity userEntity);
+    void updateUserDetail(@NotNull UserEntity userEntity);
 }
 

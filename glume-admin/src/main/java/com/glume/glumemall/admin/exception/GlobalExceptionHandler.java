@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -60,6 +61,17 @@ public class GlobalExceptionHandler {
         LOGGER.error(e.getMessage(), e);
         Integer code = e.getCode();
         return code == null ? R.error(code, e.getMessage()) : R.error(e.getMessage());
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
+    {
+        LOGGER.error(e.getMessage(), e);
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return R.error(message);
     }
 
     /**

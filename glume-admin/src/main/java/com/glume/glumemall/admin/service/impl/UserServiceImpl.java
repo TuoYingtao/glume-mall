@@ -18,6 +18,8 @@ import com.glume.glumemall.admin.dao.UserDao;
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.service.UserService;
 
+import javax.validation.constraints.NotNull;
+
 
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements UserService {
@@ -54,16 +56,26 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     }
 
     /**
-     * 通过用户名获取用户信息
+     * Security 通过用户名获取用户信息
      * @param username 用户名
      * @return
      */
     @Override
     public UserEntity getByUserDetail(String username) {
         QueryWrapper<UserEntity> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.select("user_id","username","email","mobile","status","create_time").eq("username",username);
+        objectQueryWrapper.eq("username",username);
         UserEntity userEntity = baseMapper.selectOne(objectQueryWrapper);
         return userEntity;
+    }
+
+    /**
+     * 修改用户信息
+     * @param userEntity
+     * @return
+     */
+    @Override
+    public Integer updateUserDetail(@NotNull UserEntity userEntity) {
+        return baseMapper.updateById(userEntity);
     }
 
 }

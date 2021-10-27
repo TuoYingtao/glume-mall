@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,5 +22,7 @@ public interface UserService extends IService<UserEntity> {
     HashMap<String,Object> getByUserInfoAndMenu(String username);
 
     UserEntity getByUserDetail(String username);
+
+    Integer updateUserDetail(@NotNull UserEntity userEntity);
 }
 

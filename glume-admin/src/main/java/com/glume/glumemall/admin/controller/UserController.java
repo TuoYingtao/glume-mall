@@ -150,7 +150,7 @@ public class UserController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId",value = "用户ID"),

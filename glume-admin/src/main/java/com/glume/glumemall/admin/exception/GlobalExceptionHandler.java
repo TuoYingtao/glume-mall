@@ -6,6 +6,7 @@ import com.glume.glumemall.common.utils.R;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -71,6 +72,16 @@ public class GlobalExceptionHandler {
         LOGGER.error("请求地址'{}',业务异常'{}'",requestURI, e.getMessage(), e);
         Integer code = e.getCode();
         return code == null ? R.error(code, e.getMessage()) : R.error(e.getMessage());
+    }
+
+    /**
+     * 缺少所需的请求体异常处理
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public R handlerHttpMessageNotReadableException(HttpMessageNotReadableException e,HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        LOGGER.error("请求地址'{}',缺少所需的请求体",requestURI,e.getMessage(),e);
+        return R.error("缺少所需的请求体");
     }
 
     /**

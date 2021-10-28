@@ -23,6 +23,8 @@ public interface MenuService extends IService<MenuEntity> {
 
     void addMenuItem(MenuEntity menuEntity,String username);
 
+    void updateMenuItem(MenuEntity menuEntity, String username);
+
     List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific);
 }
 

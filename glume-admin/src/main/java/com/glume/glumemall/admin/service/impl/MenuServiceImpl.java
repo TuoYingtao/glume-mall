@@ -69,7 +69,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         menuEntity.setCreateBy(username);
         Integer row = baseMapper.insert(menuEntity);
         if (row == 0) {
-            throw new ServiceException("添加失败");
+            throw new ServiceException("添加失败！");
+        }
+    }
+
+    /**
+     * 更新菜单项
+     * @param menuEntity 菜单实体类
+     * @param username 更新者用户名
+     */
+    @Override
+    public void updateMenuItem(MenuEntity menuEntity, String username) {
+        menuEntity.setUpdateTime(new Date(DateUtils.getSysDateTime()));
+        menuEntity.setUpdateBy(username);
+        Integer row = baseMapper.updateById(menuEntity);
+        System.out.println(row);
+        if (row == 0) {
+            throw new ServiceException("更新失败！");
         }
     }
 

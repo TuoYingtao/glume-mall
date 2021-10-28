@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',业务异常'{}'",requestURI, e.getMessage(), e);
         Integer code = e.getCode();
-        return code == null ? R.error(code, e.getMessage()) : R.error(e.getMessage());
+        return code == null ? R.error(e.getMessage()) : R.error(code, e.getMessage());
     }
 
     /**

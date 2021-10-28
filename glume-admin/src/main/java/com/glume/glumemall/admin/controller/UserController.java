@@ -154,12 +154,12 @@ public class UserController {
     @PostMapping("/update")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId",value = "用户ID"),
-            @ApiImplicitParam(name = "username",value = "用户名"),
-            @ApiImplicitParam(name = "password",value = "密码"),
-            @ApiImplicitParam(name = "email",value = "邮箱"),
-            @ApiImplicitParam(name = "mobile",value = "手机号"),
-            @ApiImplicitParam(name = "status",value = "状态"),
+            @ApiImplicitParam(name = "userId",value = "用户ID",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "username",value = "用户名",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "password",value = "密码",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "email",value = "邮箱",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "mobile",value = "手机号",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "status",value = "状态",dataType = "Integer"),
     })
     public R update(@Validated UserEntity userEntity){
         userService.updateUserDetail(userEntity);

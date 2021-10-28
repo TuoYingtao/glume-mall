@@ -21,6 +21,8 @@ public interface MenuService extends IService<MenuEntity> {
 
     MenuEntity getMenuDetail(Long menuId);
 
+    void addMenuItem(MenuEntity menuEntity,String username);
+
     List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific);
 }
 

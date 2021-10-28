@@ -2,9 +2,13 @@ package com.glume.glumemall.admin.controller;
 
 import java.util.*;
 
+import com.glume.glumemall.admin.util.JwtUtils;
+import com.glume.glumemall.common.utils.SpringUtils;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.MenuEntity;
@@ -12,6 +16,7 @@ import com.glume.glumemall.admin.service.MenuService;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.common.utils.R;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -27,10 +32,14 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @GetMapping("/menu/{userId}")
+    /**
+     * 列表
+     */
+    @GetMapping("/list/{userId}")
     @ApiOperation(value = "获取用户菜单",notes = "")
     @ApiImplicitParam(name = "userId",value = "用户ID",required = true,dataType = "Long")
-    public R getMenuDetail(@PathVariable("userId") Long userId) {
+    public R getMenuDetail(@RequestParam Map<String,Object> params,@PathVariable("userId") Long userId) {
+        PageUtils page = menuService.queryPage(params);
         List<MenuEntity> menuList = menuService.getMenuList(userId,false);
         HashMap<String, List<MenuEntity>> map = new HashMap<>();
         map.put("menus",menuList);
@@ -39,34 +48,44 @@ public class MenuController {
     }
 
     /**
-     * 列表
-     */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = menuService.queryPage(params);
-
-        return R.ok().put("page", page);
-    }
-
-
-    /**
      * 信息
      */
-    @RequestMapping("/info/{menuId}")
+    @GetMapping("/info/{menuId}")
+    @ApiOperation(value = "获取菜单项详情",notes = "获取菜单项详情")
+    @ApiImplicitParam(name = "menuId",value = "菜单ID",required = true,dataType = "Long")
     public R info(@PathVariable("menuId") Long menuId){
 		MenuEntity menu = menuService.getById(menuId);
-
-        return R.ok().put("menu", menu);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("menuInfo",menu);
+        return R.ok().put("code",200)
+                .put("data", data);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody MenuEntity menu){
-		menuService.save(menu);
-
-        return R.ok();
+    @PostMapping("/save")
+    @ApiOperation(value = "添加菜单项",notes = "添加菜单项")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "parentId",value = "父菜单ID",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "name",value = "菜单名称",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "path",value = "菜单地址",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "component",value = "菜单路径",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "query",value = "路由参数",dataType = "String"),
+            @ApiImplicitParam(name = "visible",value = "菜单显示状态",required = true,dataType = "Character"),
+            @ApiImplicitParam(name = "status",value = "菜单启用状态",required = true,dataType = "Character"),
+            @ApiImplicitParam(name = "perms",value = "授权",dataType = "String"),
+            @ApiImplicitParam(name = "menuType",value = "菜单类型",required = true,dataType = "Character"),
+            @ApiImplicitParam(name = "icon",value = "菜单图标",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "orderNum",value = "排序",dataType = "String"),
+            @ApiImplicitParam(name = "remark",value = "备注",dataType = "String"),
+    })
+    public R save(@Validated MenuEntity menu, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        String userName = SpringUtils.getBean(JwtUtils.class).getUserNameFromToken(token);
+        menuService.addMenuItem(menu,userName);
+        return R.ok().put("code",200)
+                .put("msg","添加成功！");
     }
 
     /**

@@ -2,12 +2,15 @@ package com.glume.glumemall.admin.service.impl;
 
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
 import com.glume.glumemall.admin.entity.UserRoleEntity;
+import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.admin.service.RoleMenuService;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.common.constant.Constants;
+import com.glume.glumemall.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +57,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
     public MenuEntity getMenuDetail(Long menuId) {
         MenuEntity menuEntity = baseMapper.selectById(menuId);
         return menuEntity;
+    }
+
+    /**
+     * 添加菜单项
+     * @param menuEntity
+     */
+    @Override
+    public void addMenuItem(MenuEntity menuEntity,String username) {
+        menuEntity.setCreateTime(new Date(DateUtils.getSysDateTime()));
+        menuEntity.setCreateBy(username);
+        Integer row = baseMapper.insert(menuEntity);
+        if (row == 0) {
+            throw new ServiceException("添加失败");
+        }
     }
 
     /**

@@ -6,16 +6,19 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: baidu_route
-          uri: https://www.baidu.com
+        - id: product_route
+          uri: lb://glume-product
           predicates:
-            - Query=url,baidu
-            - Path=/baidu
-        - id: qq_route
-          uri: https://www.qq.com
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
+        - id: admin_route
+          uri: lb://glume-admin
           predicates:
-            - Query=url,qq
-            - Path=/qq
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/admin/$\{segment}
     nacos:
       discovery:
         server-addr: localhost:8848

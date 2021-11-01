@@ -17,3 +17,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto #主键自增
+swagger:
+  enabled: true
+jwt:
+  header: "Authorization"

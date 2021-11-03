@@ -75,7 +75,8 @@ public class CategoryController {
     @ApiOperation(value = "删除菜单")
     public R delete(@PathVariable("catId") Long[] catIds){
         categoryService.removeMenuByIds(Arrays.asList(catIds));
-        return R.ok().put("code",200);
+        return R.ok().put("code",200)
+                .put("msg","删除成功");
     }
 
 }

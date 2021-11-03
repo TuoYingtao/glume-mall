@@ -1,21 +1,19 @@
 package com.glume.glumemall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.glumemall.common.utils.PageUtils;
 import com.glume.glumemall.common.utils.Query;
+import com.glume.glumemall.product.dao.CategoryDao;
+import com.glume.glumemall.product.entity.CategoryEntity;
+import com.glume.glumemall.product.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.glume.glumemall.product.dao.CategoryDao;
-import com.glume.glumemall.product.entity.CategoryEntity;
-import com.glume.glumemall.product.service.CategoryService;
 
 
 @Service("categoryService")
@@ -48,7 +46,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
     /* 递归查找所有菜单的子菜单 */
     public List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all) {
-                List<CategoryEntity> children = all.stream().filter(categoryEntity -> categoryEntity.getParentCid() == root.getCatId())
+        List<CategoryEntity> children = all.stream().filter(categoryEntity -> categoryEntity.getParentCid() == root.getCatId())
                 .map(categoryEntity -> {
                     // 1.找到子菜单
                     categoryEntity.setChildren(getChildrens(categoryEntity,all));

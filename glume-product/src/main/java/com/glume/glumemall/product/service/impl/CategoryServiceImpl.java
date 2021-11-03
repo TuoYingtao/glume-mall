@@ -10,6 +10,7 @@ import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,6 +45,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<CategoryEntity> list = sortedMenus.collect(Collectors.toList());
         return list;
     }
+
+    @Override
+    public void removeMenuByIds(List<Long> catIds) {
+        //TODO 1.检测当前删除的菜单，是否被别的地方引用
+
+        baseMapper.deleteBatchIds(catIds);
+    }
+
     /* 递归查找所有菜单的子菜单 */
     public List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all) {
         List<CategoryEntity> children = all.stream().filter(categoryEntity -> categoryEntity.getParentCid() == root.getCatId())

@@ -17,6 +17,9 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto #主键自增
+      # 逻辑删除：1-显示 0-不显示
+      logic-delete-value: 0
+      logic-not-delete-value: 1
 swagger:
   enabled: true
 jwt:

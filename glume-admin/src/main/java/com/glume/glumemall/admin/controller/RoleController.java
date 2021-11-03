@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.service.RoleService;
-import com.glume.glumemall.common.utils.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
 import com.glume.glumemall.common.utils.R;
 
 

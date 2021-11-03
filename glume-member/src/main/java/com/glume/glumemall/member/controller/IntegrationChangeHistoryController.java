@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.member.entity.IntegrationChangeHistoryEntity;
 import com.glume.glumemall.member.service.IntegrationChangeHistoryService;
-import com.glume.glumemall.common.utils.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
 import com.glume.glumemall.common.utils.R;
 
 

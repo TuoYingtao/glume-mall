@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.hutool.core.lang.UUID;
-import com.glume.glumemall.admin.util.JwtUtils;
-import com.glume.glumemall.admin.util.RedisUtils;
+import com.glume.glumemall.common.utils.JwtUtils;
+import com.glume.glumemall.common.utils.redis.RedisUtils;
 import com.glume.glumemall.common.constant.RedisConstant;
 import com.glume.glumemall.common.utils.SpringUtils;
 import com.google.code.kaptcha.Producer;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.service.UserService;
-import com.glume.glumemall.common.utils.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
 import com.glume.glumemall.common.utils.R;
 import sun.misc.BASE64Encoder;
 

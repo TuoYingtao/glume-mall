@@ -2,7 +2,7 @@ package com.glume.glumemall.admin.controller;
 
 import java.util.*;
 
-import com.glume.glumemall.admin.util.JwtUtils;
+import com.glume.glumemall.common.utils.JwtUtils;
 import com.glume.glumemall.common.utils.SpringUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.service.MenuService;
-import com.glume.glumemall.common.utils.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
 import com.glume.glumemall.common.utils.R;
 
 import javax.servlet.http.HttpServletRequest;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.order.entity.OrderItemEntity;
 import com.glume.glumemall.order.service.OrderItemService;
-import com.glume.glumemall.common.utils.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
 import com.glume.glumemall.common.utils.R;
 
 

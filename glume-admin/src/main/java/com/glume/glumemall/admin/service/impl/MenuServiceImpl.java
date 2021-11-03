@@ -2,10 +2,10 @@ package com.glume.glumemall.admin.service.impl;
 
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
 import com.glume.glumemall.admin.entity.UserRoleEntity;
-import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.admin.service.RoleMenuService;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.common.constant.Constants;
+import com.glume.glumemall.common.exception.servlet.ServiceException;
 import com.glume.glumemall.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.glume.glumemall.common.utils.PageUtils;
-import com.glume.glumemall.common.utils.Query;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.Query;
 
 import com.glume.glumemall.admin.dao.MenuDao;
 import com.glume.glumemall.admin.entity.MenuEntity;

@@ -1,4 +1,4 @@
-package com.glume.glumemall.admin.util;
+package com.glume.glumemall.common.utils.redis;
 
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;

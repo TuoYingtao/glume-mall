@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.member.entity.MemberEntity;
 import com.glume.glumemall.member.service.MemberService;
-import com.glume.glumemall.common.utils.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
 import com.glume.glumemall.common.utils.R;
 
 import javax.annotation.Resource;

@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.glume.glumemall.common.utils;
+package com.glume.glumemall.common.utils.mybatis;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;

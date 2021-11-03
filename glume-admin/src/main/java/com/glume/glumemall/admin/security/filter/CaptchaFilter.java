@@ -1,9 +1,9 @@
 package com.glume.glumemall.admin.security.filter;
 
-import com.glume.glumemall.admin.exception.CaptchaException;
 import com.glume.glumemall.admin.security.handler.LoginFailureHandler;
-import com.glume.glumemall.admin.util.RedisUtils;
+import com.glume.glumemall.common.utils.redis.RedisUtils;
 import com.glume.glumemall.common.constant.RedisConstant;
+import com.glume.glumemall.common.exception.CaptchaException;
 import com.glume.glumemall.common.utils.SpringUtils;
 import com.glume.glumemall.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.glume.glumemall.product.service.impl;
 
 
-import com.glume.glumemall.common.utils.PageUtils;
-import com.glume.glumemall.common.utils.Query;
+import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.glumemall.common.utils.mybatis.Query;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

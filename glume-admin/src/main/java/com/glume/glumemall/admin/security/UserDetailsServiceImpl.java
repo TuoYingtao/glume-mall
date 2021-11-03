@@ -1,10 +1,10 @@
 package com.glume.glumemall.admin.security;
 
 import com.glume.glumemall.admin.entity.UserEntity;
-import com.glume.glumemall.admin.exception.servlet.ServiceException;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.admin.service.UserService;
 import com.glume.glumemall.common.enums.UserStatus;
+import com.glume.glumemall.common.exception.servlet.ServiceException;
 import com.glume.glumemall.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

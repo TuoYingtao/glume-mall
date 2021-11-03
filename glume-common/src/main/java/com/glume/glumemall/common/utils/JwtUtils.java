@@ -1,4 +1,4 @@
-package com.glume.glumemall.admin.util;
+package com.glume.glumemall.common.utils;
 
 import io.jsonwebtoken.*;
 import lombok.Data;

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.coupon.entity.CouponEntity;
 import com.glume.glumemall.coupon.service.CouponService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.R;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.core.utils.R;
 
 /**
  * 优惠券信息

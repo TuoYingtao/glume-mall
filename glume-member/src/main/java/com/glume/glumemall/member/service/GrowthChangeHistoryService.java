@@ -1,7 +1,7 @@
 package com.glume.glumemall.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.member.entity.GrowthChangeHistoryEntity;
 
 import java.util.Map;

@@ -2,7 +2,7 @@ package com.glume.glumemall.product.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.entity.AttrAttrgroupRelationEntity;
 
 import java.util.Map;

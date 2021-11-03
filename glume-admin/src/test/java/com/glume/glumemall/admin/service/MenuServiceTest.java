@@ -1,7 +1,7 @@
 package com.glume.glumemall.admin.service;
 
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
-import com.glume.glumemall.common.utils.SpringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

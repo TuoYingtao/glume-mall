@@ -3,8 +3,8 @@ package com.glume.glumemall.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.R;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.core.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

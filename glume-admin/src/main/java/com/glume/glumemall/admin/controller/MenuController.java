@@ -1,9 +1,10 @@
 package com.glume.glumemall.admin.controller;
 
-import java.util.*;
 
-import com.glume.glumemall.common.utils.JwtUtils;
-import com.glume.glumemall.common.utils.SpringUtils;
+import com.glume.common.core.utils.JwtUtils;
+import com.glume.common.core.utils.R;
+import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.mybatis.PageUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.service.MenuService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.R;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,7 +46,7 @@ public class MenuController {
     @GetMapping("/list/{userId}")
     @ApiOperation(value = "获取用户菜单",notes = "")
     @ApiImplicitParam(name = "userId",value = "用户ID",required = true,dataType = "Long")
-    public R getMenuDetail(@RequestParam Map<String,Object> params,@PathVariable("userId") Long userId) {
+    public R getMenuDetail(@RequestParam Map<String,Object> params, @PathVariable("userId") Long userId) {
         PageUtils page = menuService.queryPage(params);
         List<MenuEntity> menuList = menuService.getMenuList(userId,false);
         HashMap<String, List<MenuEntity>> map = new HashMap<>();

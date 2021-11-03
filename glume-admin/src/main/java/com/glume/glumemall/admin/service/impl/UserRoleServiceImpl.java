@@ -1,11 +1,13 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.glume.common.core.constant.RedisConstant;
+import com.glume.common.core.utils.RedisUtils;
+import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.service.RoleMenuService;
 import com.glume.glumemall.admin.service.RoleService;
-import com.glume.glumemall.common.utils.redis.RedisUtils;
-import com.glume.glumemall.common.constant.RedisConstant;
-import com.glume.glumemall.common.utils.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,6 @@ import java.util.stream.Collectors;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.mybatis.Query;
 
 import com.glume.glumemall.admin.dao.UserRoleDao;
 import com.glume.glumemall.admin.entity.UserRoleEntity;

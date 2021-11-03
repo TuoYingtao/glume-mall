@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.coupon.entity.CouponHistoryEntity;
 import com.glume.glumemall.coupon.service.CouponHistoryService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.R;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.core.utils.R;
 
 
 

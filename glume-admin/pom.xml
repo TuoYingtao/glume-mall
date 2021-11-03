@@ -10,11 +10,23 @@
     <artifactId>glume-admin</artifactId>
     <description>glume-mall 的后台管理系统</description>
     <dependencies>
+        <!-- 公共核心工具类 -->
         <dependency>
-            <groupId>com.glume.glumemall</groupId>
-            <artifactId>glume-common</artifactId>
+            <groupId>com.glume.common.core</groupId>
+            <artifactId>glume-common-core</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.glume.common.mybatis</groupId>
+            <artifactId>glume-common-mybatis</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.glume.common.swagger</groupId>
+            <artifactId>glume-common-swagger</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
@@ -23,6 +35,13 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+
+        <!-- security 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!-- 图片验证码 -->
         <dependency>
             <groupId>com.github.axet</groupId>

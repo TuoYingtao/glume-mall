@@ -1,7 +1,7 @@
 package com.glume.glumemall.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.LogEntity;
 
 import java.util.Map;

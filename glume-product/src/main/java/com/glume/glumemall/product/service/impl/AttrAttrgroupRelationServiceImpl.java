@@ -1,8 +1,8 @@
 package com.glume.glumemall.product.service.impl;
 
 
-import com.glume.glumemall.common.utils.mybatis.Query;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.Query;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.dao.AttrAttrgroupRelationDao;
 import com.glume.glumemall.product.entity.AttrAttrgroupRelationEntity;
 import com.glume.glumemall.product.service.AttrAttrgroupRelationService;

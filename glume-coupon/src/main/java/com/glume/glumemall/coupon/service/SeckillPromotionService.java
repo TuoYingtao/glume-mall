@@ -1,7 +1,7 @@
 package com.glume.glumemall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.coupon.entity.SeckillPromotionEntity;
 
 import java.util.Map;

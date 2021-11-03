@@ -1,7 +1,7 @@
 package com.glume.glumemall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.ware.entity.WareOrderTaskEntity;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.glume.glumemall.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.order.entity.OrderReturnReasonEntity;
 
 import java.util.Map;

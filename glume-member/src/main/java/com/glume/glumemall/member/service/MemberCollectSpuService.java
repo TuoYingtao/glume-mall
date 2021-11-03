@@ -1,7 +1,8 @@
 package com.glume.glumemall.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.mybatis.Query;
 import com.glume.glumemall.member.entity.MemberCollectSpuEntity;
 
 import java.util.Map;

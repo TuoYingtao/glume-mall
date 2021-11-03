@@ -1,10 +1,10 @@
 package com.glume.glumemall.admin.security.filter;
 
 import cn.hutool.core.util.StrUtil;
+import com.glume.common.core.utils.JwtUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.security.UserDetailsServiceImpl;
 import com.glume.glumemall.admin.service.impl.UserServiceImpl;
-import com.glume.glumemall.common.utils.JwtUtils;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ import java.io.IOException;
  */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
-    @Autowired
+    @Resource
     private JwtUtils jwtUtils;
 
     @Autowired

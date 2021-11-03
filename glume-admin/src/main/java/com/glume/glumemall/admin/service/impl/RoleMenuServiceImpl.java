@@ -1,4 +1,6 @@
 package com.glume.glumemall.admin.service.impl;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.service.MenuService;
 import com.glume.glumemall.admin.service.UserRoleService;
 import org.slf4j.Logger;
@@ -13,8 +15,6 @@ import java.util.stream.Collectors;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.mybatis.Query;
 
 import com.glume.glumemall.admin.dao.RoleMenuDao;
 import com.glume.glumemall.admin.entity.RoleMenuEntity;

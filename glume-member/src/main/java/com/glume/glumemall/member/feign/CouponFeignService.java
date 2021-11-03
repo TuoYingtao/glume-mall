@@ -1,6 +1,6 @@
 package com.glume.glumemall.member.feign;
 
-import com.glume.glumemall.common.utils.R;
+import com.glume.common.core.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 

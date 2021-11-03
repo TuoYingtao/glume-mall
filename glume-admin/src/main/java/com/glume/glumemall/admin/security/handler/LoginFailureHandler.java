@@ -1,9 +1,9 @@
 package com.glume.glumemall.admin.security.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.glume.glumemall.common.constant.HttpStatus;
-import com.glume.glumemall.common.utils.R;
-import com.glume.glumemall.common.utils.ServletUtils;
+import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.utils.R;
+import com.glume.common.core.utils.ServletUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) {
         R result = R.error()
-                .put("code",HttpStatus.ERROR)
+                .put("code", HttpStatus.ERROR)
                 .put("msg", e.getMessage());
         ServletUtils.renderString(httpServletResponse, HttpStatus.ERROR, JSON.toJSONString(result));
     }

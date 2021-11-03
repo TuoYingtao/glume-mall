@@ -3,6 +3,8 @@ package com.glume.glumemall.admin.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.glume.common.core.utils.R;
+import com.glume.common.mybatis.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.admin.entity.UserRoleEntity;
 import com.glume.glumemall.admin.service.UserRoleService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.R;
 
 
 

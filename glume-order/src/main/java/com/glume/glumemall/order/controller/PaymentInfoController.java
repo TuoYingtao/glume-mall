@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.glume.glumemall.order.entity.PaymentInfoEntity;
 import com.glume.glumemall.order.service.PaymentInfoService;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.R;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.core.utils.R;
 
 
 

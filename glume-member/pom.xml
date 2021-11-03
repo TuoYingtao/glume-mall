@@ -11,9 +11,20 @@
     <description>glume-mall 的会员服务</description>
 
     <dependencies>
+                <!-- 公共核心工具类 -->
         <dependency>
-            <groupId>com.glume.glumemall</groupId>
-            <artifactId>glume-common</artifactId>
+            <groupId>com.glume.common.core</groupId>
+            <artifactId>glume-common-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.glume.common.mybatis</groupId>
+            <artifactId>glume-common-mybatis</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.glume.common.swagger</groupId>
+            <artifactId>glume-common-swagger</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>

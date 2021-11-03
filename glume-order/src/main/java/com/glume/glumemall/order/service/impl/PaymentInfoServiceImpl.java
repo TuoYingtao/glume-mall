@@ -5,8 +5,8 @@ import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.glume.glumemall.common.utils.mybatis.PageUtils;
-import com.glume.glumemall.common.utils.mybatis.Query;
+import com.glume.common.mybatis.PageUtils;
+import com.glume.common.mybatis.Query;
 
 import com.glume.glumemall.order.dao.PaymentInfoDao;
 import com.glume.glumemall.order.entity.PaymentInfoEntity;

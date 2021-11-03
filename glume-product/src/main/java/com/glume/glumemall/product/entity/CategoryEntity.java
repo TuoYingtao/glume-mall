@@ -9,9 +9,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * 商品三级分类
@@ -38,23 +40,28 @@ public class CategoryEntity implements Serializable {
 	/**
 	 * 父分类id
 	 */
+	@NotNull(message = "父分类ID不能为空")
 	private Long parentCid;
 	/**
 	 * 层级
 	 */
+	@NotNull(message = "层级不能为空")
 	private Integer catLevel;
 	/**
 	 * 是否显示[0-不显示，1显示]
 	 */
+	@JsonIgnore
 	@TableLogic
 	private Integer showStatus;
 	/**
 	 * 排序
 	 */
+	@NotNull(message = "排序不能为空")
 	private Integer sort;
 	/**
 	 * 图标地址
 	 */
+	@NotBlank(message = "图标地址不能为空")
 	private String icon;
 	/**
 	 * 计量单位
@@ -63,6 +70,7 @@ public class CategoryEntity implements Serializable {
 	/**
 	 * 商品数量
 	 */
+	@NotNull(message = "商品数量不能为空")
 	private Integer productCount;
 	/**
 	 * 子级

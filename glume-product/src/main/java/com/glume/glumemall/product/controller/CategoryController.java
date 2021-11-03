@@ -4,8 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.glume.glumemall.common.utils.R;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.product.entity.CategoryEntity;
@@ -51,11 +54,20 @@ public class CategoryController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody CategoryEntity category){
+    @PostMapping("/save")
+    @ApiOperation(value = "保存商品")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name",value = "分类名称",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "parentCid",value = "父分类id",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "catLevel",value = "层级",required = true,dataType = "Integer"),
+            @ApiImplicitParam(name = "sort",value = "排序",required = true,dataType = "Integer"),
+            @ApiImplicitParam(name = "icon",value = "图标地址",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "productCount",value = "商品数量",required = true,dataType = "Integer")
+    })
+    public R save(@Validated CategoryEntity category){
 		categoryService.save(category);
-
-        return R.ok();
+        return R.ok().put("code",200)
+                .put("msg","保存成功");
     }
 
     /**

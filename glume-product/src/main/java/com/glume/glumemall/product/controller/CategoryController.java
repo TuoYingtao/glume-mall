@@ -34,7 +34,7 @@ public class CategoryController {
      * 查询所有分类以及子分类，以树形结构组装起来
      */
     @GetMapping("/list/tree")
-    @ApiOperation(value = "商品菜单分类")
+    @ApiOperation(value = "商品分类")
     public R list(){
         List<CategoryEntity> entities = categoryService.listWithTree();
         return R.ok().put("code",200)
@@ -46,7 +46,7 @@ public class CategoryController {
      * 信息
      */
     @GetMapping("/info/{catId}")
-    @ApiOperation(value = "获取菜单详情")
+    @ApiOperation(value = "获取商品分类详情")
     public R info(@PathVariable("catId") Long catId){
 		CategoryEntity category = categoryService.getById(catId);
         HashMap<Object, Object> data = new HashMap<>();
@@ -59,7 +59,7 @@ public class CategoryController {
      * 保存
      */
     @PostMapping("/save")
-    @ApiOperation(value = "保存商品")
+    @ApiOperation(value = "保存商品分类信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name",value = "分类名称",required = true,dataType = "String"),
             @ApiImplicitParam(name = "parentCid",value = "父分类id",required = true,dataType = "Long"),
@@ -78,9 +78,9 @@ public class CategoryController {
      * 修改
      */
     @PutMapping("/update")
-    @ApiOperation(value = "修改菜单")
+    @ApiOperation(value = "修改商品分类信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "catId",value = "菜单ID",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "catId",value = "商品ID",required = true,dataType = "Long"),
             @ApiImplicitParam(name = "name",value = "分类名称",required = true,dataType = "String"),
             @ApiImplicitParam(name = "parentCid",value = "父分类id",required = true,dataType = "Long"),
             @ApiImplicitParam(name = "catLevel",value = "层级",required = true,dataType = "Integer"),
@@ -98,7 +98,7 @@ public class CategoryController {
      * 删除
      */
     @DeleteMapping("/delete/{catId}")
-    @ApiOperation(value = "删除菜单")
+    @ApiOperation(value = "删除商品分类信息")
     public R delete(@PathVariable("catId") Long[] catIds){
         categoryService.removeMenuByIds(Arrays.asList(catIds));
         return R.ok().put("code",200)

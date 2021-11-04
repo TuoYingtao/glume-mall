@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 21/10/2021 13:48:38
+ Date: 04/11/2021 17:45:50
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `config_info`  (
   `c_schema` text CHARACTER SET utf8 COLLATE utf8_bin NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_configinfo_datagrouptenant`(`data_id`, `group_id`, `tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'config_info' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'config_info' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of config_info
@@ -56,6 +56,7 @@ INSERT INTO `config_info` VALUES (27, 'datasource.yaml', 'dev', 'spring:\r\n  da
 INSERT INTO `config_info` VALUES (28, 'mybatis.yaml', 'dev', 'mybatis-plus:\r\n  mapper-locations: classpath:/mapper/**/*.xml\r\n  global-config:\r\n    db-config:\r\n      id-type: auto #主键自增', '9e5ea3a80ee8b9ff346a1a3624b1a7ae', '2021-10-14 07:22:46', '2021-10-14 07:22:46', NULL, '0:0:0:0:0:0:0:1', '', '2eecedd5-c791-439d-bd7d-c7180be61da6', NULL, NULL, NULL, 'yaml', NULL);
 INSERT INTO `config_info` VALUES (29, 'other.yaml', 'dev', 'server:\r\n  port: 7000\r\nspring:\r\n  profiles:\r\n    active: dev\r\n  application:\r\n    name: glume-coupon\r\n  cloud:\r\n    nacos:\r\n      discovery:\r\n        server-addr: localhost:8848', 'c1fea799e490fcbac1b320db2958719a', '2021-10-14 07:23:18', '2021-10-14 07:23:18', NULL, '0:0:0:0:0:0:0:1', '', '2eecedd5-c791-439d-bd7d-c7180be61da6', NULL, NULL, NULL, 'yaml', NULL);
 INSERT INTO `config_info` VALUES (30, 'glume-gateway.yaml', 'dev', 'spring:\r\n    application:\r\n        name: glume-gateway', '59feff90e88e2d71dc37ef5105bb6fcb', '2021-10-14 07:50:28', '2021-10-14 07:50:28', NULL, '0:0:0:0:0:0:0:1', '', 'c0aa677b-6aad-4d3c-bf42-d431617f847a', NULL, NULL, NULL, 'yaml', NULL);
+INSERT INTO `config_info` VALUES (31, 'oss.yaml', 'DEFAULT_GROUP', '# alibaba oss 对象存储\r\nalibaba:\r\n  cloud:\r\n    access-key: LTAI5t6UPxQqej4JDx19V4XB\r\n    secret-key: UuMiYBfgjyrnf5KWEfflxmRL1nXSgN\r\n    oss:\r\n      endpoint: oss-cn-shenzhen.aliyuncs.com', '14a763cc0ed6d4e788341a673be588f2', '2021-11-04 09:29:08', '2021-11-04 09:29:08', NULL, '0:0:0:0:0:0:0:1', '', '4cc5ba66-dbba-40b7-bb98-709cd26fad66', NULL, NULL, NULL, 'yaml', NULL);
 
 -- ----------------------------
 -- Table structure for config_info_aggr
@@ -194,7 +195,7 @@ CREATE TABLE `his_config_info`  (
   INDEX `idx_gmt_create`(`gmt_create`) USING BTREE,
   INDEX `idx_gmt_modified`(`gmt_modified`) USING BTREE,
   INDEX `idx_did`(`data_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '多租户改造' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '多租户改造' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of his_config_info
@@ -225,6 +226,7 @@ INSERT INTO `his_config_info` VALUES (0, 31, 'datasource.yaml', 'dev', '', 'spri
 INSERT INTO `his_config_info` VALUES (0, 32, 'mybatis.yaml', 'dev', '', 'mybatis-plus:\r\n  mapper-locations: classpath:/mapper/**/*.xml\r\n  global-config:\r\n    db-config:\r\n      id-type: auto #主键自增', '9e5ea3a80ee8b9ff346a1a3624b1a7ae', '2021-10-14 15:22:45', '2021-10-14 07:22:46', NULL, '0:0:0:0:0:0:0:1', 'I', '2eecedd5-c791-439d-bd7d-c7180be61da6');
 INSERT INTO `his_config_info` VALUES (0, 33, 'other.yaml', 'dev', '', 'server:\r\n  port: 7000\r\nspring:\r\n  profiles:\r\n    active: dev\r\n  application:\r\n    name: glume-coupon\r\n  cloud:\r\n    nacos:\r\n      discovery:\r\n        server-addr: localhost:8848', 'c1fea799e490fcbac1b320db2958719a', '2021-10-14 15:23:18', '2021-10-14 07:23:18', NULL, '0:0:0:0:0:0:0:1', 'I', '2eecedd5-c791-439d-bd7d-c7180be61da6');
 INSERT INTO `his_config_info` VALUES (0, 34, 'glume-gateway.yaml', 'dev', '', 'spring:\r\n    application:\r\n        name: glume-gateway', '59feff90e88e2d71dc37ef5105bb6fcb', '2021-10-14 15:50:27', '2021-10-14 07:50:28', NULL, '0:0:0:0:0:0:0:1', 'I', 'c0aa677b-6aad-4d3c-bf42-d431617f847a');
+INSERT INTO `his_config_info` VALUES (0, 35, 'oss.yaml', 'DEFAULT_GROUP', '', '# alibaba oss 对象存储\r\nalibaba:\r\n  cloud:\r\n    access-key: LTAI5t6UPxQqej4JDx19V4XB\r\n    secret-key: UuMiYBfgjyrnf5KWEfflxmRL1nXSgN\r\n    oss:\r\n      endpoint: oss-cn-shenzhen.aliyuncs.com', '14a763cc0ed6d4e788341a673be588f2', '2021-11-04 17:29:07', '2021-11-04 09:29:08', NULL, '0:0:0:0:0:0:0:1', 'I', '4cc5ba66-dbba-40b7-bb98-709cd26fad66');
 
 -- ----------------------------
 -- Table structure for permissions
@@ -295,7 +297,7 @@ CREATE TABLE `tenant_info`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_tenant_info_kptenantid`(`kp`, `tenant_id`) USING BTREE,
   INDEX `idx_tenant_id`(`tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tenant_info
@@ -307,6 +309,7 @@ INSERT INTO `tenant_info` VALUES (4, '1', '2eecedd5-c791-439d-bd7d-c7180be61da6'
 INSERT INTO `tenant_info` VALUES (5, '1', 'c0aa677b-6aad-4d3c-bf42-d431617f847a', 'gateway', 'API网关服务', 'nacos', 1634197611766, 1634197611766);
 INSERT INTO `tenant_info` VALUES (6, '1', '93e4a05e-b268-4598-8f2d-3a47ff36edf9', 'product', '商品服务', 'nacos', 1634201499517, 1634201499517);
 INSERT INTO `tenant_info` VALUES (7, '1', '510cd728-988e-4e39-9142-9ee7f8f7b383', 'admin', '后台系统服务', 'nacos', 1634268513303, 1634268513303);
+INSERT INTO `tenant_info` VALUES (8, '1', '4cc5ba66-dbba-40b7-bb98-709cd26fad66', 'thirdParty', '第三方服务', 'nacos', 1636017876281, 1636017876281);
 
 -- ----------------------------
 -- Table structure for users

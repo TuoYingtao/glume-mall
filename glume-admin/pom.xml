@@ -10,6 +10,15 @@
     <artifactId>glume-admin</artifactId>
     <description>glume-mall 的后台管理系统</description>
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
         <!-- 公共核心工具类 -->
         <dependency>
             <groupId>com.glume.common.core</groupId>
@@ -26,14 +35,10 @@
             <artifactId>glume-common-swagger</artifactId>
             <version>1.0.0</version>
         </dependency>
-
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <groupId>com.glume.common.validator</groupId>
+            <artifactId>glume-common-validator</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- security 依赖 -->
@@ -48,16 +53,21 @@
             <artifactId>kaptcha</artifactId>
             <version>0.0.9</version>
         </dependency>
+
+        <!-- mysql-connector -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
+        <!-- devtools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

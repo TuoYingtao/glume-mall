@@ -127,11 +127,12 @@ public class MenuController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] menuIds){
-		menuService.removeByIds(Arrays.asList(menuIds));
-
-        return R.ok();
+    @DeleteMapping("/delete/{menuIds}")
+    @ApiOperation(value = "删除菜单项",notes = "删除菜单项，可批量删除")
+    public R delete(@PathVariable("menuIds") Long[] menuIds){
+        menuService.removeMenuByIds(Arrays.asList(menuIds));
+        return R.ok().put("code",200)
+                .put("msg","删除成功！");
     }
 
 }

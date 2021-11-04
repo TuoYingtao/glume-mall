@@ -89,6 +89,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         }
     }
 
+    @Override
+    public void removeMenuByIds(List<Long> asList) {
+        // TODO 1.检测当前删除的菜单信息，是否被别的地方引用
+
+        Integer row = baseMapper.deleteBatchIds(asList);
+        if (row == 0) {
+            throw new ServiceException("删除失败！");
+        }
+    }
+
     /**
      * 获取用户菜单
      * @param userId

@@ -25,6 +25,8 @@ public interface MenuService extends IService<MenuEntity> {
 
     void updateMenuItem(MenuEntity menuEntity, String username);
 
+    void removeMenuByIds(List<Long> asList);
+
     List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific);
 }
 

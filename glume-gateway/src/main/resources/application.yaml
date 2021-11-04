@@ -13,6 +13,13 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
 
+        - id: third_party_route
+          uri: lb://glume-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
         - id: admin_route
           uri: lb://glume-admin
           predicates:

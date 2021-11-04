@@ -19,5 +19,6 @@
         <module>glume-common-core</module>
         <module>glume-common-mybatis</module>
         <module>glume-common-swagger</module>
+        <module>glume-common-validator</module>
     </modules>
 </project>

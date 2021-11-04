@@ -1,16 +1,17 @@
 package com.glume.glumemall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.product.entity.BrandEntity;
 import com.glume.glumemall.product.service.BrandService;
@@ -33,52 +34,80 @@ public class BrandController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
+    @ApiOperation("品牌列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "页数"),
+            @ApiImplicitParam(name = "limit",value = "每页多少条")
+    })
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = brandService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.ok().put("code",200)
+                .put("data", page);
     }
 
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{brandId}")
+    @GetMapping("/info/{brandId}")
+    @ApiOperation(value = "获取品牌信息")
     public R info(@PathVariable("brandId") Long brandId){
-		BrandEntity brand = brandService.getById(brandId);
-
-        return R.ok().put("brand", brand);
+		BrandEntity brand = brandService.getBrandById(brandId);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("brand",brand);
+        return R.ok().put("code",200)
+                .put("data", data);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody BrandEntity brand){
+    @PostMapping("/save")
+    @ApiOperation(value = "保存品牌信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name",value = "品牌名称",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "logo",value = "品牌logo地址",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "descript",value = "描述",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "firstLetter",value = "检索首字母",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "sort",value = "排序",dataType = "Integer")
+    })
+    public R save(@Validated BrandEntity brand){
 		brandService.save(brand);
 
-        return R.ok();
+        return R.ok().put("code",200)
+                .put("msg","保存成功！");
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody BrandEntity brand){
+    @PutMapping("/update")
+    @ApiOperation(value = "修改品牌信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "brandId",value = "品牌id",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "name",value = "品牌名称",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "logo",value = "品牌logo地址",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "descript",value = "描述",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "firstLetter",value = "检索首字母",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "sort",value = "排序",dataType = "Integer")
+    })
+    public R update(@Validated BrandEntity brand){
 		brandService.updateById(brand);
 
-        return R.ok();
+        return R.ok().put("code",200)
+                .put("msg","更新成功！");
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] brandIds){
-		brandService.removeByIds(Arrays.asList(brandIds));
-
-        return R.ok();
+    @DeleteMapping("/delete/{brandIds}")
+    public R delete(@PathVariable("brandIds") Long[] brandIds){
+		brandService.removeBrandByIds(Arrays.asList(brandIds));
+        return R.ok().put("code",200)
+                .put("msg","删除成功！");
     }
 
 }

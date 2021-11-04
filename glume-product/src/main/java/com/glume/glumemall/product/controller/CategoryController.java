@@ -95,6 +95,19 @@ public class CategoryController {
     }
 
     /**
+     * 拖拽修改商品分类排序
+     * @param category
+     * @return
+     */
+    @PutMapping("/update/sort")
+    @ApiOperation(value = "拖拽修改商品分类排序")
+    public R updateSort(CategoryEntity category){
+        categoryService.updateBatchById(Arrays.asList(category));
+        return R.ok().put("code",200)
+                .put("msg","商品分类排序修改成功");
+    }
+
+    /**
      * 删除
      */
     @DeleteMapping("/delete/{catId}")

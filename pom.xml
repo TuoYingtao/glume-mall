@@ -18,6 +18,7 @@
         <module>glume-order</module>
         <module>glume-product</module>
         <module>glume-ware</module>
+        <module>glume-third-party</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
     </modules>

@@ -1,0 +1,9 @@
+server:
+  port: 30000
+spring:
+  application:
+    name: glume-third-party
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

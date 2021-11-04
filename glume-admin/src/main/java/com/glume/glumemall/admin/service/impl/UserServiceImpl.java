@@ -6,6 +6,7 @@ import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -76,6 +77,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      */
     @Override
     public void updateUserDetail(@NotNull UserEntity userEntity) {
+        String password = userEntity.getPassword();
+        String encodePassword = new BCryptPasswordEncoder().encode(password);
+        userEntity.setPassword(encodePassword);
         Integer row = baseMapper.updateById(userEntity);
         if (row == 0) {
             throw new ServiceException("更新失败！");

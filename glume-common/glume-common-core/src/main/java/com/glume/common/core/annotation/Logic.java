@@ -1,6 +1,8 @@
 package com.glume.common.core.annotation;
 
-import com.glume.common.core.annotation.constraint.LogicConstraintValidator;
+
+import com.glume.common.core.annotation.constraint.CharacterLogicConstraintValidator;
+import com.glume.common.core.annotation.constraint.IntegerLogicConstraintValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,7 +14,8 @@ import java.lang.annotation.*;
  * @create 2021-11-05 13:23
  */
 @Documented
-@Constraint(validatedBy = {LogicConstraintValidator.class})
+@Constraint(validatedBy = {IntegerLogicConstraintValidator.class,
+        CharacterLogicConstraintValidator.class})
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Logic {

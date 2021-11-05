@@ -8,17 +8,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Integer 型 Logic验证
  * @author tuoyingtao
  * @create 2021-11-05 13:31
  */
-public class LogicConstraintValidator implements ConstraintValidator<Logic,Integer> {
+public class IntegerLogicConstraintValidator implements ConstraintValidator<Logic,Integer> {
 
     private Set<Integer> set = new HashSet<>();
 
     @Override
     public void initialize(Logic constraintAnnotation) {
         int[] vals = constraintAnnotation.vals();
-        for (int val : vals) {
+        for (Integer val : vals) {
             set.add(val);
         }
     }

@@ -21,8 +21,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) {
-        R result = R.error().put("code", HttpStatus.UNAUTHORIZED)
-                .put("msg","认证失败请先登录!");
+        R result = R.error(HttpStatus.UNAUTHORIZED,"认证失败请先登录!");
         String context = JSON.toJSONString(result);
         ServletUtils.renderString(httpServletResponse,HttpStatus.UNAUTHORIZED,context);
     }

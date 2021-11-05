@@ -8,7 +8,8 @@
 
 package com.glume.common.core.utils;
 
-import org.apache.http.HttpStatus;
+
+import com.glume.common.core.constant.HttpStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,16 +32,16 @@ public class R extends HashMap<String, Object> {
 	public static final String DATA_TAG = "data";
 
 	public R() {
-		put(CODE_TAG, 0);
+		put(CODE_TAG, HttpStatus.SUCCESS);
 		put(MSG_TAG, "success");
 	}
 	
 	public static R error() {
-		return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "未知异常，请联系管理员");
+		return error(HttpStatus.ERROR, "未知异常，请联系管理员");
 	}
 	
 	public static R error(String msg) {
-		return error(HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
+		return error(HttpStatus.ERROR, msg);
 	}
 	
 	public static R error(int code, String msg) {

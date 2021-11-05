@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) {
-        R result = R.error().put("code", HttpStatus.ERROR)
-                .put("msg",e.getMessage());
+        R result = R.error(HttpStatus.ERROR,e.getMessage());
         ServletUtils.renderString(httpServletResponse,HttpStatus.ERROR,JSON.toJSONString(result));
     }
 }

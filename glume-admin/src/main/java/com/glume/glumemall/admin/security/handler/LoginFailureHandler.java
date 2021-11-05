@@ -21,9 +21,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) {
-        R result = R.error()
-                .put("code", HttpStatus.ERROR)
-                .put("msg", e.getMessage());
+        R result = R.error(HttpStatus.ERROR,e.getMessage());
         ServletUtils.renderString(httpServletResponse, HttpStatus.ERROR, JSON.toJSONString(result));
     }
 }

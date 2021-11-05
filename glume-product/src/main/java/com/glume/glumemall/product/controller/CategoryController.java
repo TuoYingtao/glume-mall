@@ -37,8 +37,7 @@ public class CategoryController {
     @ApiOperation(value = "商品分类")
     public R list(){
         List<CategoryEntity> entities = categoryService.listWithTree();
-        return R.ok().put("code",200)
-                .put("data", entities);
+        return R.ok().put("data", entities);
     }
 
 
@@ -51,8 +50,7 @@ public class CategoryController {
 		CategoryEntity category = categoryService.getById(catId);
         HashMap<Object, Object> data = new HashMap<>();
         data.put("category",category);
-        return R.ok().put("code",200)
-                .put("data", data);
+        return R.ok().put("data", data);
     }
 
     /**
@@ -70,8 +68,7 @@ public class CategoryController {
     })
     public R save(@Validated CategoryEntity category){
 		categoryService.save(category);
-        return R.ok().put("code",200)
-                .put("msg","保存成功");
+        return R.ok("保存成功!");
     }
 
     /**
@@ -90,8 +87,7 @@ public class CategoryController {
     })
     public R update(@Validated CategoryEntity category){
 		categoryService.updateById(category);
-        return R.ok().put("code",200)
-                .put("msg","修改成功");
+        return R.ok("修改成功!");
     }
 
     /**
@@ -103,8 +99,7 @@ public class CategoryController {
     @ApiOperation(value = "拖拽修改商品分类排序")
     public R updateSort(CategoryEntity category){
         categoryService.updateBatchById(Arrays.asList(category));
-        return R.ok().put("code",200)
-                .put("msg","商品分类排序修改成功");
+        return R.ok("商品分类排序修改成功!");
     }
 
     /**
@@ -114,8 +109,7 @@ public class CategoryController {
     @ApiOperation(value = "删除商品分类信息")
     public R delete(@PathVariable("catId") Long[] catIds){
         categoryService.removeMenuByIds(Arrays.asList(catIds));
-        return R.ok().put("code",200)
-                .put("msg","删除成功");
+        return R.ok("删除成功!");
     }
 
 }

@@ -75,8 +75,7 @@ public class OssController {
         } finally {
             ossClient.shutdown();
         }
-        return R.ok().put("code",200)
-                .put("data",respMap);
+        return R.ok().put("data",respMap);
     }
 
 }

@@ -76,8 +76,7 @@ public class UserController {
             redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail,date.getTime());
             LOGGER.info("MySQL中获取用户信息");
         }
-        return R.ok().put("code",200)
-                .put("data",byUserDetail);
+        return R.ok().put("data",byUserDetail);
     }
 
     @ApiOperation(value = "登录验证码",notes = "")
@@ -97,9 +96,7 @@ public class UserController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("key",key);
         map.put("image",base64Img);
-        return R.ok()
-                .put("code",200)
-                .put("data",map);
+        return R.ok().put("data",map);
     }
 
     @ApiOperation(value = "测试密码加密",notes = "开发测试")
@@ -111,9 +108,7 @@ public class UserController {
         System.out.println("密码匹配结果：" + matches);
         HashMap<String, Object> map = new HashMap<>();
         map.put("password",paw);
-        return R.ok()
-                .put("data",map)
-                .put("code",200);
+        return R.ok().put("data",map);
     }
 
     /**
@@ -163,8 +158,7 @@ public class UserController {
     })
     public R update(@Validated UserEntity userEntity){
         userService.updateUserDetail(userEntity);
-        return R.ok().put("code",200)
-                .put("msg","更新成功！");
+        return R.ok("更新成功！");
     }
 
     /**

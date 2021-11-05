@@ -51,8 +51,7 @@ public class MenuController {
         List<MenuEntity> menuList = menuService.getMenuList(userId,false);
         HashMap<String, List<MenuEntity>> map = new HashMap<>();
         map.put("menus",menuList);
-        return R.ok().put("code",200)
-                .put("data",map);
+        return R.ok().put("data",map);
     }
 
     /**
@@ -65,8 +64,7 @@ public class MenuController {
 		MenuEntity menu = menuService.getById(menuId);
         HashMap<String, Object> data = new HashMap<>();
         data.put("menuInfo",menu);
-        return R.ok().put("code",200)
-                .put("data", data);
+        return R.ok().put("data", data);
     }
 
     /**
@@ -92,8 +90,7 @@ public class MenuController {
         String token = request.getHeader(tokenHeader);
         String userName = SpringUtils.getBean(JwtUtils.class).getUserNameFromToken(token);
         menuService.addMenuItem(menu,userName);
-        return R.ok().put("code",200)
-                .put("msg","添加成功！");
+        return R.ok("添加成功！");
     }
 
     /**
@@ -120,8 +117,7 @@ public class MenuController {
         String token = request.getHeader(tokenHeader);
         String username = SpringUtils.getBean(JwtUtils.class).getUserNameFromToken(token);
         menuService.updateMenuItem(menuEntity,username);
-        return R.ok().put("code",200)
-                .put("msg","更新成功！");
+        return R.ok("更新成功！");
     }
 
     /**
@@ -131,8 +127,7 @@ public class MenuController {
     @ApiOperation(value = "删除菜单项",notes = "删除菜单项，可批量删除")
     public R delete(@PathVariable("menuIds") Long[] menuIds){
         menuService.removeMenuByIds(Arrays.asList(menuIds));
-        return R.ok().put("code",200)
-                .put("msg","删除成功！");
+        return R.ok("删除成功！");
     }
 
 }

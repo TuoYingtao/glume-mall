@@ -43,8 +43,7 @@ public class BrandController {
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = brandService.queryPage(params);
 
-        return R.ok().put("code",200)
-                .put("data", page);
+        return R.ok().put("data", page);
     }
 
 
@@ -57,8 +56,7 @@ public class BrandController {
 		BrandEntity brand = brandService.getBrandById(brandId);
         HashMap<String, Object> data = new HashMap<>();
         data.put("brand",brand);
-        return R.ok().put("code",200)
-                .put("data", data);
+        return R.ok().put("data", data);
     }
 
     /**
@@ -76,8 +74,7 @@ public class BrandController {
     public R save(@Validated BrandEntity brand){
 		brandService.save(brand);
 
-        return R.ok().put("code",200)
-                .put("msg","保存成功！");
+        return R.ok("保存成功！");
     }
 
     /**
@@ -96,8 +93,7 @@ public class BrandController {
     public R update(@Validated BrandEntity brand){
 		brandService.updateById(brand);
 
-        return R.ok().put("code",200)
-                .put("msg","更新成功！");
+        return R.ok("更新成功！");
     }
 
     /**
@@ -106,8 +102,7 @@ public class BrandController {
     @DeleteMapping("/delete/{brandIds}")
     public R delete(@PathVariable("brandIds") Long[] brandIds){
 		brandService.removeBrandByIds(Arrays.asList(brandIds));
-        return R.ok().put("code",200)
-                .put("msg","删除成功！");
+        return R.ok("删除成功！");
     }
 
 }

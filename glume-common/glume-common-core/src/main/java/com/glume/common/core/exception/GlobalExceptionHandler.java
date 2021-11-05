@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
     public R handlerHttpMessageNotReadableException(HttpMessageNotReadableException e,HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',缺少所需的请求体",requestURI,e.getMessage(),e);
-        return R.error("缺少所需的请求体");
+        return R.error("缺少所需的请求体").put("code",400);
     }
 
     /**
@@ -93,7 +93,7 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         LOGGER.error("请求地址'{}',校验异常'{}'",requestURI, e.getMessage(), e);
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        return R.error(message);
+        return R.error(message).put("code",400);
     }
 
     /**
@@ -106,9 +106,9 @@ public class GlobalExceptionHandler {
         String message = "";
         BindingResult bindingResult = e.getBindingResult();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            message += fieldError.getDefaultMessage() + "!";
+            message += fieldError.getField() + "：" + fieldError.getDefaultMessage() + "!";
         }
-        return R.error(message);
+        return R.error(message).put("code",400);
     }
 
     /**
@@ -125,7 +125,7 @@ public class GlobalExceptionHandler {
             msgList.add(cvl.getMessageTemplate());
         }
         LOGGER.error("请求地址'{}',校验异常'{}'", requestURI, e.getMessage(), e);
-        return R.error(String.join(",",msgList));
+        return R.error(String.join(",",msgList)).put("code",400);
     }
 
     /**

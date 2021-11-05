@@ -11,8 +11,5 @@ spring:
 # alibaba oss 对象存储
 alibaba:
   cloud:
-    access-key: LTAI5t6UPxQqej4JDx19V4XB
-    secret-key: UuMiYBfgjyrnf5KWEfflxmRL1nXSgN
     oss:
-      endpoint: oss-cn-shenzhen.aliyuncs.com
       bucket: glume-mall

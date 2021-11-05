@@ -8,9 +8,10 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.glume.common.core.valid.AddGroup;
-import com.glume.common.core.valid.IDGroup;
-import com.glume.common.core.valid.UpdateGroup;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.Logic;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -33,7 +34,7 @@ public class UserEntity implements Serializable {
 	 */
 	@TableId
 	@JsonProperty(value = "id")
-	@NotNull(message = "商品ID不能为空",
+	@NotNull(message = "用户ID不能为空",
 			groups = {UpdateGroup.class, IDGroup.class})
 	@Null(message = "新增不能指定ID",
 			groups = AddGroup.class)
@@ -83,6 +84,9 @@ public class UserEntity implements Serializable {
 	/**
 	 * 状态  0：禁用   1：正常
 	 */
+	@NotNull(message = "状态不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
+	@Logic(vals = {0,1}, groups = {AddGroup.class,UpdateGroup.class})
 	private Integer status;
 	/**
 	 * 创建者ID

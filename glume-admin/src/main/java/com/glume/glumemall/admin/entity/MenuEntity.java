@@ -10,15 +10,17 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.glume.common.core.valid.AddGroup;
-import com.glume.common.core.valid.IDGroup;
-import com.glume.common.core.valid.UpdateGroup;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.Logic;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Pattern;
 
 /**
  * 菜单管理
@@ -75,12 +77,16 @@ public class MenuEntity implements Serializable {
 	/**
 	 * 菜单状态（0显示 1隐藏）
 	 */
+	@Logic(vals = {0,1},
+			groups = {AddGroup.class,UpdateGroup.class})
 	@NotNull(message = "菜单显示状态不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
 	private Character visible;
 	/**
 	 * 菜单状态（0正常 1停用）
 	 */
+	@Logic(vals = {0,1},
+			groups = {AddGroup.class,UpdateGroup.class})
 	@NotNull(message = "菜单启用状态不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
 	private Character status;
@@ -92,6 +98,8 @@ public class MenuEntity implements Serializable {
 	 * 菜单类型（M目录 C菜单 F按钮）
 	 */
 	@NotNull(message = "菜单类型不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
+	@Pattern(regexp = "^[MCF]$",message = "菜单类型必需是：M(目录)、C(菜单)、F(按钮)中的任意一个字母",
 			groups = {AddGroup.class,UpdateGroup.class})
 	private Character menuType;
 	/**

@@ -4,6 +4,8 @@ package com.glume.glumemall.admin.controller;
 import com.glume.common.core.utils.JwtUtils;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.valid.AddGroup;
+import com.glume.common.core.valid.UpdateGroup;
 import com.glume.common.mybatis.PageUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -86,7 +88,7 @@ public class MenuController {
             @ApiImplicitParam(name = "orderNum",value = "排序",dataType = "String"),
             @ApiImplicitParam(name = "remark",value = "备注",dataType = "String"),
     })
-    public R save(@Validated MenuEntity menu, HttpServletRequest request){
+    public R save(@Validated(AddGroup.class) MenuEntity menu, HttpServletRequest request){
         String token = request.getHeader(tokenHeader);
         String userName = SpringUtils.getBean(JwtUtils.class).getUserNameFromToken(token);
         menuService.addMenuItem(menu,userName);
@@ -113,7 +115,7 @@ public class MenuController {
             @ApiImplicitParam(name = "orderNum",value = "排序",dataType = "String"),
             @ApiImplicitParam(name = "remark",value = "备注",dataType = "String"),
     })
-    public R update(@Validated MenuEntity menuEntity,HttpServletRequest request){
+    public R update(@Validated(UpdateGroup.class) MenuEntity menuEntity, HttpServletRequest request){
         String token = request.getHeader(tokenHeader);
         String username = SpringUtils.getBean(JwtUtils.class).getUserNameFromToken(token);
         menuService.updateMenuItem(menuEntity,username);

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.glume.common.core.valid.AddGroup;
+import com.glume.common.core.valid.UpdateGroup;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
 import io.swagger.annotations.ApiImplicitParam;
@@ -71,7 +73,7 @@ public class BrandController {
             @ApiImplicitParam(name = "firstLetter",value = "检索首字母",required = true,dataType = "String"),
             @ApiImplicitParam(name = "sort",value = "排序",dataType = "Integer")
     })
-    public R save(@Validated BrandEntity brand){
+    public R save(@Validated(AddGroup.class) BrandEntity brand){
 		brandService.save(brand);
 
         return R.ok("保存成功！");
@@ -90,7 +92,7 @@ public class BrandController {
             @ApiImplicitParam(name = "firstLetter",value = "检索首字母",required = true,dataType = "String"),
             @ApiImplicitParam(name = "sort",value = "排序",dataType = "Integer")
     })
-    public R update(@Validated BrandEntity brand){
+    public R update(@Validated(UpdateGroup.class) BrandEntity brand){
 		brandService.updateById(brand);
 
         return R.ok("更新成功！");

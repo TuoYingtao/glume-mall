@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.glume.common.core.utils.R;
+import com.glume.common.core.valid.AddGroup;
+import com.glume.common.core.valid.IDGroup;
+import com.glume.common.core.valid.UpdateGroup;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -66,7 +69,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "icon",value = "图标地址",required = true,dataType = "String"),
             @ApiImplicitParam(name = "productCount",value = "商品数量",required = true,dataType = "Integer")
     })
-    public R save(@Validated CategoryEntity category){
+    public R save(@Validated(AddGroup.class) CategoryEntity category){
 		categoryService.save(category);
         return R.ok("保存成功!");
     }
@@ -85,7 +88,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "icon",value = "图标地址",required = true,dataType = "String"),
             @ApiImplicitParam(name = "productCount",value = "商品数量",required = true,dataType = "Integer")
     })
-    public R update(@Validated CategoryEntity category){
+    public R update(@Validated(UpdateGroup.class) CategoryEntity category){
 		categoryService.updateById(category);
         return R.ok("修改成功!");
     }

@@ -10,11 +10,15 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.glume.common.core.valid.AddGroup;
+import com.glume.common.core.valid.IDGroup;
+import com.glume.common.core.valid.UpdateGroup;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 /**
  * 菜单管理
@@ -33,27 +37,36 @@ public class MenuEntity implements Serializable {
 	 */
 	@TableId
 	@JsonProperty(value = "id")
+	@NotNull(message = "菜单ID不能为空",
+			groups = {UpdateGroup.class, IDGroup.class})
+	@Null(message = "新增不能指定ID",
+			groups = AddGroup.class)
 	private Long menuId;
 	/**
 	 * 父菜单ID，一级菜单为0
 	 */
-	@NotNull(message = "父菜单ID不能为空")
+	@NotNull(message = "父菜单ID不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private Long parentId;
 	/**
 	 * 菜单名称
 	 */
-	@NotBlank(message = "菜单名称不能为空")
-	@Length(min = 2,max = 8,message = "菜单名称长度不能超过2到8个字符")
+	@NotBlank(message = "菜单名称不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
+	@Length(min = 2,max = 8,message = "菜单名称长度不能超过2到8个字符",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private String name;
 	/**
 	 * 菜单path
 	 */
-	@NotBlank(message = "菜单地址不能为空")
+	@NotBlank(message = "菜单地址不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private String path;
 	/**
 	 * 菜单路径
 	 */
-	@NotBlank(message = "菜单路径不能为空")
+	@NotBlank(message = "菜单路径不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private String component;
 	/**
 	 * 路由参数
@@ -62,12 +75,14 @@ public class MenuEntity implements Serializable {
 	/**
 	 * 菜单状态（0显示 1隐藏）
 	 */
-	@NotNull(message = "菜单显示状态不能为空")
+	@NotNull(message = "菜单显示状态不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private Character visible;
 	/**
 	 * 菜单状态（0正常 1停用）
 	 */
-	@NotNull(message = "菜单启用状态不能为空")
+	@NotNull(message = "菜单启用状态不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private Character status;
 	/**
 	 * 授权(多个用逗号分隔，如：user:list,user:create)
@@ -76,12 +91,14 @@ public class MenuEntity implements Serializable {
 	/**
 	 * 菜单类型（M目录 C菜单 F按钮）
 	 */
-	@NotNull(message = "菜单类型不能为空")
+	@NotNull(message = "菜单类型不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private Character menuType;
 	/**
 	 * 菜单图标
 	 */
-	@NotBlank(message = "菜单图标不能为空")
+	@NotBlank(message = "菜单图标不能为空",
+			groups = {AddGroup.class,UpdateGroup.class})
 	private String icon;
 	/**
 	 * 排序

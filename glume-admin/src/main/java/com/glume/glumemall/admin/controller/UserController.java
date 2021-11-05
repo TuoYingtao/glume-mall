@@ -14,6 +14,7 @@ import com.glume.common.core.utils.JwtUtils;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.valid.UpdateGroup;
 import com.glume.common.mybatis.PageUtils;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.ApiImplicitParam;
@@ -156,7 +157,7 @@ public class UserController {
             @ApiImplicitParam(name = "mobile",value = "手机号",required = true,dataType = "String"),
             @ApiImplicitParam(name = "status",value = "状态",dataType = "Integer"),
     })
-    public R update(@Validated UserEntity userEntity){
+    public R update(@Validated(UpdateGroup.class) UserEntity userEntity){
         userService.updateUserDetail(userEntity);
         return R.ok("更新成功！");
     }

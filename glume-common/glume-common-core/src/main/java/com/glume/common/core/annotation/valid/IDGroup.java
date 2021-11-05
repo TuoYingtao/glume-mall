@@ -1,4 +1,4 @@
-package com.glume.common.core.valid;
+package com.glume.common.core.annotation.valid;
 
 /**
  * @author tuoyingtao

@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.glume.common.core.valid.AddGroup;
-import com.glume.common.core.valid.IDGroup;
-import com.glume.common.core.valid.UpdateGroup;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
@@ -68,7 +68,7 @@ public class BrandEntity implements Serializable {
 	 */
 	@NotBlank(message = "检索首字母不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
-	@Pattern(regexp = "/^[a-zA-Z]$/",message = "检索首字母必需是一个字母",
+	@Pattern(regexp = "^[a-zA-Z]$",message = "检索首字母必需是一个字母",
 			groups = {AddGroup.class,UpdateGroup.class})
 	private String firstLetter;
 	/**

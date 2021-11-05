@@ -1,4 +1,4 @@
-package com.glume.common.core.valid;
+package com.glume.common.core.annotation.valid;
 
 /**
  * validator 删除分组

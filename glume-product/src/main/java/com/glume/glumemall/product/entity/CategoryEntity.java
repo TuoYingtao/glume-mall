@@ -9,9 +9,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.glume.common.core.valid.AddGroup;
-import com.glume.common.core.valid.UpdateGroup;
-import com.glume.common.core.valid.IDGroup;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

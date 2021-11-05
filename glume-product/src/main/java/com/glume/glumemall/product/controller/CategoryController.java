@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.glume.common.core.utils.R;
-import com.glume.common.core.valid.AddGroup;
-import com.glume.common.core.valid.IDGroup;
-import com.glume.common.core.valid.UpdateGroup;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;

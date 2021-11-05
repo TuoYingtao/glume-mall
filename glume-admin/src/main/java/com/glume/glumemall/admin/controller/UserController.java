@@ -14,7 +14,7 @@ import com.glume.common.core.utils.JwtUtils;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
-import com.glume.common.core.valid.UpdateGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import com.glume.common.mybatis.PageUtils;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.ApiImplicitParam;

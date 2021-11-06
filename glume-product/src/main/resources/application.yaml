@@ -24,3 +24,6 @@ swagger:
   enabled: true
 jwt:
   header: "Authorization"
+logging:
+  level:
+    com.glume.glumemall: debug

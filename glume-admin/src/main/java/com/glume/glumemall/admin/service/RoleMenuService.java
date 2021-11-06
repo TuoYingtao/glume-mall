@@ -21,5 +21,7 @@ public interface RoleMenuService extends IService<RoleMenuEntity> {
     List<RoleMenuEntity> getRoleMenuEntity(Long roleId);
 
     List<String> getRoleAuthorityInfo(Long roleId);
+
+    void removeMenuRoleByIds(List<Long> menu_id);
 }
 

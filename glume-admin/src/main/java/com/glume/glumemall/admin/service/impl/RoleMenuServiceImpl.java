@@ -1,4 +1,5 @@
 package com.glume.glumemall.admin.service.impl;
+import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.service.MenuService;
@@ -69,6 +70,19 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
             authentication = menu;
         }
         return authentication;
+    }
+
+    /**
+     * 根据菜单ID删除角色关系
+     * @param menu_id 菜单ID
+     * @return
+     */
+    @Override
+    public void removeMenuRoleByIds(List<Long> menu_id) {
+        Integer row = baseMapper.delete(new QueryWrapper<RoleMenuEntity>().in("menu_id", menu_id));
+        if (row == 0) {
+            throw new ServiceException("删除失败！");
+        }
     }
 
 }

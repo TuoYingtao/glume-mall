@@ -3,6 +3,7 @@ package com.glume.glumemall.admin.service.impl;
 import com.glume.common.core.constant.Constants;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.DateUtils;
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
@@ -83,7 +84,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         menuEntity.setUpdateTime(new Date(DateUtils.getSysDateTime()));
         menuEntity.setUpdateBy(username);
         Integer row = baseMapper.updateById(menuEntity);
-        System.out.println(row);
         if (row == 0) {
             throw new ServiceException("更新失败！");
         }
@@ -91,9 +91,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
 
     @Override
     public void removeMenuByIds(List<Long> asList) {
-        // TODO 1.检测当前删除的菜单信息，是否被别的地方引用
-
         Integer row = baseMapper.deleteBatchIds(asList);
+        // TODO 1.检测当前删除的菜单信息，是否被别的地方引用
+        SpringUtils.getBean(RoleMenuService.class).removeMenuRoleByIds(asList);
         if (row == 0) {
             throw new ServiceException("删除失败！");
         }

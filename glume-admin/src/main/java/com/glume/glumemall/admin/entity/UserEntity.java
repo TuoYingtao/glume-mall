@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
 import com.glume.common.core.annotation.Logic;
@@ -33,7 +32,6 @@ public class UserEntity implements Serializable {
 	 * 
 	 */
 	@TableId
-	@JsonProperty(value = "id")
 	@NotNull(message = "用户ID不能为空",
 			groups = {UpdateGroup.class, IDGroup.class})
 	@Null(message = "新增不能指定ID",

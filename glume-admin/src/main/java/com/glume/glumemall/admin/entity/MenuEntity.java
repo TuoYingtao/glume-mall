@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.glume.common.core.annotation.LogicStr;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
 import com.glume.common.core.annotation.Logic;
@@ -20,7 +21,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Pattern;
 
 /**
  * 菜单管理
@@ -99,7 +99,7 @@ public class MenuEntity implements Serializable {
 	 */
 	@NotNull(message = "菜单类型不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
-	@Pattern(regexp = "^[MCF]$",message = "菜单类型必需是：M(目录)、C(菜单)、F(按钮)中的任意一个字母",
+	@LogicStr(vals = {"M","C","F"},message = "菜单类型必需是：M(目录)、C(菜单)、F(按钮)中的任意一个字母",
 			groups = {AddGroup.class,UpdateGroup.class})
 	private Character menuType;
 	/**

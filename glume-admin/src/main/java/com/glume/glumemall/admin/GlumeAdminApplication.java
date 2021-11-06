@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScans;
 @ComponentScans({
         @ComponentScan("com.glume.common.core"),
         @ComponentScan("com.glume.common.swagger.config"),
-        @ComponentScan("com.glume.common.validator.config")
+        @ComponentScan("com.glume.common.validator.config"),
+        @ComponentScan("com.glume.common.mybatis.config")
 })
 public class GlumeAdminApplication {
 

@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.glume.common.core.annotation.LogicStr;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
@@ -38,7 +38,6 @@ public class MenuEntity implements Serializable {
 	 * 
 	 */
 	@TableId
-	@JsonProperty(value = "id")
 	@NotNull(message = "菜单ID不能为空",
 			groups = {UpdateGroup.class, IDGroup.class})
 	@Null(message = "新增不能指定ID",
@@ -67,8 +66,6 @@ public class MenuEntity implements Serializable {
 	/**
 	 * 菜单路径
 	 */
-	@NotBlank(message = "菜单路径不能为空",
-			groups = {AddGroup.class,UpdateGroup.class})
 	private String component;
 	/**
 	 * 路由参数
@@ -81,7 +78,7 @@ public class MenuEntity implements Serializable {
 			groups = {AddGroup.class,UpdateGroup.class})
 	@NotNull(message = "菜单显示状态不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
-	private Character visible;
+	private Integer visible;
 	/**
 	 * 菜单状态（0正常 1停用）
 	 */
@@ -89,7 +86,7 @@ public class MenuEntity implements Serializable {
 			groups = {AddGroup.class,UpdateGroup.class})
 	@NotNull(message = "菜单启用状态不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
-	private Character status;
+	private Integer status;
 	/**
 	 * 授权(多个用逗号分隔，如：user:list,user:create)
 	 */
@@ -139,6 +136,7 @@ public class MenuEntity implements Serializable {
 	 * 子级菜单
 	 */
 	@TableField(exist = false)
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	private List<MenuEntity> children;
 
 }

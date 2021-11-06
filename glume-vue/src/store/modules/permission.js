@@ -15,7 +15,7 @@ const permission  = {
     GenerateRoutes({ commit },menus) {
       return new Promise(resolve => {
         let mane = menuModelHandler(menus);
-        let routes = [...constantRoutes,...mane];
+        let routes = [...mane,...constantRoutes];
         commit('SET_ROUTES',routes)
         resolve(routes)
       })
@@ -26,7 +26,7 @@ const permission  = {
 function menuModelHandler(menus) {
   menus.forEach(item => {
     item.meta = {};
-    item.component == null ? item.component = Layout : item.component = loadView(item.component);
+    (item.component == null || item.component == "") ? item.component = Layout : item.component = loadView(item.component);
     let keys = Object.keys(item);
     keys.forEach(key => {
       if (key == "component" || key == "meta" || key == "path" || key == "children") return

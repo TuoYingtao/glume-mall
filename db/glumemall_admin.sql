@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 04/11/2021 17:46:13
+ Date: 06/11/2021 18:08:13
 */
 
 SET NAMES utf8mb4;
@@ -273,7 +273,7 @@ CREATE TABLE `schedule_job`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule_job
@@ -295,7 +295,7 @@ CREATE TABLE `schedule_job_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -342,7 +342,7 @@ CREATE TABLE `sys_config`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `param_key`(`param_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config
@@ -363,7 +363,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -392,42 +392,40 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', 'sys', NULL, NULL, '0', '0', NULL, 'M', 'system', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', NULL, NULL, '0', '0', NULL, 'M', 'admin', 1, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', '/roleManage', NULL, NULL, '0', '0', NULL, 'M', 'role', 2, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (4, 1, '菜单管理', '/menuManage', 'menuManage/index', NULL, '0', '0', NULL, 'M', 'menu', 3, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/glume-admin/druid/sql.html', NULL, NULL, '0', '0', NULL, 'M', 'sql', 4, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', '', '', '0', '0', '', 'M', 'peoples', 1, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', '/roleManage', NULL, NULL, '0', '0', NULL, 'M', 'user', 2, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', '/menuManage', '', '', '0', '0', '', 'M', 'tree-table', 3, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/glume-admin/druid/sql.html', '', '', '0', '0', '', 'M', 'data', 4, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', NULL, NULL, '0', '0', NULL, 'M', 'job', 5, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, NULL, NULL, '0', '0', 'sys:schedule:list,sys:schedule:info', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, NULL, NULL, '0', '0', 'sys:schedule:save', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, NULL, NULL, '0', '0', 'sys:schedule:update', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (10, 6, '删除', NULL, NULL, NULL, '0', '0', 'sys:schedule:delete', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (11, 6, '暂停', NULL, NULL, NULL, '0', '0', 'sys:schedule:pause', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (12, 6, '恢复', NULL, NULL, NULL, '0', '0', 'sys:schedule:resume', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (13, 6, '立即执行', NULL, NULL, NULL, '0', '0', 'sys:schedule:run', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (14, 6, '日志列表', NULL, NULL, NULL, '0', '0', 'sys:schedule:log', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (15, 2, '查看', NULL, NULL, NULL, '0', '0', 'sys:user:list,sys:user:info', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (16, 2, '新增', NULL, NULL, NULL, '0', '0', 'sys:user:save,sys:role:select', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (17, 2, '修改', NULL, NULL, NULL, '0', '0', 'sys:user:update,sys:role:select', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (18, 2, '删除', NULL, NULL, NULL, '0', '0', 'sys:user:delete', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (19, 3, '查看', NULL, NULL, NULL, '0', '0', 'sys:role:list,sys:role:info', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (20, 3, '新增', NULL, NULL, NULL, '0', '0', 'sys:role:save,sys:menu:list', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (21, 3, '修改', NULL, NULL, NULL, '0', '0', 'sys:role:update,sys:menu:list', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (22, 3, '删除', NULL, NULL, NULL, '0', '0', 'sys:role:delete', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (23, 4, '查看', NULL, NULL, NULL, '0', '0', 'sys:menu:list,sys:menu:info', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (24, 4, '新增', NULL, NULL, NULL, '0', '0', 'sys:menu:save,sys:menu:select', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (25, 4, '修改', NULL, NULL, NULL, '0', '0', 'sys:menu:update,sys:menu:select', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (26, 4, '删除', NULL, NULL, NULL, '0', '0', 'sys:menu:delete', 'F', '#', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (27, 1, '参数管理', 'sys/config', NULL, NULL, '0', '0', 'sys:config:list,sys:config:info,sys:config:save,sys:config:update,sys:config:delete', 'C', 'config', 6, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (29, 1, '系统日志', 'sys/log', NULL, NULL, '0', '0', 'sys:log:list', 'C', 'log', 7, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (30, 1, '文件上传', 'oss/oss', NULL, NULL, '0', '0', 'sys:oss:all', 'C', 'oss', 6, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (31, 0, '用户列表', '/uesr/list', '/userManage/index', '', '0', '0', 'sys:user:list', 'M', 'user', 1, 'admin', '2021-10-28 00:00:00', NULL, NULL, '');
-INSERT INTO `sys_menu` VALUES (32, 31, '用户管理', '/uesr/list', '/userManage/index', '', '0', '0', 'sys:user:list', 'C', 'user', 1, 'admin', '2021-10-28 00:00:00', 'admin', '2021-11-03 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, NULL, NULL, '0', '0', 'sys:schedule:list,sys:schedule:info', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, NULL, NULL, '0', '0', 'sys:schedule:save', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, NULL, NULL, '0', '0', 'sys:schedule:update', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (10, 6, '删除', NULL, NULL, NULL, '0', '0', 'sys:schedule:delete', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (11, 6, '暂停', NULL, NULL, NULL, '0', '0', 'sys:schedule:pause', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (12, 6, '恢复', NULL, NULL, NULL, '0', '0', 'sys:schedule:resume', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (13, 6, '立即执行', NULL, NULL, NULL, '0', '0', 'sys:schedule:run', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (14, 6, '日志列表', NULL, NULL, NULL, '0', '0', 'sys:schedule:log', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (15, 2, '查看', NULL, NULL, NULL, '0', '0', 'sys:user:list,sys:user:info', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (16, 2, '新增', NULL, NULL, NULL, '0', '0', 'sys:user:save,sys:role:select', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (17, 2, '修改', NULL, NULL, NULL, '0', '0', 'sys:user:update,sys:role:select', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (18, 2, '删除', NULL, NULL, NULL, '0', '0', 'sys:user:delete', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (19, 37, '查看', NULL, NULL, NULL, '0', '0', 'sys:role:list,sys:role:info', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (20, 37, '新增', NULL, NULL, NULL, '0', '0', 'sys:role:save,sys:menu:list', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (21, 37, '修改', NULL, NULL, NULL, '0', '0', 'sys:role:update,sys:menu:list', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (22, 37, '删除', NULL, NULL, NULL, '0', '0', 'sys:role:delete', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (23, 33, '查看', NULL, NULL, NULL, '0', '0', 'sys:menu:list,sys:menu:info', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (24, 33, '新增', NULL, NULL, NULL, '0', '0', 'sys:menu:save,sys:menu:select', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (25, 33, '修改', NULL, NULL, NULL, '0', '0', 'sys:menu:update,sys:menu:select', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (26, 33, '删除', NULL, NULL, NULL, '0', '0', 'sys:menu:delete', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (33, 4, '菜单列表', '/menuManage/list', 'menuManage/index', '', '0', '0', 'sys:menu:list', 'C', 'list', 6, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (34, 0, '测试', '/test', NULL, NULL, '0', '0', NULL, 'M', 'bug', 0, 'admin', '2021-11-06 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (37, 3, '角色列表', '/role/list', 'roleManage/index', '', '0', '0', 'sys:role:lsit', 'C', 'user', 1, 'admin', '2021-11-06 00:00:00', 'admin', '2021-11-06 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -438,7 +436,7 @@ CREATE TABLE `sys_oss`  (
   `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oss
@@ -504,18 +502,15 @@ INSERT INTO `sys_role_menu` VALUES (23, 2001, 23);
 INSERT INTO `sys_role_menu` VALUES (24, 2001, 24);
 INSERT INTO `sys_role_menu` VALUES (25, 2001, 25);
 INSERT INTO `sys_role_menu` VALUES (26, 2001, 26);
-INSERT INTO `sys_role_menu` VALUES (27, 2001, 27);
-INSERT INTO `sys_role_menu` VALUES (29, 2001, 29);
-INSERT INTO `sys_role_menu` VALUES (30, 2001, 30);
 INSERT INTO `sys_role_menu` VALUES (31, 2002, 1);
 INSERT INTO `sys_role_menu` VALUES (32, 2002, 2);
 INSERT INTO `sys_role_menu` VALUES (33, 2002, 3);
 INSERT INTO `sys_role_menu` VALUES (34, 2002, 4);
 INSERT INTO `sys_role_menu` VALUES (35, 2002, 5);
 INSERT INTO `sys_role_menu` VALUES (36, 2002, 6);
-INSERT INTO `sys_role_menu` VALUES (37, 2002, 27);
-INSERT INTO `sys_role_menu` VALUES (38, 2002, 29);
-INSERT INTO `sys_role_menu` VALUES (39, 2002, 30);
+INSERT INTO `sys_role_menu` VALUES (37, 2001, 33);
+INSERT INTO `sys_role_menu` VALUES (38, 2001, 34);
+INSERT INTO `sys_role_menu` VALUES (39, 2001, 37);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -589,7 +584,7 @@ CREATE TABLE `tb_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_user

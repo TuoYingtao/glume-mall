@@ -66,17 +66,20 @@ public class UserController {
         String token = httpServletRequest.getHeader(headerToken);
         String userName = jwtUtils.getUserNameFromToken(token);
         HashMap<String, Object> byUserDetail = new HashMap<>();
-        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
-        if (redisUtils.hHasKey(RedisConstant.USER_INFO_AND_MENU,userName)) {
-            Object hget = redisUtils.hget(RedisConstant.USER_INFO_AND_MENU, userName);
-            byUserDetail.putAll((Map<? extends String, ?>) hget);
-            LOGGER.info("Redis中获取用户信息：{}",hget);
-        } else {
-            byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
-            Date date = new Date(System.currentTimeMillis() * 1000 + (60 * 60 * 2));
-            redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail,date.getTime());
-            LOGGER.info("MySQL中获取用户信息");
-        }
+        // TODO 1.从Redis中获取用户信息,待优化（暂时拿取SQL数据）
+//        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
+//        if (redisUtils.hHasKey(RedisConstant.USER_INFO_AND_MENU,userName)) {
+//            Object hget = redisUtils.hget(RedisConstant.USER_INFO_AND_MENU, userName);
+//            byUserDetail.putAll((Map<? extends String, ?>) hget);
+//            LOGGER.info("Redis中获取用户信息：{}",hget);
+//        } else {
+//            byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
+//            Date date = new Date(System.currentTimeMillis() * 1000 + (60 * 60 * 2));
+//            redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail,date.getTime());
+//            LOGGER.info("MySQL中获取用户信息");
+//        }
+
+        byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
         return R.ok().put("data",byUserDetail);
     }
 

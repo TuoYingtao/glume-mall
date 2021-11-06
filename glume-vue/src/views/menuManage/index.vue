@@ -4,7 +4,7 @@
       <el-empty v-if="is_empty" class="empty" :image-size="300" description="暂无数据"></el-empty>
       <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
-          <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
+          <el-button icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button type="info" icon="el-icon-sort" size="mini" @click="toggleExpandAll">展开/折叠</el-button>

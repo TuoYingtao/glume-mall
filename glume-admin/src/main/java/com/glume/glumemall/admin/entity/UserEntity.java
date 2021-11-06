@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
@@ -13,6 +14,7 @@ import com.glume.common.core.annotation.Logic;
 import com.glume.common.core.annotation.valid.UpdateGroup;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 
@@ -94,6 +96,8 @@ public class UserEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
 }

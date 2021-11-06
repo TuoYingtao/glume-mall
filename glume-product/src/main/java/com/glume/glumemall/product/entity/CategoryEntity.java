@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.UpdateGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
@@ -88,6 +89,7 @@ public class CategoryEntity implements Serializable {
 	/**
 	 * 子级
 	 */
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	@TableField(exist = false)
 	private List<CategoryEntity> children;
 }

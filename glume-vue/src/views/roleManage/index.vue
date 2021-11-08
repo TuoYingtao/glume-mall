@@ -44,7 +44,7 @@
         <el-form-item>
           <span class="fr">
             <el-button @click="handleClose">取消</el-button>
-            <el-button type="cyan" @click="handleAdd">添加</el-button>
+            <el-button type="cyan" @click="submitForm">添加</el-button>
           </span>
         </el-form-item>
       </el-form>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import { roleList } from "@/api/role"
+import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
   import SearchBox from '@/components/searchBox/index'
   import TableBox from '@/components/TableBox'
   import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
@@ -67,7 +67,9 @@
           {label: '角色名称',prop: 'roleName'},
           {label: '角色标签',prop: 'roleTag'},
           {label: '描述',prop: 'remark'},
-          {label: '操作',size: 'mini',model: [{name: '订单详情',color: 'primary',onClick: 'jumpPage'}],type: 'bottom'},
+          {label: '操作',size: 'mini',model: [
+              {name: '修改',color: 'warning',onClick: 'amendRole',icon: "el-icon-edit"},
+              {name: '删除',color: 'warning',onClick: 'deleteRole',icon: "el-icon-edit"}],type: 'bottom'},
         ],
         total: 0,
         showSearch: true,
@@ -112,15 +114,46 @@
         this.reset();
         this.title = "添加角色";
         this.dialogVisible = true;
+        this.treeSelect();
       },
-      handleAdd() {
+      treeSelect() {
+        getTreeSelect().then(response => {
+          this.menuOptions = response.data.menus;
+        })
+      },
+      /** 提交按钮 */
+      submitForm: function() {
+        this.$refs["elForm"].validate(valid => {
+          if (valid) {
+            if (this.form.roleId != undefined) {
+              this.form.menuIds = this.getMenuAllCheckedKeys();
+              updateRole(this.form).then(response => {
+                this.notSuccess("修改成功");
+                this.dialogVisible = false;
+                this.getList();
+              });
+            } else {
+              this.form.menuIds = this.getMenuAllCheckedKeys();
+              addRole(this.form).then(response => {
+                this.notSuccess("新增成功");
+                this.dialogVisible = false;
+                this.getList();
+              });
+            }
+          }
+        });
+      },
+      amendRole(row) {
 
       },
-      jumpPage(row) {
-        this.$router.push({
-          path: '/mailOrder/mailGoodsInfo',
-          query: { info: encodeURIComponent(JSON.stringify(row)) }
-        })
+      // 所有菜单节点数据
+      getMenuAllCheckedKeys() {
+        // 目前被选中的菜单节点
+        let checkedKeys = this.$refs.menu.getCheckedKeys();
+        // 半选中的菜单节点
+        let halfCheckedKeys = this.$refs.menu.getHalfCheckedKeys();
+        checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+        return checkedKeys;
       },
       // 树权限（展开/折叠）
       handleCheckedTreeExpand(value, type) {

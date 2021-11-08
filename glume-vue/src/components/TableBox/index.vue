@@ -273,7 +273,7 @@ export default {
     handlerBtn(h,btn,props,size) {
       let children = [];
       btn.forEach(item => {
-        children.push(<el-button size={size || item.size} type={item.color} v-on:click={() => {
+        children.push(<el-button icon={item.icon || ''} size={size || item.size} type={item.color} v-on:click={() => {
           this.$emit(item.onClick,props.row)
         }}>{item.name}</el-button>)
       })

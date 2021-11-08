@@ -10,8 +10,17 @@ export function roleList(param) {
   })
 }
 
+// 角色下拉菜单权限列表
+export function getTreeSelect(roleId) {
+  return request({
+    url: `/role/menuTree`,
+    method: 'GET',
+    params: roleId
+  })
+}
+
 // 修改
-export function updateMenu(data) {
+export function updateRole(data) {
   return request({
     url: `/role/update`,
     method: 'PUT',
@@ -20,7 +29,7 @@ export function updateMenu(data) {
 }
 
 // 添加
-export function addMenu(data) {
+export function addRole(data) {
   return request({
     url: `/role/save`,
     method: 'POST',
@@ -29,7 +38,7 @@ export function addMenu(data) {
 }
 
 // 查询
-export function queryMenu(menuId) {
+export function queryRole(menuId) {
   return request({
     url: `/role/info/${menuId}`,
     method: 'GET',
@@ -37,7 +46,7 @@ export function queryMenu(menuId) {
 }
 
 // 删除
-export function delMenu(userId) {
+export function delRole(userId) {
   return request({
     url: `/role/delete/${userId}`,
     method: 'DELETE',

@@ -38,6 +38,15 @@ public class RoleController {
         return R.ok().put("data", page);
     }
 
+    /**
+     * 角色菜单
+     */
+    @GetMapping("/menuTree")
+    @ApiOperation(value = "角色下拉菜单权限列表")
+    public R menuTree(@RequestParam(value = "roleId",required = false) Long roleId) {
+        HashMap<String, Object> data = roleService.menuTreeService(roleId);
+        return R.ok().put("data",data);
+    }
 
     /**
      * 信息

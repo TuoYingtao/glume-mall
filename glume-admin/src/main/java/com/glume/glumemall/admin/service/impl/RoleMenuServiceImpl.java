@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -82,6 +83,23 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
         Integer row = baseMapper.delete(new QueryWrapper<RoleMenuEntity>().in("menu_id", menu_id));
         if (row == 0) {
             throw new ServiceException("删除失败！");
+        }
+    }
+
+    /**
+     * 批量保存角色菜单ID
+     * @param roleId 角色ID
+     * @param menuIds 菜单ID
+     */
+    @Override
+    public void saveMyBatch(Long roleId, Long[] menuIds) {
+        ArrayList<RoleMenuEntity> roleMenuEntities = new ArrayList<>();
+        for (Long menuId : menuIds) {
+            roleMenuEntities.add(new RoleMenuEntity(roleId,menuId));
+        }
+        boolean b = this.saveBatch(roleMenuEntities);
+        if (!b) {
+            throw new ServiceException("批量保存角色菜单ID失败！");
         }
     }
 

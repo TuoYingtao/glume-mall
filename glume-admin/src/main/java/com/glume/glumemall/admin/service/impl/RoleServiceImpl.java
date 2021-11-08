@@ -46,10 +46,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
             hashMap.put("ids",ids);
         }
         // 获取菜单列表
-        QueryWrapper<MenuEntity> entityQueryWrapper = new QueryWrapper<>();
         List<MenuEntity> menuEntities =
-                SpringUtils.getBean(MenuService.class).getBaseMapper().selectList(entityQueryWrapper);
-        List<MenuEntity> menuEntityList = menuEntities.stream().map(item -> {
+                SpringUtils.getBean(MenuService.class).getBaseMapper().selectList(new QueryWrapper<>());
+        List<MenuEntity> menuEntityList = menuEntities.stream().filter(menuEntity -> menuEntity.getParentId() == 0).map(item -> {
             item.setChildren(handlerChildrens(item, menuEntities));
             return item;
         }).distinct().sorted((num1, num2) -> num1.getOrderNum() - num2.getOrderNum()).collect(Collectors.toList());

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.RoleEntity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,6 +19,8 @@ public interface RoleService extends IService<RoleEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     RoleEntity getRoleDetail(Long role_id);
+
+    void saveMyRole(RoleEntity roleEntity);
 
     HashMap<String, Object> menuTreeService(Long roleId);
 }

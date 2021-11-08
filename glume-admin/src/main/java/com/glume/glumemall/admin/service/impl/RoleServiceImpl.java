@@ -1,9 +1,21 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.exception.servlet.ServiceException;
+import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
+import com.glume.glumemall.admin.entity.MenuEntity;
+import com.glume.glumemall.admin.entity.RoleMenuEntity;
+import com.glume.glumemall.admin.entity.TreeSelectEntity;
+import com.glume.glumemall.admin.service.MenuService;
+import com.glume.glumemall.admin.service.RoleMenuService;
 import org.springframework.stereotype.Service;
-import java.util.Map;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,6 +44,42 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
         RoleEntity roleEntity = baseMapper.selectById(role_id);
         return roleEntity;
     }
+
+    /** 保存角色信息 */
+    @Override
+    public void saveMyRole(RoleEntity roleEntity) {
+        // 验证当前角色是否存在
+        verifyRoleNameSole(roleEntity.getRoleName());
+        //验证当前角色标签是否存在
+        verifyRoleTagSole(roleEntity.getRoleTag());
+        Integer row = baseMapper.insert(roleEntity);
+        if (row == 0) {
+            throw new ServiceException(HttpStatus.ERROR,"角色保存失败！");
+        }
+        if (StringUtils.isNotEmpty(roleEntity.getMenuIds())) {
+            SpringUtils.getBean(RoleMenuService.class).saveMyBatch(roleEntity.getRoleId(),roleEntity.getMenuIds());
+        }
+    }
+
+    private void verifyRoleTagSole(String roleTag) {
+        QueryWrapper<RoleEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_tag",roleTag);
+        RoleEntity roleEntity = baseMapper.selectOne(wrapper);
+        if (StringUtils.isNotNull(roleEntity)) {
+            throw new ServiceException(HttpStatus.ERROR,"角色标签：<" + roleTag + "> 已存在！");
+        }
+    }
+
+    private void verifyRoleNameSole(String roleName) {
+        QueryWrapper<RoleEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_name",roleName);
+        RoleEntity roleEntity = baseMapper.selectOne(wrapper);
+        if (StringUtils.isNotNull(roleEntity)){
+            throw new ServiceException(HttpStatus.ERROR,"角色名称：<" + roleName + "> 已存在！");
+        };
+    }
+
+
 
     /** 角色下拉菜单权限列表 */
     @Override

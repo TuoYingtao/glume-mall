@@ -60,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     /**
      * Security 通过用户名获取用户信息
      * @param username 用户名
-     * @return
+     * @return 用户信息
      */
     @Override
     public UserEntity getByUserDetail(String username) {

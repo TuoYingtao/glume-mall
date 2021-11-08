@@ -1,17 +1,27 @@
 package com.glume.glumemall.admin.controller;
 
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.glume.common.core.utils.R;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.utils.*;
 import com.glume.common.mybatis.PageUtils;
+import com.glume.glumemall.admin.entity.UserEntity;
+import com.glume.glumemall.admin.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.service.RoleService;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -26,6 +36,9 @@ import com.glume.glumemall.admin.service.RoleService;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+
+    @Value("${jwt.header}")
+    private String headerToken;
 
     /**
      * 列表
@@ -61,11 +74,23 @@ public class RoleController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody RoleEntity role){
-		roleService.save(role);
-
-        return R.ok();
+    @PostMapping("/save")
+    @ApiOperation("保存角色信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roleName",value = "角色名称",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "roleTag",value = "角色标签",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "remark",value = "备注",dataType = "String"),
+    })
+    public R save(@Validated(AddGroup.class) RoleEntity roleEntity, HttpServletRequest httpServletRequest){
+        // 获取当前操作用户Id
+        String token = httpServletRequest.getHeader(headerToken);
+        String username = SpringUtils.getBean(JwtUtils.class).getUserNameFromToken(token);
+        UserEntity userDetail = SpringUtils.getBean(UserService.class).getByUserDetail(username);
+        // 设置创建时间
+        roleEntity.setCreateUserId(userDetail.getUserId());
+        roleEntity.setCreateTime(new Date(DateUtils.getSysDateTime()));
+        roleService.saveMyRole(roleEntity);
+        return R.ok("添加成功！");
     }
 
     /**

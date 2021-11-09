@@ -141,6 +141,10 @@ import {addRole, delRole, getTreeSelect, queryRole, roleList, updateRole} from "
         this.$refs["elForm"].validate(valid => {
           if (valid) {
             if (this.form.roleId != undefined) {
+              if (this.form.roleTag == "admin") {
+                this.dialogVisible = false;
+                return this.notError("超级管理员工不能修改！");
+              }
               this.form.menuIds = this.getMenuAllCheckedKeys() || [];
               updateRole(this.form).then(response => {
                 this.notSuccess("修改成功");
@@ -159,6 +163,7 @@ import {addRole, delRole, getTreeSelect, queryRole, roleList, updateRole} from "
         });
       },
       deleteRole(row) {
+        if (row.roleTag == "admin") return this.notError("超级管理员工不能删除！");
         MessageBox.confirm('是否确认删除名称为"' + row.roleName + '"的数据项？').then(function() {
           return delRole(row.roleId);
         }).then(() => {

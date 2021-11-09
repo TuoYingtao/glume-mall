@@ -69,6 +69,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         menuEntity.setCreateTime(new Date(DateUtils.getSysDateTime()));
         menuEntity.setCreateBy(username);
         Integer row = baseMapper.insert(menuEntity);
+        // 没添加一个菜单，都给超级管理员加上
+        SpringUtils.getBean(RoleMenuService.class).save(new RoleMenuEntity(2001L,menuEntity.getMenuId()));
         if (row == 0) {
             throw new ServiceException("添加失败！");
         }

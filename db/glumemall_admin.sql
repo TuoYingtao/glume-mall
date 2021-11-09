@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 08/11/2021 17:59:51
+ Date: 09/11/2021 18:10:38
 */
 
 SET NAMES utf8mb4;
@@ -401,8 +401,8 @@ INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', 'sys', NULL, NULL, '0', '0'
 INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', '', '', '0', '0', '', 'M', 'peoples', 1, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', '/roleManage', NULL, NULL, '0', '0', NULL, 'M', 'user', 2, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', '/menuManage', '', '', '0', '0', '', 'M', 'tree-table', 3, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/glume-admin/druid/sql.html', '', '', '0', '0', '', 'M', 'data', 4, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', NULL, NULL, '0', '0', NULL, 'M', 'job', 5, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
+INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/glume-admin/druid/sql.html', '', '', '0', '0', '', 'M', 'data', 6, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-09 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', '', '', '0', '0', '', 'M', 'job', 7, 'admin', '2016-11-11 11:11:11', 'admin', '2021-11-09 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, NULL, NULL, '0', '0', 'sys:schedule:list,sys:schedule:info', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, NULL, NULL, '0', '0', 'sys:schedule:save', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, NULL, NULL, '0', '0', 'sys:schedule:update', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
@@ -424,8 +424,12 @@ INSERT INTO `sys_menu` VALUES (24, 33, '新增', NULL, NULL, NULL, '0', '0', 'sy
 INSERT INTO `sys_menu` VALUES (25, 33, '修改', NULL, NULL, NULL, '0', '0', 'sys:menu:update,sys:menu:select', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (26, 33, '删除', NULL, NULL, NULL, '0', '0', 'sys:menu:delete', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (33, 4, '菜单列表', '/menuManage/list', 'menuManage/index', '', '0', '0', 'sys:menu:list', 'C', 'list', 6, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (34, 0, '测试', '/test', NULL, NULL, '0', '0', NULL, 'M', 'bug', 0, 'admin', '2021-11-06 00:00:00', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES (37, 3, '角色列表', '/role/list', 'roleManage/index', '', '0', '0', 'sys:role:lsit', 'C', 'user', 1, 'admin', '2021-11-06 00:00:00', 'admin', '2021-11-06 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (38, 0, '品牌分类管理', '/brandSortManage', '', '', '0', '0', '', 'M', 'cascader', 4, 'admin', '2021-11-09 14:49:38', 'admin', '2021-11-09 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (39, 38, '品牌列表', '/brandManage/brand/list', 'brandManage/index', '', '0', '0', 'sys:brand:list', 'C', 'theme', 2, 'admin', '2021-11-09 14:51:33', 'admin', '2021-11-09 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (40, 0, '分类管理', '/sortManage', '', '', '0', '0', '', 'M', 'cascader', 5, 'admin', '2021-11-09 17:24:50', 'admin', '2021-11-09 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (41, 40, '分类列表', '/sortManage/list', 'sortManage/index', NULL, '0', '0', 'sys:sort:list', 'C', 'cascader', 1, 'admin', '2021-11-09 17:27:09', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (42, 38, '分类列表', '/sortManage/list', 'sortManage/index', NULL, '0', '0', 'sys:sort:list', 'C', 'tree-table', 1, 'admin', '2021-11-09 17:36:07', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -454,15 +458,13 @@ CREATE TABLE `sys_role`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `role_tag` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色标签',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2003 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2011 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (2001, '超级管理员', 'admin', 1001, '2021-10-15 22:09:44', 'admin');
 INSERT INTO `sys_role` VALUES (2002, '普通用户', '普通用户', 1001, '2021-10-15 22:09:44', 'common');
-INSERT INTO `sys_role` VALUES (2009, '测试', '测试角色', 1001, '2021-11-08 17:09:43', 'test');
-INSERT INTO `sys_role` VALUES (2010, '测试2', '测试角色', 1001, '2021-11-08 17:30:52', 'test2');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -473,78 +475,50 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (1, 2001, 1);
-INSERT INTO `sys_role_menu` VALUES (2, 2001, 2);
-INSERT INTO `sys_role_menu` VALUES (3, 2001, 3);
-INSERT INTO `sys_role_menu` VALUES (4, 2001, 4);
-INSERT INTO `sys_role_menu` VALUES (5, 2001, 5);
-INSERT INTO `sys_role_menu` VALUES (6, 2001, 6);
-INSERT INTO `sys_role_menu` VALUES (7, 2001, 7);
-INSERT INTO `sys_role_menu` VALUES (8, 2001, 8);
-INSERT INTO `sys_role_menu` VALUES (9, 2001, 9);
-INSERT INTO `sys_role_menu` VALUES (10, 2001, 10);
-INSERT INTO `sys_role_menu` VALUES (11, 2001, 11);
-INSERT INTO `sys_role_menu` VALUES (12, 2001, 12);
-INSERT INTO `sys_role_menu` VALUES (13, 2001, 13);
-INSERT INTO `sys_role_menu` VALUES (14, 2001, 14);
-INSERT INTO `sys_role_menu` VALUES (15, 2001, 15);
-INSERT INTO `sys_role_menu` VALUES (16, 2001, 16);
-INSERT INTO `sys_role_menu` VALUES (17, 2001, 17);
-INSERT INTO `sys_role_menu` VALUES (18, 2001, 18);
-INSERT INTO `sys_role_menu` VALUES (19, 2001, 19);
-INSERT INTO `sys_role_menu` VALUES (20, 2001, 20);
-INSERT INTO `sys_role_menu` VALUES (21, 2001, 21);
-INSERT INTO `sys_role_menu` VALUES (22, 2001, 22);
-INSERT INTO `sys_role_menu` VALUES (23, 2001, 23);
-INSERT INTO `sys_role_menu` VALUES (24, 2001, 24);
-INSERT INTO `sys_role_menu` VALUES (25, 2001, 25);
-INSERT INTO `sys_role_menu` VALUES (26, 2001, 26);
-INSERT INTO `sys_role_menu` VALUES (31, 2002, 1);
-INSERT INTO `sys_role_menu` VALUES (32, 2002, 2);
-INSERT INTO `sys_role_menu` VALUES (33, 2002, 3);
-INSERT INTO `sys_role_menu` VALUES (34, 2002, 4);
-INSERT INTO `sys_role_menu` VALUES (35, 2002, 5);
-INSERT INTO `sys_role_menu` VALUES (36, 2002, 6);
-INSERT INTO `sys_role_menu` VALUES (37, 2001, 33);
-INSERT INTO `sys_role_menu` VALUES (38, 2001, 34);
-INSERT INTO `sys_role_menu` VALUES (39, 2001, 37);
-INSERT INTO `sys_role_menu` VALUES (40, 2009, 1);
-INSERT INTO `sys_role_menu` VALUES (41, 2009, 2);
-INSERT INTO `sys_role_menu` VALUES (42, 2009, 3);
-INSERT INTO `sys_role_menu` VALUES (43, 2010, 1);
-INSERT INTO `sys_role_menu` VALUES (44, 2010, 34);
-INSERT INTO `sys_role_menu` VALUES (45, 2010, 2);
-INSERT INTO `sys_role_menu` VALUES (46, 2010, 15);
-INSERT INTO `sys_role_menu` VALUES (47, 2010, 16);
-INSERT INTO `sys_role_menu` VALUES (48, 2010, 17);
-INSERT INTO `sys_role_menu` VALUES (49, 2010, 18);
-INSERT INTO `sys_role_menu` VALUES (50, 2010, 3);
-INSERT INTO `sys_role_menu` VALUES (51, 2010, 37);
-INSERT INTO `sys_role_menu` VALUES (52, 2010, 19);
-INSERT INTO `sys_role_menu` VALUES (53, 2010, 20);
-INSERT INTO `sys_role_menu` VALUES (54, 2010, 21);
-INSERT INTO `sys_role_menu` VALUES (55, 2010, 22);
-INSERT INTO `sys_role_menu` VALUES (56, 2010, 4);
-INSERT INTO `sys_role_menu` VALUES (57, 2010, 33);
-INSERT INTO `sys_role_menu` VALUES (58, 2010, 23);
-INSERT INTO `sys_role_menu` VALUES (59, 2010, 24);
-INSERT INTO `sys_role_menu` VALUES (60, 2010, 25);
-INSERT INTO `sys_role_menu` VALUES (61, 2010, 26);
-INSERT INTO `sys_role_menu` VALUES (62, 2010, 5);
-INSERT INTO `sys_role_menu` VALUES (63, 2010, 6);
-INSERT INTO `sys_role_menu` VALUES (64, 2010, 7);
-INSERT INTO `sys_role_menu` VALUES (65, 2010, 8);
-INSERT INTO `sys_role_menu` VALUES (66, 2010, 9);
-INSERT INTO `sys_role_menu` VALUES (67, 2010, 10);
-INSERT INTO `sys_role_menu` VALUES (68, 2010, 11);
-INSERT INTO `sys_role_menu` VALUES (69, 2010, 12);
-INSERT INTO `sys_role_menu` VALUES (70, 2010, 13);
-INSERT INTO `sys_role_menu` VALUES (71, 2010, 14);
+INSERT INTO `sys_role_menu` VALUES (108, 2002, 1);
+INSERT INTO `sys_role_menu` VALUES (110, 2002, 2);
+INSERT INTO `sys_role_menu` VALUES (111, 2002, 3);
+INSERT INTO `sys_role_menu` VALUES (112, 2002, 4);
+INSERT INTO `sys_role_menu` VALUES (113, 2002, 5);
+INSERT INTO `sys_role_menu` VALUES (114, 2002, 6);
+INSERT INTO `sys_role_menu` VALUES (175, 2001, 1);
+INSERT INTO `sys_role_menu` VALUES (177, 2001, 2);
+INSERT INTO `sys_role_menu` VALUES (178, 2001, 15);
+INSERT INTO `sys_role_menu` VALUES (179, 2001, 16);
+INSERT INTO `sys_role_menu` VALUES (180, 2001, 17);
+INSERT INTO `sys_role_menu` VALUES (181, 2001, 18);
+INSERT INTO `sys_role_menu` VALUES (182, 2001, 38);
+INSERT INTO `sys_role_menu` VALUES (183, 2001, 39);
+INSERT INTO `sys_role_menu` VALUES (184, 2001, 3);
+INSERT INTO `sys_role_menu` VALUES (185, 2001, 37);
+INSERT INTO `sys_role_menu` VALUES (186, 2001, 19);
+INSERT INTO `sys_role_menu` VALUES (187, 2001, 20);
+INSERT INTO `sys_role_menu` VALUES (188, 2001, 21);
+INSERT INTO `sys_role_menu` VALUES (189, 2001, 22);
+INSERT INTO `sys_role_menu` VALUES (190, 2001, 4);
+INSERT INTO `sys_role_menu` VALUES (191, 2001, 33);
+INSERT INTO `sys_role_menu` VALUES (192, 2001, 23);
+INSERT INTO `sys_role_menu` VALUES (193, 2001, 24);
+INSERT INTO `sys_role_menu` VALUES (194, 2001, 25);
+INSERT INTO `sys_role_menu` VALUES (195, 2001, 26);
+INSERT INTO `sys_role_menu` VALUES (196, 2001, 5);
+INSERT INTO `sys_role_menu` VALUES (197, 2001, 6);
+INSERT INTO `sys_role_menu` VALUES (198, 2001, 7);
+INSERT INTO `sys_role_menu` VALUES (199, 2001, 8);
+INSERT INTO `sys_role_menu` VALUES (200, 2001, 9);
+INSERT INTO `sys_role_menu` VALUES (201, 2001, 10);
+INSERT INTO `sys_role_menu` VALUES (202, 2001, 11);
+INSERT INTO `sys_role_menu` VALUES (203, 2001, 12);
+INSERT INTO `sys_role_menu` VALUES (204, 2001, 13);
+INSERT INTO `sys_role_menu` VALUES (205, 2001, 14);
+INSERT INTO `sys_role_menu` VALUES (206, 2001, 40);
+INSERT INTO `sys_role_menu` VALUES (207, 2001, 41);
+INSERT INTO `sys_role_menu` VALUES (208, 2001, 42);
 
 -- ----------------------------
 -- Table structure for sys_user

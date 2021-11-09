@@ -66,7 +66,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
         QueryWrapper<RoleMenuEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("role_id",roleId);
         List<RoleMenuEntity> roleMenuEntities = baseMapper.selectList(wrapper);
-        List<Long> list = roleMenuEntities.stream().map(item -> item.getMenuId()).collect(Collectors.toList());
+        List<Long> list = roleMenuEntities.stream().map(RoleMenuEntity::getMenuId).collect(Collectors.toList());
         return list;
     }
 

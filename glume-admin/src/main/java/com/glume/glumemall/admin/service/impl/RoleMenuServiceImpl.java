@@ -1,4 +1,5 @@
 package com.glume.glumemall.admin.service.impl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
@@ -83,6 +84,18 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
         Integer row = baseMapper.delete(new QueryWrapper<RoleMenuEntity>().in("menu_id", menu_id));
         if (row == 0) {
             throw new ServiceException("删除失败！");
+        }
+    }
+
+    /**
+     * 根据角色ID删除
+     * @param roleIds
+     */
+    @Override
+    public void removeRoleMenuByIds(List<Long> roleIds) {
+        boolean role_id = SqlHelper.retBool(baseMapper.delete(new QueryWrapper<RoleMenuEntity>().in("role_id", roleIds)));
+        if (!role_id) {
+            throw new ServiceException("删除失败");
         }
     }
 

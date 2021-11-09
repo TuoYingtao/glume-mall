@@ -64,11 +64,11 @@ public class RoleController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{roleId}")
+    @GetMapping("/info/{roleId}")
+    @ApiOperation(value = "获取角色菜单信息")
     public R info(@PathVariable("roleId") Long roleId){
-		RoleEntity role = roleService.getById(roleId);
-
-        return R.ok().put("role", role);
+        HashMap<String, Object> data = roleService.getInfoById(roleId);
+        return R.ok().put("data", data);
     }
 
     /**
@@ -106,11 +106,11 @@ public class RoleController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] roleIds){
-		roleService.removeByIds(Arrays.asList(roleIds));
-
-        return R.ok();
+    @DeleteMapping("/delete/{roleIds}")
+    @ApiOperation("删除角色信息")
+    public R delete(@PathVariable("roleIds") Long[] roleIds){
+        roleService.removeRoleByIds(Arrays.asList(roleIds));
+        return R.ok("删除成功！");
     }
 
 }

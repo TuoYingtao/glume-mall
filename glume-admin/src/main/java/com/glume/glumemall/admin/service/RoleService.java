@@ -5,6 +5,7 @@ import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.RoleEntity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +20,10 @@ public interface RoleService extends IService<RoleEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     RoleEntity getRoleDetail(Long role_id);
+
+    HashMap<String,Object> getInfoById(Long roleId);
+
+    void removeRoleByIds(List<Long> roleIds);
 
     void saveMyRole(RoleEntity roleEntity);
 

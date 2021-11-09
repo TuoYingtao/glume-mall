@@ -1,5 +1,6 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.glume.common.core.constant.HttpStatus;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.SpringUtils;
@@ -43,6 +44,30 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
     public RoleEntity getRoleDetail(Long role_id) {
         RoleEntity roleEntity = baseMapper.selectById(role_id);
         return roleEntity;
+    }
+
+    /** 获取角色详情 */
+    @Override
+    public HashMap<String,Object> getInfoById(Long roleId) {
+        RoleEntity roleEntity = baseMapper.selectOne(new QueryWrapper<RoleEntity>().eq("role_id", roleId));
+        if (!StringUtils.isNotNull(roleEntity)) {
+            throw new ServiceException("没有ID为" + roleId + "的角色");
+        }
+        List<RoleMenuEntity> roleMenuEntity = SpringUtils.getBean(RoleMenuService.class).getRoleMenuEntity(roleId);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("info",roleEntity);
+        hashMap.put("menuIds",roleMenuEntity);
+        return hashMap;
+    }
+
+    /** 删除角色信息 */
+    @Override
+    public void removeRoleByIds(List<Long> roleIds) {
+        boolean bool = SqlHelper.retBool(baseMapper.deleteBatchIds(roleIds));
+        SpringUtils.getBean(RoleMenuService.class).removeRoleMenuByIds(roleIds);
+        if (!bool) {
+            throw new ServiceException("删除角色失败");
+        }
     }
 
     /** 保存角色信息 */

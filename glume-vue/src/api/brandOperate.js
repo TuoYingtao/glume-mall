@@ -1,11 +1,11 @@
 import request from "@/utils/request"
 import qs from "qs"
 
-/* 获取品牌数据 */
+/* 获取分类数据 */
 export function getBrandTree() {
   return request({
-    url: "/product",
-    method: "GET"
+    url: "/product/category/list/tree",
+    method: "GET",
   })
 }
 /* 修改品牌排序 */

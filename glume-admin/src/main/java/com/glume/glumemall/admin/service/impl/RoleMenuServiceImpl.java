@@ -45,7 +45,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
     }
 
     /**
-     * 获取用户角色菜单
+     * 获取用户角色菜单列表
      * @param roleId 角色ID
      * @return
      */
@@ -54,6 +54,20 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
         QueryWrapper<RoleMenuEntity> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("role_id",roleId);
         return baseMapper.selectList(objectQueryWrapper);
+    }
+
+    /**
+     * 获取用户角色菜单ID
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<Long> getRoleMenuIds(Long roleId) {
+        QueryWrapper<RoleMenuEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id",roleId);
+        List<RoleMenuEntity> roleMenuEntities = baseMapper.selectList(wrapper);
+        List<Long> list = roleMenuEntities.stream().map(item -> item.getMenuId()).collect(Collectors.toList());
+        return list;
     }
 
     /**

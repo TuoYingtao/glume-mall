@@ -53,10 +53,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
         if (!StringUtils.isNotNull(roleEntity)) {
             throw new ServiceException("没有ID为" + roleId + "的角色");
         }
-        List<RoleMenuEntity> roleMenuEntity = SpringUtils.getBean(RoleMenuService.class).getRoleMenuEntity(roleId);
+        List<Long> roleMenuIds = SpringUtils.getBean(RoleMenuService.class).getRoleMenuIds(roleId);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("info",roleEntity);
-        hashMap.put("menuIds",roleMenuEntity);
+        hashMap.put("menuIds",roleMenuIds);
         return hashMap;
     }
 

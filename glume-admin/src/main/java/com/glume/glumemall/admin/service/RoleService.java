@@ -23,6 +23,8 @@ public interface RoleService extends IService<RoleEntity> {
 
     HashMap<String,Object> getInfoById(Long roleId);
 
+    void updateRoleById(RoleEntity role);
+
     void removeRoleByIds(List<Long> roleIds);
 
     void saveMyRole(RoleEntity roleEntity);

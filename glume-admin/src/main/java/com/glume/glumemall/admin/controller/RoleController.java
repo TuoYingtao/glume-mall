@@ -96,10 +96,17 @@ public class RoleController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody RoleEntity role){
-		roleService.updateById(role);
-
+    @PutMapping("/update")
+    @ApiOperation("修改角色信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roleId",value = "角色ID",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "roleName",value = "角色名称",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "roleTag",value = "角色标签",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "remark",value = "备注",dataType = "String"),
+            @ApiImplicitParam(name = "menuIds",value = "角色菜单ID",dataType = "Array"),
+    })
+    public R update(RoleEntity role){
+		roleService.updateRoleById(role);
         return R.ok();
     }
 

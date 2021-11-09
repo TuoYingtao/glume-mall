@@ -29,5 +29,7 @@ public interface RoleMenuService extends IService<RoleMenuEntity> {
     void removeRoleMenuByIds(List<Long> roleIds);
 
     void saveMyBatch(Long roleId, Long[] menuIds);
+
+    void updateBatchRoleMenu(Long roleId,Long[] menuIds);
 }
 

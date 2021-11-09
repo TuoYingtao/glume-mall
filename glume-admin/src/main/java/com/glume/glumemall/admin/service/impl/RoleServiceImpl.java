@@ -60,6 +60,17 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
         return hashMap;
     }
 
+    /** 更新角色详情 */
+    @Override
+    public void updateRoleById(RoleEntity role) {
+        boolean bool = SqlHelper.retBool(baseMapper.updateById(role));
+        if (!bool) {
+            throw new ServiceException("更新角色信息失败！");
+        }
+        Long[] menuIds = StringUtils.isEmpty(role.getMenuIds()) ? null : role.getMenuIds();
+        SpringUtils.getBean(RoleMenuService.class).updateBatchRoleMenu(role.getRoleId(),menuIds);
+    }
+
     /** 删除角色信息 */
     @Override
     public void removeRoleByIds(List<Long> roleIds) {

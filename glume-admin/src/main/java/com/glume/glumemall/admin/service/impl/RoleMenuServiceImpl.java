@@ -1,6 +1,7 @@
 package com.glume.glumemall.admin.service.impl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.glume.common.core.exception.servlet.ServiceException;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.service.MenuService;
@@ -127,6 +128,25 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
         boolean b = this.saveBatch(roleMenuEntities);
         if (!b) {
             throw new ServiceException("批量保存角色菜单ID失败！");
+        }
+    }
+
+    /**
+     * 更新角色菜单权限
+     * @param roleId 角色ID
+     * @param menuIds 当前角色拥有权限的ID
+     */
+    @Override
+    public void updateBatchRoleMenu(Long roleId, Long[] menuIds) {
+        // 删除当前角色全部权限
+        SqlHelper.retBool(baseMapper.delete( new QueryWrapper<RoleMenuEntity>().eq("role_id",roleId)));
+        // 添加当前角色全部权限
+        if (StringUtils.isNotEmpty(menuIds)) {
+            List<RoleMenuEntity> roleMenuEntities = new ArrayList<>();
+            for (Long menuId : menuIds) {
+                roleMenuEntities.add(new RoleMenuEntity(roleId,menuId));
+            }
+            this.saveBatch(roleMenuEntities);
         }
     }
 

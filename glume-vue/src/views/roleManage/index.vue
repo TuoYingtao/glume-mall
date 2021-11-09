@@ -9,7 +9,7 @@
         <right-toolbar :showSearch.sync="showSearch" :isFlagShow="$route.meta.search" @queryTable="getList" />
       </el-row>
       <!--    内容展示-->
-      <table-box :loading="loading" :data="roleList" :tableColumn="tableColumn" @jumpPage="jumpPage" @selection-change="handleSelectionChange"/>
+      <table-box :loading="loading" :data="roleList" :tableColumn="tableColumn" @amendRole="amendRole" @deleteRole="deleteRole" @selection-change="handleSelectionChange"/>
       <pagination :page-sizes="[20,40,60,80]" v-show="total>0" :total="total" :page.sync="queryParams.page" :limit.sync="queryParams.limit" @pagination="getList"/>
     </el-card>
     <!-- 弹出层 -->
@@ -37,7 +37,8 @@
               <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
               <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
               <el-tree class="tree-border" :data="menuOptions" show-checkbox ref="menu" node-key="id"
-                       :check-strictly="!form.menuCheckStrictly" empty-text="加载中，请稍候" :props="defaultProps"></el-tree>
+                       :default-checked-keys="menuIds" :check-strictly="!form.menuCheckStrictly"
+                       empty-text="加载中，请稍候" :props="defaultProps"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -53,10 +54,12 @@
 </template>
 
 <script>
-import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
+import {addRole, delRole, getTreeSelect, queryRole, roleList, updateRole} from "@/api/role"
   import SearchBox from '@/components/searchBox/index'
   import TableBox from '@/components/TableBox'
   import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
+  import {MessageBox} from "element-ui";
+  import {delMenu} from "@/api/menu";
   export default {
     name: 'roleList',
     components: { LayoutContainer, SearchBox,TableBox },
@@ -69,7 +72,7 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
           {label: '描述',prop: 'remark'},
           {label: '操作',size: 'mini',model: [
               {name: '修改',color: 'warning',onClick: 'amendRole',icon: "el-icon-edit"},
-              {name: '删除',color: 'warning',onClick: 'deleteRole',icon: "el-icon-edit"}],type: 'bottom'},
+              {name: '删除',color: 'danger',onClick: 'deleteRole',icon: "el-icon-delete"}],type: 'bottom'},
         ],
         total: 0,
         showSearch: true,
@@ -91,6 +94,7 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
         roleList: [],
         menuExpand: false,
         menuNodeAll: false,
+        menuIds: [],
         menuOptions: [],
         defaultProps: {
           children: "children",
@@ -116,6 +120,17 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
         this.dialogVisible = true;
         this.treeSelect();
       },
+      amendRole(row) {
+        this.reset();
+        this.treeSelect();
+        this.form.roleId = row.role;
+        queryRole(row.roleId).then(response => {
+          this.form = response.data.info;
+          this.menuIds = response.data.menuIds;
+          this.dialogVisible = true;
+          this.title = "修改角色";
+        });
+      },
       treeSelect() {
         getTreeSelect().then(response => {
           this.menuOptions = response.data.menus;
@@ -126,14 +141,14 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
         this.$refs["elForm"].validate(valid => {
           if (valid) {
             if (this.form.roleId != undefined) {
-              this.form.menuIds = this.getMenuAllCheckedKeys();
+              this.form.menuIds = this.getMenuAllCheckedKeys() || [];
               updateRole(this.form).then(response => {
                 this.notSuccess("修改成功");
                 this.dialogVisible = false;
                 this.getList();
               });
             } else {
-              this.form.menuIds = this.getMenuAllCheckedKeys();
+              this.form.menuIds = this.getMenuAllCheckedKeys() || [];
               addRole(this.form).then(response => {
                 this.notSuccess("新增成功");
                 this.dialogVisible = false;
@@ -143,8 +158,13 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
           }
         });
       },
-      amendRole(row) {
-
+      deleteRole(row) {
+        MessageBox.confirm('是否确认删除名称为"' + row.roleName + '"的数据项？').then(function() {
+          return delRole(row.roleId);
+        }).then(() => {
+          this.getList();
+          this.notSuccess("删除成功");
+        }).catch(() => {});
       },
       // 所有菜单节点数据
       getMenuAllCheckedKeys() {
@@ -189,7 +209,6 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
         console.log(e)
       },
       handleQuery(param) {
-        console.log(param)
         this.getList();
       },
       resetQuery() {
@@ -202,6 +221,10 @@ import {addRole, getTreeSelect, roleList, updateRole} from "@/api/role"
       },
       reset() {
         this.title = "";
+        this.menuExpand = false;
+        this.menuNodeAll = false;
+        this.menuIds = [];
+        this.form = {};
         this.queryParams = {
           page: 1,
           limit: 20,

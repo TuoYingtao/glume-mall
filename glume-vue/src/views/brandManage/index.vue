@@ -5,6 +5,11 @@
         <div class="tree-input-box">
           <el-input class="tree-input" placeholder="输入品牌名称进行过滤" v-model="filterText" />
         </div>
+        <div class="operation">
+          <el-checkbox v-model="isAddCheckbox">添加</el-checkbox>
+          <el-checkbox v-model="isAmendCheckbox">修改</el-checkbox>
+          <el-checkbox v-model="isDelCheckbox">删除</el-checkbox>
+        </div>
         <el-tree class="filter-tree" ref="tree" node-key="id"
                  :data="brandTreeList" :props="defaultProps"
                  :default-expanded-keys="expanded"
@@ -14,10 +19,11 @@
                  @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{ node, data }" :key="domKey">
           <span class="el-tree-text" @click="expandedMenu(data)">{{ node.label }}</span>
-          <template>
-            <span class="el-tree-text" v-show="(data.level == 2) && data.is_sort" @dblclick="onInput(node,data)" ref="refTree">{{ data.sort }}</span>
-            <el-input class="el-tree-input" type="number" ref="treeInput" v-focus v-show="(data.level == 2) && !data.is_sort" v-model="data.sort" @blur="blurInputTree(node,data)" />
-          </template>
+          <span>
+            <el-button class="add" v-show="isAddCheckbox" type="text" size="mini" @click="treeAddClick(data)">添加</el-button>
+            <el-button class="amend" v-show="isAmendCheckbox" type="text" size="mini" @click="treeAmendClick(data)">修改</el-button>
+            <el-button class="del" v-show="isDelCheckbox" type="text" size="mini" @click="treeDelClick(data)">删除</el-button>
+          </span>
         </span>
         </el-tree>
       </el-card>
@@ -62,24 +68,126 @@
       </el-card>
     </div>
     <price-dialog ref="RefDialog" :mobel-id="id"/>
+
+    <!-- tree 弹窗 -->
+    <el-dialog :title="title" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
+      <el-form ref="treeFrom" :model="treeFrom" :rules="TreeRules" size="medium" label-width="100px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="上级商品：">
+              <treeselect v-model="treeFrom.parentCid" :options="treeOptions" :normalizer="normalizer" :show-count="true" placeholder="选择上级菜单" @select="treeselectSelect"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="分类名称：" prop="name">
+              <el-input v-model="treeFrom.name"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="显示排序：" prop="catLevel">
+              <el-input-number v-model="treeFrom.catLevel" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="商品排序：" prop="sort">
+              <el-input-number v-model="treeFrom.sort" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="计量单位：">
+              <el-input v-model="treeFrom.productUnit"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="商品数量：" prop="productCount">
+              <el-input-number v-model="treeFrom.productCount" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="图标：" prop="icon">
+              <el-upload :action="uploadParams.host"
+                         :data="uploadParams"
+                         :on-success="uploadSuccess"
+                         list-type="picture-card"
+                         :auto-upload="true">
+                  <i slot="default" class="el-icon-plus"></i>
+                  <div slot="file" slot-scope="{file}">
+                    <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+                    <span class="el-upload-list__item-actions">
+                      <span class="el-upload-list__item-preview"@click="handlePictureCardPreview(file)">
+                        <i class="el-icon-zoom-in"></i>
+                      </span>
+                      <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleDownload(file)">
+                        <i class="el-icon-download"></i>
+                      </span>
+                      <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                        <i class="el-icon-delete"></i>
+                      </span>
+                    </span>
+                </div>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item>
+          <span class="fr">
+            <el-button @click="treeFromHandleClose">取消</el-button>
+            <el-button type="cyan" @click="treeFromSubmitForm">添加</el-button>
+          </span>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </layout-container>
 </template>
 
 <script>
-import { getBrandTree, amendBrandSort, getBrandModel, amendBrandModel } from "@/api/brandOperate"
+import {
+  getBrandTree,
+  getBrandModel,
+  amendBrandModel,
+  getOSSPolicy,
+  addBrandTree, amendBrandTree, delBrandTree, queryBrandTree
+} from "@/api/brandOperate"
 import PriceDialog from '@/views/system/brandOperate/components/dialog'
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {MessageBox} from "element-ui";
 
 export default {
   name: 'index',
   components: {
     LayoutContainer,
-    PriceDialog
+    PriceDialog,
+    Treeselect
   },
   data() {
     return {
       id: null,
       is_price: false,
+      isAddCheckbox: false,
+      isAmendCheckbox: false,
+      isDelCheckbox: false,
+      isTreeOpen: false,
+      treeFrom: {},
+      treeOptions: [],
+      brandTreeList: [],
+      TreeRules: {
+        name: [{ required: true, message: "分类名称不能为空", trigger: "blur" }],
+        catLevel: [{ required: true, message: "层级不能为空", trigger: "blur" }],
+        sort: [{ required: true, message: "排序不能为空", trigger: "blur" }],
+        icon: [{ required: true, message: "图标地址不能为空", trigger: "blur" }],
+        productCount: [{ required: true, message: "商品数量不能为空", trigger: "blur" }],
+      },
+      uploadPath: "",
+      uploadParams: {},
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+
       domKey: 0,
       domKey2: 0,
       showSearch: true,
@@ -91,7 +199,6 @@ export default {
         label: "name",
         children: "children"
       },
-      brandTreeList: [],
       modelList: [],
       title: "",
       total: null,
@@ -118,12 +225,27 @@ export default {
   },
   created() {
     this.getBrandTree();
+    this.OSSPolicy();
   },
   methods: {
     getBrandTree() {
       getBrandTree().then(response => {
         this.brandTreeList = response.data;
         this.handlerBrandTreeList(this.brandTreeList);
+      })
+    },
+    OSSPolicy() {
+      getOSSPolicy().then(response => {
+        this.uploadPath = response.data.dir + "/" + new Date().getTime();
+        this.uploadParams = {
+          host: response.data.host,
+          OSSAccessKeyId: response.data.accessid,
+          key: this.uploadPath,
+          signature: response.data.signature,
+          policy: response.data.policy,
+          // 设置服务端返回状态码为200，不设置则默认返回状态码204。
+          success_action_status: 200,
+        }
       })
     },
     getBrandModel() {
@@ -137,7 +259,7 @@ export default {
     },
     handlerBrandTreeList(brandTreeList) {
       this.queryParam.brand_id = brandTreeList[0].children[0].id;
-      this.title = `${brandTreeList[0].name} > ${brandTreeList[0].children[0].name}`;
+      this.title = `${brandTreeList[0].name} > ${brandTreeList[0].children[0].name} > ${brandTreeList[0].children[0].children[0].name}`;
       this.getBrandModel();
       brandTreeList.forEach(item => {
         item.level = 1;
@@ -201,6 +323,91 @@ export default {
       })
       this.domKey += 1;
     },
+    treeAddClick(row) {
+      this.treeReset()
+      this.treeFrom.parentCid = row.catId
+      this.getTreeselect()
+      this.isTreeOpen = true
+    },
+    treeAmendClick(row) {
+      this.treeReset()
+      this.treeFrom.catId = row.catId
+      this.getTreeselect()
+      this.getQueryTreeInfo(row.catId)
+      this.isTreeOpen = true
+    },
+    getQueryTreeInfo(catId) {
+      queryBrandTree(catId).then(response => {
+        this.treeFrom = response.data.category;
+      });
+    },
+    treeDelClick(row) {
+      MessageBox.confirm('是否确认删除名称为"' + row.name + '"的数据项？').then(function() {
+        return delBrandTree(row.catId);
+      }).then(() => {
+        this.getBrandTree();
+        this.notSuccess("删除成功");
+      }).catch(() => {});
+    },
+    treeFromSubmitForm() {
+      this.$refs["treeFrom"].validate(valid => {
+        if (valid) {
+          if (this.treeFrom.catId != undefined) {
+            amendBrandTree(this.treeFrom).then(response => {
+              this.notSuccess("修改成功");
+              this.isTreeOpen = false;
+              this.getBrandTree();
+            });
+          } else {
+            addBrandTree(this.treeFrom).then(response => {
+              this.notSuccess("新增成功");
+              this.isTreeOpen = false;
+              this.getBrandTree();
+            });
+          }
+        }
+      });
+    },
+    treeFromHandleClose() {
+      this.isTreeOpen = false
+      this.treeReset()
+    },
+    treeselectSelect(e) {
+      this.treeFrom.parentCid = e.catId;
+    },
+    /** 转换Tree数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.catId,
+        label: node.name,
+        children: node.children
+      };
+    },
+    /** 查询Tree下拉树结构 */
+    getTreeselect() {
+      console.log(this.treeFrom)
+      this.treeOptions = [];
+      const tree = { catId: 0, name: '主类目', children: [] };
+      tree.children = this.handleTree(this.brandTreeList, "catId","parentCid");
+      this.treeOptions.push(tree);
+    },
+    handleRemove(file) {
+      console.log(file);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
+    uploadSuccess(response, file, fileList) {
+      console.log("上传成功！")
+      this.treeFrom.icon = "https://glume-mall.oss-cn-shenzhen.aliyuncs.com/" + this.uploadPath;
+    },
     handlerItem(key,row) {
       this.modelList.forEach(item => {
         if (item.id == row.id) {
@@ -208,6 +415,9 @@ export default {
         }
       })
       this.domKey2 += 1;
+    },
+    treeReset() {
+      this.treeFrom = {}
     },
     reset() {
       this.queryParam = {
@@ -249,7 +459,18 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
-
+}
+.operation {
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.amend {
+  color: #ffba00;
+}
+.del {
+  color: #ff4949;
 }
 .filter-tree {
   margin-top: 10px;

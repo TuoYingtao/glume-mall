@@ -4,7 +4,7 @@ import qs from 'qs'
 // 登录方法
 export function login(login) {
   return request({
-    url: '/user/login',
+    url: '/admin/user/login',
     method: 'POST',
     data: qs.stringify(login)
   })
@@ -12,14 +12,14 @@ export function login(login) {
 
 export function captcha() {
   return request({
-    url: '/user/captcha',
+    url: '/admin/user/captcha',
     method: 'GET',
   })
 }
 // 用户信息
 export function getInfo () {
   return request({
-    url: '/user/info',
+    url: '/admin/user/info',
     method: 'GET'
   })
 }

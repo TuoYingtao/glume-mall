@@ -4,7 +4,7 @@ import qs from 'qs'
 // 获取角色列表
 export function roleList(param) {
   return request({
-    url: `/role/list`,
+    url: `/admin/role/list`,
     method: 'GET',
     params: param
   })
@@ -13,7 +13,7 @@ export function roleList(param) {
 // 角色下拉菜单权限列表
 export function getTreeSelect(roleId) {
   return request({
-    url: `/role/menuTree`,
+    url: `/admin/role/menuTree`,
     method: 'GET',
     params: roleId
   })
@@ -22,7 +22,7 @@ export function getTreeSelect(roleId) {
 // 修改
 export function updateRole(data) {
   return request({
-    url: `/role/update`,
+    url: `/admin/role/update`,
     method: 'PUT',
     data: qs.stringify(data)
   })
@@ -31,7 +31,7 @@ export function updateRole(data) {
 // 添加
 export function addRole(data) {
   return request({
-    url: `/role/save`,
+    url: `/admin/role/save`,
     method: 'POST',
     data: qs.stringify(data)
   })
@@ -40,7 +40,7 @@ export function addRole(data) {
 // 查询
 export function queryRole(menuId) {
   return request({
-    url: `/role/info/${menuId}`,
+    url: `/admin/role/info/${menuId}`,
     method: 'GET',
   })
 }
@@ -48,7 +48,7 @@ export function queryRole(menuId) {
 // 删除
 export function delRole(userId) {
   return request({
-    url: `/role/delete/${userId}`,
+    url: `/admin/role/delete/${userId}`,
     method: 'DELETE',
   })
 }

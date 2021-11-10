@@ -4,7 +4,7 @@ import qs from 'qs'
 // 获取菜单列表
 export function menuList(userId) {
   return request({
-    url: `/menu/list/${userId}`,
+    url: `/admin/menu/list/${userId}`,
     method: 'GET',
   })
 }
@@ -12,7 +12,7 @@ export function menuList(userId) {
 // 修改
 export function updateMenu(data) {
   return request({
-    url: `/menu/update`,
+    url: `/admin/menu/update`,
     method: 'PUT',
     data: qs.stringify(data)
   })
@@ -21,7 +21,7 @@ export function updateMenu(data) {
 // 添加
 export function addMenu(data) {
   return request({
-    url: `/menu/save`,
+    url: `/admin/menu/save`,
     method: 'POST',
     data: qs.stringify(data)
   })
@@ -30,7 +30,7 @@ export function addMenu(data) {
 // 查询
 export function queryMenu(menuId) {
   return request({
-    url: `/menu/info/${menuId}`,
+    url: `/admin/menu/info/${menuId}`,
     method: 'GET',
   })
 }
@@ -38,7 +38,7 @@ export function queryMenu(menuId) {
 // 删除
 export function delMenu(userId) {
   return request({
-    url: `/menu/delete/${userId}`,
+    url: `/admin/menu/delete/${userId}`,
     method: 'DELETE',
   })
 }

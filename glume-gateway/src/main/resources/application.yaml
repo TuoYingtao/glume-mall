@@ -23,9 +23,9 @@ spring:
         - id: admin_route
           uri: lb://glume-admin
           predicates:
-            - Path=/api/**
+            - Path=/api/admin/**
           filters:
-            - RewritePath=/api/?(?<segment>.*),/admin/$\{segment}
+            - RewritePath=/api/?(?<segment>.*),/$\{segment}
     nacos:
       discovery:
         server-addr: localhost:8848

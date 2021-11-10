@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 04/11/2021 17:46:03
+ Date: 10/11/2021 17:46:27
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `pms_attr`  (
   `catelog_id` bigint NULL DEFAULT NULL COMMENT '所属分类',
   `show_desc` tinyint NULL DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整',
   PRIMARY KEY (`attr_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_attr
@@ -59,7 +59,7 @@ CREATE TABLE `pms_attr_attrgroup_relation`  (
   `attr_group_id` bigint NULL DEFAULT NULL COMMENT '属性分组id',
   `attr_sort` int NULL DEFAULT NULL COMMENT '属性组内排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性&属性分组关联' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性&属性分组关联' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_attr_attrgroup_relation
@@ -84,7 +84,7 @@ CREATE TABLE `pms_attr_group`  (
   `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组图标',
   `catelog_id` bigint NULL DEFAULT NULL COMMENT '所属分类id',
   PRIMARY KEY (`attr_group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性分组' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性分组' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_attr_group
@@ -107,7 +107,7 @@ CREATE TABLE `pms_brand`  (
   `first_letter` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '检索首字母',
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`brand_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_brand
@@ -116,7 +116,7 @@ INSERT INTO `pms_brand` VALUES (9, '华为', 'https://gulimall-hello.oss-cn-beij
 INSERT INTO `pms_brand` VALUES (10, '小米', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-18/1f9e6968-cf92-462e-869a-4c2331a4113f_xiaomi.png', '小米', 1, 'M', 1);
 INSERT INTO `pms_brand` VALUES (11, 'oppo', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-18/5c8303f2-8b0c-4a5b-89a6-86513133d758_oppo.png', 'oppo', 1, 'O', 1);
 INSERT INTO `pms_brand` VALUES (12, 'iPhone', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-18/819bb0b1-3ed8-4072-8304-78811a289781_apple.png', '苹果', 1, 'A', 1);
-INSERT INTO `pms_brand` VALUES (13, 'iPhone 13 Pro Max', 'ASCACDSACASCSASCASCAS', 'iPhone 13 Pro Max', 0, 'I', 0);
+INSERT INTO `pms_brand` VALUES (13, 'iPhone 13 Pro Max', 'ASCACDSACASCSASCASCAS', 'iPhone 13 Pro Max', 1, 'I', 0);
 
 -- ----------------------------
 -- Table structure for pms_category
@@ -134,13 +134,13 @@ CREATE TABLE `pms_category`  (
   `product_count` int NULL DEFAULT NULL COMMENT '商品数量',
   PRIMARY KEY (`cat_id`) USING BTREE,
   INDEX `parent_cid`(`parent_cid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1434 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品三级分类' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1435 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品三级分类' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_category
 -- ----------------------------
 INSERT INTO `pms_category` VALUES (1, '图书、音像、电子书刊', 0, 1, 1, 0, NULL, NULL, 0);
-INSERT INTO `pms_category` VALUES (2, '手机', 0, 1, 1, 0, '111q', NULL, 0);
+INSERT INTO `pms_category` VALUES (2, '手机', 0, 0, 1, 0, '111q', '', 0);
 INSERT INTO `pms_category` VALUES (3, '家用电器', 0, 1, 1, 0, 'aaa', NULL, 0);
 INSERT INTO `pms_category` VALUES (4, '数码', 0, 1, 1, 0, 'aaa', NULL, 0);
 INSERT INTO `pms_category` VALUES (5, '家居家装', 0, 1, 1, 0, NULL, NULL, 0);
@@ -1565,6 +1565,7 @@ INSERT INTO `pms_category` VALUES (1423, '面包车（二手）', 164, 3, 1, 0, 
 INSERT INTO `pms_category` VALUES (1431, 'dsa323', 1, 2, 1, NULL, NULL, NULL, NULL);
 INSERT INTO `pms_category` VALUES (1432, 'fdsffdsadddd大萨达', 1431, 3, 1, NULL, NULL, NULL, NULL);
 INSERT INTO `pms_category` VALUES (1433, '测试99', 0, 1, 1, 0, 'test', NULL, 99);
+INSERT INTO `pms_category` VALUES (1434, '测试', 1, 18, 0, 18, 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-10/1636527610612', '1', 13);
 
 -- ----------------------------
 -- Table structure for pms_category_brand_relation
@@ -1577,7 +1578,7 @@ CREATE TABLE `pms_category_brand_relation`  (
   `brand_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `catelog_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_category_brand_relation
@@ -1606,7 +1607,7 @@ CREATE TABLE `pms_comment_replay`  (
   `comment_id` bigint NULL DEFAULT NULL COMMENT '评论id',
   `reply_id` bigint NULL DEFAULT NULL COMMENT '回复id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价回复关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价回复关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_comment_replay
@@ -1625,7 +1626,7 @@ CREATE TABLE `pms_product_attr_value`  (
   `attr_sort` int NULL DEFAULT NULL COMMENT '顺序',
   `quick_show` tinyint NULL DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu属性值' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu属性值' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_product_attr_value
@@ -1655,7 +1656,7 @@ CREATE TABLE `pms_sku_images`  (
   `img_sort` int NULL DEFAULT NULL COMMENT '排序',
   `default_img` int NULL DEFAULT NULL COMMENT '默认图[0 - 不是默认图，1 - 是默认图]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku图片' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku图片' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_sku_images
@@ -1788,7 +1789,7 @@ CREATE TABLE `pms_sku_info`  (
   `price` decimal(18, 4) NULL DEFAULT NULL COMMENT '价格',
   `sale_count` bigint NULL DEFAULT NULL COMMENT '销量',
   PRIMARY KEY (`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_sku_info
@@ -1832,7 +1833,7 @@ CREATE TABLE `pms_sku_sale_attr_value`  (
   `attr_value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '销售属性值',
   `attr_sort` int NULL DEFAULT NULL COMMENT '顺序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku销售属性&值' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku销售属性&值' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_sku_sale_attr_value
@@ -1912,7 +1913,7 @@ CREATE TABLE `pms_spu_comment`  (
   `member_icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户头像',
   `comment_type` tinyint NULL DEFAULT NULL COMMENT '评论类型[0 - 对商品的直接评论，1 - 对评论的回复]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_spu_comment
@@ -1930,7 +1931,7 @@ CREATE TABLE `pms_spu_images`  (
   `img_sort` int NULL DEFAULT NULL COMMENT '顺序',
   `default_img` tinyint NULL DEFAULT NULL COMMENT '是否默认图',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu图片' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu图片' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_spu_images
@@ -1968,7 +1969,7 @@ CREATE TABLE `pms_spu_info`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_spu_info
@@ -2008,7 +2009,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of undo_log

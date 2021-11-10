@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 09/11/2021 18:10:38
+ Date: 10/11/2021 17:46:17
 */
 
 SET NAMES utf8mb4;
@@ -392,7 +392,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -426,10 +426,7 @@ INSERT INTO `sys_menu` VALUES (26, 33, '删除', NULL, NULL, NULL, '0', '0', 'sy
 INSERT INTO `sys_menu` VALUES (33, 4, '菜单列表', '/menuManage/list', 'menuManage/index', '', '0', '0', 'sys:menu:list', 'C', 'list', 6, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (37, 3, '角色列表', '/role/list', 'roleManage/index', '', '0', '0', 'sys:role:lsit', 'C', 'user', 1, 'admin', '2021-11-06 00:00:00', 'admin', '2021-11-06 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (38, 0, '品牌分类管理', '/brandSortManage', '', '', '0', '0', '', 'M', 'cascader', 4, 'admin', '2021-11-09 14:49:38', 'admin', '2021-11-09 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (39, 38, '品牌列表', '/brandManage/brand/list', 'brandManage/index', '', '0', '0', 'sys:brand:list', 'C', 'theme', 2, 'admin', '2021-11-09 14:51:33', 'admin', '2021-11-09 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (40, 0, '分类管理', '/sortManage', '', '', '0', '0', '', 'M', 'cascader', 5, 'admin', '2021-11-09 17:24:50', 'admin', '2021-11-09 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (41, 40, '分类列表', '/sortManage/list', 'sortManage/index', NULL, '0', '0', 'sys:sort:list', 'C', 'cascader', 1, 'admin', '2021-11-09 17:27:09', NULL, NULL, NULL);
-INSERT INTO `sys_menu` VALUES (42, 38, '分类列表', '/sortManage/list', 'sortManage/index', NULL, '0', '0', 'sys:sort:list', 'C', 'tree-table', 1, 'admin', '2021-11-09 17:36:07', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (39, 38, '品牌分类列表', '/brandManage/brand/list', 'brandManage/index', '', '0', '0', 'sys:brand:list', 'C', 'tree-table', 2, 'admin', '2021-11-09 14:51:33', 'admin', '2021-11-10 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -458,7 +455,7 @@ CREATE TABLE `sys_role`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `role_tag` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色标签',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2011 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2012 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
@@ -475,7 +472,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 209 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -516,9 +513,6 @@ INSERT INTO `sys_role_menu` VALUES (202, 2001, 11);
 INSERT INTO `sys_role_menu` VALUES (203, 2001, 12);
 INSERT INTO `sys_role_menu` VALUES (204, 2001, 13);
 INSERT INTO `sys_role_menu` VALUES (205, 2001, 14);
-INSERT INTO `sys_role_menu` VALUES (206, 2001, 40);
-INSERT INTO `sys_role_menu` VALUES (207, 2001, 41);
-INSERT INTO `sys_role_menu` VALUES (208, 2001, 42);
 
 -- ----------------------------
 -- Table structure for sys_user

@@ -2,6 +2,7 @@ package com.glume.glumemall.admin.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.glumemall.admin.dao.UserRoleDao;
 import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.entity.UserRoleEntity;
@@ -14,10 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author tuoyingtao
@@ -59,5 +58,13 @@ public class RoleMenuServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
 //        Stream.concat(roleStream.stream(),menuStream.stream()).distinct().collect(Collectors.joining(","));
         LOGGER.info("menuStream：{}", menuStream);
         LOGGER.info("角色权限：" + authority);
+    }
+
+    @Test
+    public void test1() {
+        ArrayList<Long> longs = new ArrayList<>();
+        longs.add(33L);
+        longs.add(4L);
+        SpringUtils.getBean(MenuService.class).removeMenuByIds(longs);
     }
 }

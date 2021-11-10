@@ -62,8 +62,6 @@ public class MenuEntity implements Serializable {
 	/**
 	 * 菜单path
 	 */
-	@NotBlank(message = "菜单地址不能为空",
-			groups = {AddGroup.class,UpdateGroup.class})
 	private String path;
 	/**
 	 * 菜单路径
@@ -104,8 +102,6 @@ public class MenuEntity implements Serializable {
 	/**
 	 * 菜单图标
 	 */
-	@NotBlank(message = "菜单图标不能为空",
-			groups = {AddGroup.class,UpdateGroup.class})
 	private String icon;
 	/**
 	 * 排序

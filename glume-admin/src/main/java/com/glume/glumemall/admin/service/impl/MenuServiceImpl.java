@@ -91,14 +91,49 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         }
     }
 
+    /**
+     * 删除菜单项
+     * @param menuIds 菜单ID
+     */
     @Override
-    public void removeMenuByIds(List<Long> asList) {
-        Integer row = baseMapper.deleteBatchIds(asList);
+    public void removeMenuByIds(List<Long> menuIds) {
         // TODO 1.检测当前删除的菜单信息，是否被别的地方引用
-        SpringUtils.getBean(RoleMenuService.class).removeMenuRoleByIds(asList);
+        // 存储需要删除的菜单
+        List<MenuEntity> delMenuList = new ArrayList<>();
+        // 获取所有菜单
+        List<MenuEntity> menuEntities = baseMapper.selectList(new QueryWrapper<MenuEntity>());
+        // 遍历需要删除的菜单ID
+        for (Long menuId : menuIds) {
+            // 通过菜单ID查找出它的所有子菜单
+            List<MenuEntity> collect = menuEntities.stream().filter(menuEntity -> menuId.equals(menuEntity.getMenuId())).map(menuEntity -> {
+                delMenuList.addAll(handlerMenuId(menuEntity.getMenuId(), menuEntities, delMenuList));
+                return menuEntity;
+            }).distinct().collect(Collectors.toList());
+            delMenuList.addAll(collect);
+        }
+        List<Long> collect = delMenuList.stream().map(MenuEntity::getMenuId).distinct().collect(Collectors.toList());
+        // 批量删除菜单
+        Integer row = baseMapper.deleteBatchIds(collect);
+        // 批量删除菜单与角色的对应关系
+        SpringUtils.getBean(RoleMenuService.class).removeMenuRoleByIds(collect);
         if (row == 0) {
             throw new ServiceException("删除失败！");
         }
+    }
+
+    /**
+     * 查询子菜单的处理方法
+     * @param menuId 父菜单ID
+     * @param menuEntities 所有菜单集合
+     * @param delMenuList 菜单容器
+     * @return
+     */
+    private List<MenuEntity> handlerMenuId(Long menuId,List<MenuEntity> menuEntities,List<MenuEntity> delMenuList) {
+        List<MenuEntity> collect = menuEntities.stream().filter(menuEntity -> menuId.equals(menuEntity.getParentId())).map(menuEntity -> {
+            delMenuList.addAll(handlerMenuId(menuEntity.getMenuId(), menuEntities,delMenuList));
+            return menuEntity;
+        }).distinct().collect(Collectors.toList());
+        return collect;
     }
 
     /**

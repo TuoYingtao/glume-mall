@@ -35,7 +35,9 @@ service.interceptors.response.use(res => {
   const msg = errorCode[code] || res.data.data || errorCode['default']
   if (code === 200) {
     return res.data
-  }else if (code == 500) {
+  }else if (code == 400) {
+    Notification.error({ title: res.data.msg })
+  } else if (code == 500) {
     Notification.error({ title: res.data.msg })
   } else {
     Notification.error({ title: msg })

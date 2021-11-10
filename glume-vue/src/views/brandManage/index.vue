@@ -19,11 +19,13 @@
                  @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{ node, data }" :key="domKey">
           <span class="el-tree-text" @click="expandedMenu(data)">{{ node.label }}</span>
-          <span>
-            <el-button class="add" v-show="isAddCheckbox" type="text" size="mini" @click="treeAddClick(data)">添加</el-button>
-            <el-button class="amend" v-show="isAmendCheckbox" type="text" size="mini" @click="treeAmendClick(data)">修改</el-button>
-            <el-button class="del" v-show="isDelCheckbox" type="text" size="mini" @click="treeDelClick(data)">删除</el-button>
-          </span>
+          <template>
+            <span>
+              <el-button class="add" v-show="isAddCheckbox" type="text" size="mini" @click.stop="treeAddClick(data)">添加</el-button>
+              <el-button class="amend" v-show="isAmendCheckbox" type="text" size="mini" @click.stop="treeAmendClick(data)">修改</el-button>
+              <el-button class="del" v-show="isDelCheckbox" type="text" size="mini" @click.stop="treeDelClick(data)">删除</el-button>
+            </span>
+          </template>
         </span>
         </el-tree>
       </el-card>

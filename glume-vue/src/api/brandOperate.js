@@ -8,12 +8,34 @@ export function getBrandTree() {
     method: "GET",
   })
 }
-/* 修改品牌排序 */
-export function amendBrandSort(param) {
+/* 添加分类数据 */
+export function addBrandTree(data) {
   return request({
-    url: "/product",
+    url: "/product/category/save",
+    method: "POST",
+    data: qs.stringify(data)
+  })
+}
+/* 查询分类数据 */
+export function queryBrandTree(catId) {
+  return request({
+    url: `/product/category/info/${catId}`,
+    method: "GET"
+  })
+}
+/* 修改分类数据 */
+export function amendBrandTree(data) {
+  return request({
+    url: "/product/category/update",
     method: "PUT",
-    data: qs.stringify(param)
+    data: qs.stringify(data)
+  })
+}
+/* 删除分类数据 */
+export function delBrandTree(catId) {
+  return request({
+    url: `/product/category/delete/${catId}`,
+    method: "DELETE"
   })
 }
 
@@ -73,5 +95,12 @@ export function deletePriceItem(id) {
     url: "/model_price",
     method: "DELETE",
     data: qs.stringify(id)
+  })
+}
+/* 获取云存储 */
+export function getOSSPolicy() {
+  return request({
+    url: "/thirdparty/oss/policy",
+    method: "GET",
   })
 }

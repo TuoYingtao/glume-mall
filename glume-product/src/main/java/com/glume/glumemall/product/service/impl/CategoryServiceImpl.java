@@ -10,6 +10,7 @@ import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +31,41 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
+    public void removeMenuByIds(List<Long> catIds) {
+        //TODO 1.检测当前删除的商品分类信息，是否被别的地方引用
+
+        // 储存需要删除的ID
+        List<CategoryEntity> dleCatIds = new ArrayList<>();
+        // 获取所有分类数据
+        List<CategoryEntity> categoryEntities = baseMapper.selectList(new QueryWrapper<>());
+        for (Long catId : catIds) {
+            List<CategoryEntity> collect = categoryEntities.stream().filter(categoryEntity -> catId.equals(categoryEntity.getCatId())).map(categoryEntity -> {
+                dleCatIds.addAll(dleCatIdsHandler(categoryEntity.getCatId(), categoryEntities, dleCatIds));
+                return categoryEntity;
+            }).distinct().collect(Collectors.toList());
+            dleCatIds.addAll(collect);
+        }
+        List<Long> collect = dleCatIds.stream().map(CategoryEntity::getCatId).collect(Collectors.toList());
+        // 批量删除分类
+        baseMapper.deleteBatchIds(collect);
+    }
+
+    /**
+     * 查询子分类的处理方法
+     * @param cateId 父分类ID
+     * @param categoryEntities 所有分类集合
+     * @param dleCatIds 分类容器
+     * @return
+     */
+    private List<CategoryEntity> dleCatIdsHandler(Long cateId,List<CategoryEntity> categoryEntities,List<CategoryEntity> dleCatIds) {
+        List<CategoryEntity> collect = categoryEntities.stream().filter(categoryEntity -> cateId.equals(categoryEntity.getCatId())).map(categoryEntity -> {
+            dleCatIds.addAll(dleCatIdsHandler(categoryEntity.getCatId(), categoryEntities,dleCatIds));
+            return categoryEntity;
+        }).distinct().collect(Collectors.toList());
+        return collect;
+    }
+
+    @Override
     public List<CategoryEntity> listWithTree() {
         // 1.查询所有分类
         List<CategoryEntity> entities = baseMapper.selectList(null);
@@ -43,13 +79,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Stream<CategoryEntity> sortedMenus = levelMenusMap1.sorted((menu1, menu2) -> (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
         List<CategoryEntity> list = sortedMenus.collect(Collectors.toList());
         return list;
-    }
-
-    @Override
-    public void removeMenuByIds(List<Long> catIds) {
-        //TODO 1.检测当前删除的商品分类信息，是否被别的地方引用
-
-        baseMapper.deleteBatchIds(catIds);
     }
 
     /* 递归查找所有菜单的子菜单 */

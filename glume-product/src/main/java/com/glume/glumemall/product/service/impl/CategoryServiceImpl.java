@@ -3,6 +3,7 @@ package com.glume.glumemall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.dao.CategoryDao;
@@ -93,6 +94,30 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                     return (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort());
                 }).collect(Collectors.toList());
         return children;
+    }
+
+
+    @Override
+    public List<CategoryEntity> categoryPath(Long catelogId) {
+        List<CategoryEntity> entities = SpringUtils.getBean(CategoryServiceImpl.class).getBaseMapper().selectList(new QueryWrapper<CategoryEntity>());
+        List<CategoryEntity> list = new ArrayList<>();
+        List<CategoryEntity> collect = entities.stream().filter(categoryEntity -> catelogId.equals(categoryEntity.getCatId())).map(categoryEntity -> {
+            list.addAll(categoryPathHandler(categoryEntity, entities, list));
+            return categoryEntity;
+        }).collect(Collectors.toList());
+        list.addAll(collect);
+        return list;
+    }
+
+    private List<CategoryEntity> categoryPathHandler(CategoryEntity categoryEntity,List<CategoryEntity> entities,List<CategoryEntity> list) {
+        if (categoryEntity.getParentCid() != 0) {
+            List<CategoryEntity> collect = entities.stream().filter(f -> categoryEntity.getParentCid().equals(f.getCatId())).map(item -> {
+                list.addAll(categoryPathHandler(item, entities, list));
+                return item;
+            }).collect(Collectors.toList());
+            return collect;
+        }
+        return list;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.glume.glumemall.product.service;
 
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.glumemall.product.dao.CategoryDao;
 import com.glume.glumemall.product.entity.CategoryEntity;
 import org.junit.Test;
@@ -51,5 +52,11 @@ public class CategoryServiceImpl {
         Stream<CategoryEntity> sorted = entityStream.sorted((menu1, menu2) -> (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
         List<CategoryEntity> collect = sorted.collect(Collectors.toList());
         return collect;
+    }
+
+    @Test
+    public void test() {
+        List<CategoryEntity> entities = SpringUtils.getBean(CategoryService.class).categoryPath(225L);
+        System.out.println(entities);
     }
 }

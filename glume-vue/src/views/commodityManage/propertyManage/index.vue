@@ -29,47 +29,81 @@
         </span>
         </el-tree>
       </el-card>
-      <el-card class="box-card">
-        <div class="table-title-text">{{ title }}</div>
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="10">
-          </el-col>
-          <right-toolbar :show-search.sync="showSearch" :is-flag-show="$route.meta.search" @queryTable="getBrandModel"/>
-        </el-row>
-        <el-table v-loading="loading" :data="modelList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" :key="domKey2">
-          <el-table-column type="selection" width="80" align="center"/>
-          <el-table-column label="图片">
-            <template slot-scope="scope">
-              <img class="img_box" alt="loading" :src="scope.row.image_url"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="型号" prop="name">
-            <template slot-scope="scope">
-              <span class="text-table" v-show="scope.row.is_name" @dblclick="handlerItem('is_name',scope.row)">{{ scope.row.name }}</span>
-              <el-input class="name-input" v-focus type="text" v-show="!scope.row.is_name" v-model="scope.row.name" @blur="blurInputItem('is_name',scope.row)"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="价格" prop="ave_price">
-            <template slot-scope="scope">
-              <span class="text-table" v-show="scope.row.is_ave_price" @dblclick="handlerItem('is_ave_price',scope.row)">{{ scope.row.ave_price }}</span>
-              <el-input class="price-input" v-focus type="number" v-show="!scope.row.is_ave_price" v-model="scope.row.ave_price" @blur="blurInputItem('is_ave_price',scope.row)"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="排序" prop="sort">
-            <template slot-scope="scope">
-              <el-input class="sort-input" type="number" v-model="scope.row.sort" @blur="blurInputItem('is_sort',scope.row)"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" prop="sort">
-            <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="openPrice(scope.row)">价位设置</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination :page-size="[10,20,30,40,50]" v-show="total > 0" :total="total" :page.sync="queryParam.page" :limit.sync="queryParam.limit" @pagination="getBrandModel"/>
-      </el-card>
+      <div class="box-right">
+        <!--    搜索框-->
+        <search-box class="search-box" v-show="showSearch" :is-select="true" :param-accept="queryParam" :search-data="queryDataModel" @queryParams="handleQuery" @resetData="resetQuery" />
+        <el-card class="box-card">
+          <div class="table-title-text">{{ title }}</div>
+          <el-row :gutter="10" class="mb8">
+            <el-col :span="10">
+            </el-col>
+            <right-toolbar :show-search.sync="showSearch" :is-flag-show="$route.meta.search" @queryTable="getAttrList"/>
+          </el-row>
+          <el-table v-loading="loading" :data="attrList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" :key="domKey2">
+            <el-table-column type="selection" width="80" align="center"/>
+            <el-table-column label="图标" prop="icon"/>
+            <el-table-column label="组名" prop="attrGroupName"/>
+            <el-table-column label="描述" prop="descript">
+              <template slot-scope="scope">
+                <span class="text-table">{{ scope.row.descript }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="排序" prop="sort">
+              <template slot-scope="scope">
+                <el-input class="sort-input" type="number" v-model="scope.row.sort" @blur="blurInputItem('is_sort',scope.row)"/>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" prop="sort">
+              <template slot-scope="scope">
+                <el-button type="warning" size="mini" @click="amendAttrGroup(scope.row)">修改</el-button>
+                <el-button type="danger" size="mini" @click="delAttrGroup(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <pagination :page-size="[10,20,30,40,50]" v-show="total > 0" :total="total" :page.sync="queryParam.page" :limit.sync="queryParam.limit" @pagination="getAttrList"/>
+        </el-card>
+      </div>
     </div>
     <price-dialog ref="RefDialog" :mobel-id="id"/>
+
+    <!-- attr 弹窗 -->
+    <el-dialog :title="title" :visible.sync="isAttrOpen" width="28%" :before-close="treeFromHandleClose">
+      <el-form ref="treeFrom" :model="attrFrom" :rules="TreeRules" size="medium" label-width="120px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="属性分组名称：" prop="attrGroupName">
+              <el-input v-model="attrFrom.attrGroupName"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="属性分组描述：" prop="descript">
+              <el-input v-model="attrFrom.descript" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="属性分组图标：" prop="icon">
+              <el-input v-model="attrFrom.icon" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="属性分组排序：" prop="sort">
+              <el-input-number v-model="attrFrom.sort" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="属性分组路径：">
+              <el-cascader v-model="attrFrom.catelogId" :options="treeOptions" :props="attrProps" @change="cascaderChange"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item>
+          <span class="fr">
+            <el-button @click="treeFromHandleClose">取消</el-button>
+            <el-button type="cyan" @click="treeFromSubmitForm">添加</el-button>
+          </span>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
     <!-- tree 弹窗 -->
     <el-dialog :title="title" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
@@ -148,27 +182,33 @@
 <script>
 import {
   getBrandTree,
-  getBrandModel,
   amendBrandModel,
   getOSSPolicy,
   addBrandTree, amendBrandTree, delBrandTree, queryBrandTree
-} from "@/api/brandOperate"
+} from "@/api/commodityManage/classify"
 import PriceDialog from '@/views/system/brandOperate/components/dialog'
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {MessageBox} from "element-ui";
+import {getAttrGroup, queryAttrGroup} from "@/api/commodityManage/attrGroup";
+import SearchBox from "@/components/searchBox";
 
 export default {
   name: 'index',
   components: {
     LayoutContainer,
     PriceDialog,
-    Treeselect
+    Treeselect,
+    SearchBox
   },
   data() {
     return {
+      queryDataModel: [{type: "default",label: "关键字查询",prop: "key"}],
+      showSearch: true,
+      queryParam: {page: 1, limit: 10},
       id: null,
+      catId: null,
       is_price: false,
       isAddCheckbox: false,
       isAmendCheckbox: false,
@@ -190,9 +230,13 @@ export default {
       dialogVisible: false,
       disabled: false,
 
+      /* 属性分组数组 */
+      attrFrom: {},
+      isAttrOpen: false,
+      attrProps: {},
+
       domKey: 0,
       domKey2: 0,
-      showSearch: true,
       isSwitchAmand: false,
       loading: false,
       filterText: "",
@@ -201,14 +245,9 @@ export default {
         label: "name",
         children: "children"
       },
-      modelList: [],
+      attrList: [],
       title: "",
       total: null,
-      queryParam: {
-        brand_id: null,
-        page: 1,
-        limit: 10
-      }
     }
   },
   directives: {
@@ -250,25 +289,41 @@ export default {
         }
       })
     },
-    getBrandModel() {
+    getAttrList() {
       this.loading = true;
-      getBrandModel(this.queryParam).then(response => {
-        this.modelList = response.product;
-        this.total = response.total;
+      getAttrGroup(this.catId,this.queryParam).then(response => {
+        this.attrList = response.data.page.list;
+        this.total = response.data.page.totalCount;
+        this.categoryPathHandler(response.data.categoryPath);
         this.loading = false;
-        this.handlerBrandModel(this.modelList);
+        this.handlerBrandModel(this.attrList);
       })
     },
     handlerBrandTreeList(brandTreeList) {
-      this.queryParam.brand_id = brandTreeList[0].children[0].id;
-      this.title = `${brandTreeList[0].name} > ${brandTreeList[0].children[0].name} > ${brandTreeList[0].children[0].children[0].name}`;
-      this.getBrandModel();
+      this.handlerClassifyProperty(brandTreeList[0])
+      this.getAttrList();
       brandTreeList.forEach(item => {
         item.level = 1;
         if (item.children != undefined || item.children != null) {
           this.levelChildren(item,2)
         }
       })
+    },
+    categoryPathHandler(categoryPath) {
+      categoryPath.forEach(item => {
+        if (this.title == "") {
+          this.title = item.name;
+        } else {
+          this.title = this.title + " > " + item.name;
+        }
+      })
+    },
+    handlerClassifyProperty(brandTree) {
+      if (brandTree.children && brandTree.children.length > 0) {
+        this.handlerClassifyProperty(brandTree.children[0])
+      } else {
+        this.catId = brandTree.catId
+      }
     },
     levelChildren(item,level) {
       item.children.forEach(child => {
@@ -277,11 +332,13 @@ export default {
       })
     },
     handlerBrandModel(brandModel) {
-      brandModel.forEach(item => {
-        item.is_name = true;
-        item.is_sort = true;
-        item.is_ave_price = true;
-      })
+      if (brandModel && brandModel.length > 0) {
+        brandModel.forEach(item => {
+          item.is_name = true;
+          item.is_sort = true;
+          item.is_ave_price = true;
+        })
+      }
     },
     expandedMenu(data) {
       if (data.level != 1) return;
@@ -294,11 +351,8 @@ export default {
     },
     handleNodeClick(data,node,component) {
       this.reset();
-      if (!node.parent.data.length) {
-        this.title = `${node.parent.data.name} > ${data.name}`;
-      }
-      this.queryParam.brand_id = data.id;
-      this.getBrandModel();
+      this.catId = data.catId;
+      this.getAttrList();
     },
     onInput(node,data) {
       this.handlerInput(node,data);
@@ -324,6 +378,19 @@ export default {
         if (item.id == node.parent.data.id) item.children.forEach(child => { if (child.id == data.id) child.is_sort = !child.is_sort;})
       })
       this.domKey += 1;
+    },
+    cascaderChange(value) {
+      this.attrFrom.catelogId = value;
+    },
+    queryAttrGroupInfo(attrGroupId) {
+      queryAttrGroup(attrGroupId).then(response => {
+        this.attrFrom = response.data
+      })
+    },
+    amendAttrGroup(row) {
+      this.attrReset()
+      this.queryAttrGroupInfo(row.attrGroupId);
+      this.isAttrOpen = true;
     },
     treeAddClick(row) {
       this.treeReset()
@@ -411,25 +478,35 @@ export default {
       this.treeFrom.icon = "https://glume-mall.oss-cn-shenzhen.aliyuncs.com/" + this.uploadPath;
     },
     handlerItem(key,row) {
-      this.modelList.forEach(item => {
+      this.attrList.forEach(item => {
         if (item.id == row.id) {
           item[key] = !item[key];
         }
       })
       this.domKey2 += 1;
     },
+    handleQuery() {
+      this.getAttrList();
+    },
+    resetQuery() {
+      this.reset();
+      this.getAttrList();
+    },
+    attrReset() {
+      this.reset();
+    },
     treeReset() {
       this.treeFrom = {}
     },
     reset() {
+      this.title = "";
       this.queryParam = {
-        brand_id: null,
         page: 1,
         limit: 10
       }
+      this.attrFrom = {};
     },
     openPrice(row) {
-      this.id = row.id;
       this.$refs["RefDialog"].open();
     }
   }
@@ -447,6 +524,10 @@ export default {
 }
 .box-content .box-card:nth-child(2) {
   width: 86%;
+}
+.box-content .search-box {
+  width: 86% !important;
+  margin-bottom: 10px;
 }
 .tree-input-box {
   padding-top: 10px;

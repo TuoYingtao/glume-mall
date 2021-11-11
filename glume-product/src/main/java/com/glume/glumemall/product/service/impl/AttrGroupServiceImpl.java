@@ -34,11 +34,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
                     new QueryWrapper<AttrGroupEntity>());
             return new PageUtils(attrGroupEntityIPage);
         } else {
-            String key = params.get("key").toString();
             QueryWrapper<AttrGroupEntity> groupEntityQueryWrapper = new QueryWrapper<AttrGroupEntity>().eq("catelog_id",catelogId);
-            if (!StringUtils.isEmpty(key)) {
+            if ( StringUtils.isNotNull(params.get("key"))) {
+                String key = params.get("key").toString();
                 groupEntityQueryWrapper.and((obj) -> {
-                    obj.eq("attr_group_id",key).or().like("attr_group_name",key);
+                    obj.eq("attr_group_name",key).or().like("descript",key).or().like("icon",key);
                 });
             }
             IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), groupEntityQueryWrapper);

@@ -1,9 +1,12 @@
 package com.glume.glumemall.product.service.impl;
 
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,6 +47,12 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), groupEntityQueryWrapper);
             return new PageUtils(page);
         }
+    }
+
+    @Override
+    public void removeAttrByIds(List<Long> attrGroupIds) {
+        baseMapper.deleteBatchIds(attrGroupIds);
+        SpringUtils.getBean(AttrAttrgroupRelationServiceImpl.class).deleteAttrgroupBatchIds(attrGroupIds);
     }
 
 }

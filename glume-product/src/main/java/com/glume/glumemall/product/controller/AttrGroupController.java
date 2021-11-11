@@ -1,16 +1,24 @@
 package com.glume.glumemall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
+import com.glume.glumemall.product.entity.CategoryEntity;
+import com.glume.glumemall.product.service.CategoryService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.product.entity.AttrGroupEntity;
 import com.glume.glumemall.product.service.AttrGroupService;
@@ -33,51 +41,73 @@ public class AttrGroupController {
     /**
      * 列表
      */
-    @RequestMapping("/list/{catelogId}")
+    @GetMapping("/list/{catelogId}")
+    @ApiOperation(value = "属性分组列表")
     public R list(@RequestParam Map<String, Object> params,
                   @PathVariable("catelogId") Long catelogId){
         PageUtils page = attrGroupService.queryPage(params, catelogId);
-        return R.ok().put("data", page);
+        HashMap<String, Object> data = new HashMap<>();
+        List<CategoryEntity> list = SpringUtils.getBean(CategoryService.class).categoryPath(catelogId);
+        data.put("categoryPath",list);
+        data.put("page",page);
+        return R.ok().put("data", data);
     }
-
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrGroupId}")
+    @GetMapping("/info/{attrGroupId}")
+    @ApiOperation(value = "查询属性分组详情")
     public R info(@PathVariable("attrGroupId") Long attrGroupId){
 		AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
-
-        return R.ok().put("attrGroup", attrGroup);
+        List<CategoryEntity> list = SpringUtils.getBean(CategoryService.class).categoryPath(attrGroup.getCatelogId());
+        attrGroup.setCategoryPath(list);
+        return R.ok().put("data", attrGroup);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody AttrGroupEntity attrGroup){
+    @PostMapping("/save")
+    @ApiOperation(value = "保存属性分组")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "attrGroupName",value = "组名",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "sort",value = "排序",required = true,dataType = "Integer"),
+            @ApiImplicitParam(name = "descript",value = "描述",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "icon",value = "组图标",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "catelogId",value = "所属分类id",required = true,dataType = "Long"),
+    })
+    public R save(@Validated(AddGroup.class) AttrGroupEntity attrGroup){
 		attrGroupService.save(attrGroup);
-
-        return R.ok();
+        return R.ok("保存成功！");
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody AttrGroupEntity attrGroup){
+    @PutMapping("/update")
+    @ApiOperation(value = "修改属性分组信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "attrGroupId",value = "分组id",required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "attrGroupName",value = "组名",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "sort",value = "排序",required = true,dataType = "Integer"),
+            @ApiImplicitParam(name = "descript",value = "描述",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "icon",value = "组图标",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "catelogId",value = "所属分类id",required = true,dataType = "Long"),
+    })
+    public R update(@Validated(UpdateGroup.class) AttrGroupEntity attrGroup){
 		attrGroupService.updateById(attrGroup);
-
-        return R.ok();
+        return R.ok("更新成功！");
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrGroupIds){
-		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
-
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "删除属性分组信息")
+    @ApiImplicitParam(name = "attrGroupId",value = "分组id",required = true,dataType = "Long")
+    public R delete(@Validated(IDGroup.class) Long[] attrGroupIds){
+		attrGroupService.removeAttrByIds(Arrays.asList(attrGroupIds));
         return R.ok();
     }
 

@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { getBrandTree, amendBrandSort, getBrandModel, amendBrandModel } from "@/api/brandOperate"
+import { getBrandTree, amendBrandSort, getBrandModel, amendBrandModel } from "@/api/commodityManage/classify"
 import PriceDialog from '@/views/system/brandOperate/components/dialog'
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 

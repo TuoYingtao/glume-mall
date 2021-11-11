@@ -13,7 +13,7 @@
 
 <script>
 import SetReportPrice from "@/views/components/SetReportPrice/index"
-import { addPriceItem, amendPriceItem, deletePriceItem, getPriceList, selectPriceItem } from '@/api/brandOperate'
+import { addPriceItem, amendPriceItem, deletePriceItem, getPriceList, selectPriceItem } from '@/api/commodityManage/classify'
 import { MessageBox } from 'element-ui'
 import { arrayFun } from '@/utils/tuo'
 export default {

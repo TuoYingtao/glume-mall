@@ -57,46 +57,6 @@ export function amendBrandModel(param) {
   })
 }
 
-/** 设置价格 */
-export function getPriceList(param) {
-  return request({
-    url: "/model_price",
-    method: "GET",
-    params: param
-  })
-}
-/* 新增 */
-export function addPriceItem(param) {
-  return request({
-    url: "/model_price",
-    method: "POST",
-    data: qs.stringify(param)
-  })
-}
-/* 查询 */
-export function selectPriceItem(param) {
-  return request({
-    url: "/model_price/detail",
-    method: "GET",
-    params: param
-  })
-}
-/* 查询 */
-export function amendPriceItem(param) {
-  return request({
-    url: "/model_price",
-    method: "PUT",
-    data: qs.stringify(param)
-  })
-}
-/* 删除 */
-export function deletePriceItem(id) {
-  return request({
-    url: "/model_price",
-    method: "DELETE",
-    data: qs.stringify(id)
-  })
-}
 /* 获取云存储 */
 export function getOSSPolicy() {
   return request({

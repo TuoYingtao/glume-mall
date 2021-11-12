@@ -33,12 +33,8 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
 
     @Override
     public void deleteAttrgroupBatchIds(List<Long> attrGroupIds) {
-        boolean bool = SqlHelper.retBool(baseMapper.delete(new QueryWrapper<AttrAttrgroupRelationEntity>()
+        SqlHelper.retBool(baseMapper.delete(new QueryWrapper<AttrAttrgroupRelationEntity>()
                 .in("attr_group_id", attrGroupIds)));
-        if (!bool) {
-            throw new ServiceException("删除失败！");
-        }
-
     }
 
 }

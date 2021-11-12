@@ -2,7 +2,6 @@ package com.glume.glumemall.product.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.mybatis.Query;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.dao.AttrAttrgroupRelationDao;

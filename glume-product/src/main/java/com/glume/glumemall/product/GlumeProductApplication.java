@@ -5,9 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableDiscoveryClient
 @SpringBootApplication
+@EnableTransactionManagement
 @ComponentScans({
         @ComponentScan("com.glume.common.core"),
         @ComponentScan("com.glume.common.mybatis.config"),

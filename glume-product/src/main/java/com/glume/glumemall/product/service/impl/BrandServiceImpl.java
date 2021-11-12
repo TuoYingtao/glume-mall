@@ -22,11 +22,21 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<BrandEntity> page = this.page(
-                new Query<BrandEntity>().getPage(params),
-                new QueryWrapper<BrandEntity>()
-        );
-
+        QueryWrapper<BrandEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotNull(params.get("key"))) {
+            String key = params.get("key").toString();
+            wrapper.and(obj -> {
+                obj.eq("name",key)
+                    .or().eq("brand_id",key)
+                    .or().eq("first_letter",key)
+                    .or().like("descript",key);
+            });
+        }
+        if (StringUtils.isNotNull(params.get("name"))) {
+            String name = params.get("name").toString();
+            wrapper.like("name",name);
+        }
+        IPage<BrandEntity> page = this.page(new Query<BrandEntity>().getPage(params), wrapper);
         return new PageUtils(page);
     }
 

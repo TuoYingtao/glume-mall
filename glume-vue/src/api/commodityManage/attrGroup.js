@@ -12,7 +12,7 @@ export function getAttrGroup(catelogId,param) {
 /* 添加属性列表 */
 export function addAttrGroup(data) {
   return request({
-    url: "/product/category/save",
+    url: "/product/attrgroup/save",
     method: "POST",
     data: qs.stringify(data)
   })
@@ -27,33 +27,17 @@ export function queryAttrGroup(attrGroupId) {
 /* 修改属性列表 */
 export function amendAttrGroup(data) {
   return request({
-    url: "/product/category/update",
+    url: "/product/attrgroup/update",
     method: "PUT",
     data: qs.stringify(data)
   })
 }
 /* 删除属性列表 */
-export function delAttrGroup(catId) {
+export function delAttrGroup(data) {
+  console.log(data)
   return request({
-    url: `/product/category/delete/${catId}`,
-    method: "DELETE"
-  })
-}
-
-/* 获取品牌型号数据 */
-export function getBrandModel(param) {
-  return request({
-    url: `/models`,
-    method: "GET",
-    params: param
-  })
-}
-
-/* 修改品牌型号数据 */
-export function amendBrandModel(param) {
-  return request({
-    url: `/models`,
-    method: "PUT",
-    data: qs.stringify(param)
+    url: `/product/attrgroup/delete`,
+    method: "DELETE",
+    data: qs.stringify(data)
   })
 }

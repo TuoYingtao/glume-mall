@@ -84,6 +84,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
     /** 保存角色信息 */
     @Override
     public void saveMyRole(RoleEntity roleEntity) {
+        // TODO 插入数据时验证数据库中的数据是否存在，待优化
+
         // 验证当前角色是否存在
         verifyRoleNameSole(roleEntity.getRoleName());
         //验证当前角色标签是否存在

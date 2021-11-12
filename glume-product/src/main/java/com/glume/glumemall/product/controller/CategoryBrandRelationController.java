@@ -4,6 +4,7 @@ import com.glume.common.core.utils.R;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,8 @@ public class CategoryBrandRelationController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
+    @ApiOperation(value = "品牌与分类关系列表")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = categoryBrandRelationService.queryPage(params);
 

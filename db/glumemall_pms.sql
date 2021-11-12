@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 10/11/2021 17:46:27
+ Date: 12/11/2021 17:44:07
 */
 
 SET NAMES utf8mb4;
@@ -84,7 +84,7 @@ CREATE TABLE `pms_attr_group`  (
   `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组图标',
   `catelog_id` bigint NULL DEFAULT NULL COMMENT '所属分类id',
   PRIMARY KEY (`attr_group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性分组' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '属性分组' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_attr_group
@@ -116,7 +116,9 @@ INSERT INTO `pms_brand` VALUES (9, '华为', 'https://gulimall-hello.oss-cn-beij
 INSERT INTO `pms_brand` VALUES (10, '小米', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-18/1f9e6968-cf92-462e-869a-4c2331a4113f_xiaomi.png', '小米', 1, 'M', 1);
 INSERT INTO `pms_brand` VALUES (11, 'oppo', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-18/5c8303f2-8b0c-4a5b-89a6-86513133d758_oppo.png', 'oppo', 1, 'O', 1);
 INSERT INTO `pms_brand` VALUES (12, 'iPhone', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-18/819bb0b1-3ed8-4072-8304-78811a289781_apple.png', '苹果', 1, 'A', 1);
-INSERT INTO `pms_brand` VALUES (13, 'iPhone 13 Pro Max', 'ASCACDSACASCSASCASCAS', 'iPhone 13 Pro Max', 1, 'I', 0);
+INSERT INTO `pms_brand` VALUES (13, 'iPhone 13 Pro Max', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-12/1636704184390', 'iPhone 13 Pro Max', 1, 'I', 1);
+INSERT INTO `pms_brand` VALUES (14, '索尼', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-12/1636704054277', '索尼大牌', 0, 'S', 1);
+INSERT INTO `pms_brand` VALUES (15, '测试', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-12/1636705999193', '测试Test12华为 13 苹果 iPhone', 1, 'C', 1);
 
 -- ----------------------------
 -- Table structure for pms_category

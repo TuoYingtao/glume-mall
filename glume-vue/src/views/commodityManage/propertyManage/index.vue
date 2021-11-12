@@ -36,6 +36,7 @@
           <div class="table-title-text">{{ title }}</div>
           <el-row :gutter="10" class="mb8">
             <el-col :span="10">
+              <el-button icon="el-icon-plus" size="mini" @click="addAttrGroup()">添加</el-button>
             </el-col>
             <right-toolbar :show-search.sync="showSearch" :is-flag-show="$route.meta.search" @queryTable="getAttrList"/>
           </el-row>
@@ -56,7 +57,7 @@
             <el-table-column label="操作" prop="sort">
               <template slot-scope="scope">
                 <el-button type="warning" size="mini" @click="amendAttrGroup(scope.row)">修改</el-button>
-                <el-button type="danger" size="mini" @click="delAttrGroup(scope.row)">删除</el-button>
+                <el-button type="danger" size="mini" @click="attrDelClick(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -67,8 +68,8 @@
     <price-dialog ref="RefDialog" :mobel-id="id"/>
 
     <!-- attr 弹窗 -->
-    <el-dialog :title="title" :visible.sync="isAttrOpen" width="28%" :before-close="treeFromHandleClose">
-      <el-form ref="treeFrom" :model="attrFrom" :rules="TreeRules" size="medium" label-width="120px">
+    <el-dialog :title="dialogTitle" :visible.sync="isAttrOpen" width="28%" :before-close="attrFromHandleClose">
+      <el-form ref="attrFrom" :model="attrFrom" :rules="TreeRules" size="medium" label-width="120px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="属性分组名称：" prop="attrGroupName">
@@ -85,28 +86,23 @@
               <el-input v-model="attrFrom.icon" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="属性分组排序：" prop="sort">
               <el-input-number v-model="attrFrom.sort" controls-position="right" :min="0" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="属性分组路径：">
-              <el-cascader v-model="attrFrom.catelogId" :options="treeOptions" :props="attrProps" @change="cascaderChange"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item>
           <span class="fr">
-            <el-button @click="treeFromHandleClose">取消</el-button>
-            <el-button type="cyan" @click="treeFromSubmitForm">添加</el-button>
+            <el-button @click="attrFromHandleClose">取消</el-button>
+            <el-button type="cyan" @click="attrFromSubmitForm">更新</el-button>
           </span>
         </el-form-item>
       </el-form>
     </el-dialog>
 
     <!-- tree 弹窗 -->
-    <el-dialog :title="title" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
+    <el-dialog :title="dialogTitle" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
       <el-form ref="treeFrom" :model="treeFrom" :rules="TreeRules" size="medium" label-width="100px">
         <el-row>
           <el-col :span="24">
@@ -191,7 +187,13 @@ import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {MessageBox} from "element-ui";
-import {getAttrGroup, queryAttrGroup} from "@/api/commodityManage/attrGroup";
+import {
+  addAttrGroup,
+  amendAttrGroup,
+  delAttrGroup,
+  getAttrGroup,
+  queryAttrGroup
+} from "@/api/commodityManage/attrGroup";
 import SearchBox from "@/components/searchBox";
 
 export default {
@@ -233,7 +235,12 @@ export default {
       /* 属性分组数组 */
       attrFrom: {},
       isAttrOpen: false,
-      attrProps: {},
+      attrProps: {
+        label: "name",
+        value: "catId",
+      },
+      attrFromCatId: [2,34,225],
+      dialogTitle: "",
 
       domKey: 0,
       domKey2: 0,
@@ -243,7 +250,7 @@ export default {
       expanded: [1],
       defaultProps: {
         label: "name",
-        children: "children"
+        children: "children",
       },
       attrList: [],
       title: "",
@@ -310,12 +317,15 @@ export default {
       })
     },
     categoryPathHandler(categoryPath) {
+      this.attrFrom.categoryPath = []
+      this.title = "";
       categoryPath.forEach(item => {
         if (this.title == "") {
           this.title = item.name;
         } else {
           this.title = this.title + " > " + item.name;
         }
+        this.attrFrom.categoryPath.push(item.catId)
       })
     },
     handlerClassifyProperty(brandTree) {
@@ -357,17 +367,9 @@ export default {
     onInput(node,data) {
       this.handlerInput(node,data);
     },
-    blurInputTree(node,data) {
-      this.handlerInput(node,data);
-      amendBrandSort({id: data.id,sort: data.sort}).then(response => {
-        if (response.code == 200) {
-          this.notSuccess("修改成功!")
-        }
-      })
-    },
     blurInputItem(key,row) {
       this.handlerItem(key,row);
-      amendBrandModel(row).then(response => {
+      amendAttrGroup(row).then(response => {
         if (response.code == 200) {
           this.notSuccess("修改成功!")
         }
@@ -387,19 +389,27 @@ export default {
         this.attrFrom = response.data
       })
     },
+    addAttrGroup() {
+      this.attrReset()
+      this.dialogTitle = "添加属性"
+      this.isAttrOpen = true;
+    },
     amendAttrGroup(row) {
       this.attrReset()
+      this.dialogTitle = "修改属性"
       this.queryAttrGroupInfo(row.attrGroupId);
       this.isAttrOpen = true;
     },
     treeAddClick(row) {
       this.treeReset()
+      this.dialogTitle = "添加分类"
       this.treeFrom.parentCid = row.catId
       this.getTreeselect()
       this.isTreeOpen = true
     },
     treeAmendClick(row) {
       this.treeReset()
+      this.dialogTitle = "修改分类"
       this.treeFrom.catId = row.catId
       this.getTreeselect()
       this.getQueryTreeInfo(row.catId)
@@ -410,6 +420,15 @@ export default {
         this.treeFrom = response.data.category;
       });
     },
+    attrDelClick: function (row) {
+      MessageBox.confirm('是否确认删除名称为"' + row.attrGroupName + '"的数据项？').then(function () {
+        return delAttrGroup({attrGroupIds: row.attrGroupId});
+      }).then(() => {
+        this.getAttrList();
+        this.notSuccess("删除成功");
+      }).catch(() => {
+      });
+    },
     treeDelClick(row) {
       MessageBox.confirm('是否确认删除名称为"' + row.name + '"的数据项？').then(function() {
         return delBrandTree(row.catId);
@@ -417,6 +436,27 @@ export default {
         this.getBrandTree();
         this.notSuccess("删除成功");
       }).catch(() => {});
+    },
+    attrFromSubmitForm() {
+      this.$refs["attrFrom"].validate(valid => {
+        if (valid) {
+          if (this.attrFrom.attrGroupId != undefined) {
+            this.attrFrom.categoryPath = []
+            amendAttrGroup(this.attrFrom).then(response => {
+              this.notSuccess("修改成功");
+              this.isAttrOpen = false;
+              this.getAttrList();
+            });
+          } else {
+            this.attrFrom.catelogId = this.catId;
+            addAttrGroup(this.attrFrom).then(response => {
+              this.notSuccess("新增成功");
+              this.isAttrOpen = false;
+              this.getAttrList();
+            });
+          }
+        }
+      });
     },
     treeFromSubmitForm() {
       this.$refs["treeFrom"].validate(valid => {
@@ -436,6 +476,10 @@ export default {
           }
         }
       });
+    },
+    attrFromHandleClose () {
+      this.isAttrOpen = false
+      this.treeReset()
     },
     treeFromHandleClose() {
       this.isTreeOpen = false
@@ -499,7 +543,7 @@ export default {
       this.treeFrom = {}
     },
     reset() {
-      this.title = "";
+      this.dialogTitle = "";
       this.queryParam = {
         page: 1,
         limit: 10
@@ -585,6 +629,7 @@ export default {
 .table-title-text {
   font-size: 14px;
   color: #999;
+  padding-bottom: 10px;
 }
 
 .text-table {

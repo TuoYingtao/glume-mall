@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
 import com.glume.common.core.annotation.valid.UpdateGroup;
@@ -71,4 +72,8 @@ public class AttrGroupEntity implements Serializable {
 	@TableField(exist = false)
 	private List<CategoryEntity> categoryPath;
 
+	@JsonIgnore
+	public void setCategoryPath(List<CategoryEntity> categoryPath) {
+		this.categoryPath = categoryPath;
+	}
 }

@@ -1,20 +1,21 @@
 package com.glume.glumemall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
+import com.glume.glumemall.product.entity.CategoryEntity;
+import com.glume.glumemall.product.service.CategoryService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.product.entity.AttrEntity;
 import com.glume.glumemall.product.service.AttrService;
-
+import sun.rmi.runtime.Log;
 
 
 /**
@@ -30,14 +31,21 @@ public class AttrController {
     @Autowired
     private AttrService attrService;
 
+    @Autowired
+    CategoryService categoryService;
+
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = attrService.queryPage(params);
-
-        return R.ok().put("page", page);
+    @GetMapping("/list/{catelogId}")
+    @ApiOperation(value = "商品属性列表",notes = "商品属性列表")
+    public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
+        PageUtils page = attrService.queryPage(params, catelogId);
+        HashMap<Object, Object> data = new HashMap<>();
+        List<CategoryEntity> list = categoryService.categoryPath(catelogId);
+        data.put("categoryPath",list);
+        data.put("page",page);
+        return R.ok().put("data", data);
     }
 
 

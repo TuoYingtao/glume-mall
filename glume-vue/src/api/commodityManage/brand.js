@@ -39,3 +39,27 @@ export function delbrand(brandId) {
     method: "DELETE",
   })
 }
+/* 获取品牌&分类关系列表 */
+export function brandClassifyList(param) {
+  return request({
+    url: `/product/categorybrandrelation/list`,
+    method: "GET",
+    params: param
+  })
+}
+/* 删除品牌&分类关系列表 */
+export function deleteBrandClassify(data) {
+  return request({
+    url: `/product/categorybrandrelation/delete`,
+    method: "DELETE",
+    data: qs.stringify(data)
+  })
+}
+/* 添加品牌&分类关系列表 */
+export function addBrandClassify(data) {
+  return request({
+    url: `/product/categorybrandrelation/save`,
+    method: "POST",
+    data: qs.stringify(data)
+  })
+}

@@ -1,11 +1,13 @@
 package com.glume.glumemall.product.controller;
 
+import com.glume.common.core.annotation.valid.IDGroup;
 import com.glume.common.core.utils.R;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -33,47 +35,24 @@ public class CategoryBrandRelationController {
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = categoryBrandRelationService.queryPage(params);
 
-        return R.ok().put("page", page);
-    }
-
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
-        CategoryBrandRelationEntity categorybrandrelation = categoryBrandRelationService.getById(id);
-
-        return R.ok().put("categorybrandrelation", categorybrandrelation);
+        return R.ok().put("data", page);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody CategoryBrandRelationEntity categorybrandrelation){
+    @PostMapping("/save")
+    public R save(@Validated CategoryBrandRelationEntity categorybrandrelation){
         categoryBrandRelationService.save(categorybrandrelation);
-
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody CategoryBrandRelationEntity categorybrandrelation){
-        categoryBrandRelationService.updateById(categorybrandrelation);
-
-        return R.ok();
+        return R.ok("保存成功！");
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    @DeleteMapping("/delete")
+    public R delete(@Validated(IDGroup.class) Long[] ids){
         categoryBrandRelationService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

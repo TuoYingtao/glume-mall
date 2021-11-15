@@ -2,6 +2,7 @@ package com.glume.glumemall.product.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.common.core.utils.StringUtils;
@@ -36,5 +37,20 @@ public class CategoryBrandRelationServiceimpl extends ServiceImpl<CategoryBrandR
 
         return new PageUtils(page);
     }
+
+    @Override
+    public void updateBrandName(Long brandId,String brandName) {
+        CategoryBrandRelationEntity categoryBrandRelationEntity = new CategoryBrandRelationEntity();
+        categoryBrandRelationEntity.setBrandName(brandName);
+        baseMapper.update(categoryBrandRelationEntity,new UpdateWrapper<CategoryBrandRelationEntity>().eq("brand_id",brandId));
+    }
+
+    @Override
+    public void updateCategoryName(Long catId, String categoryName) {
+        CategoryBrandRelationEntity categoryBrandRelationEntity = new CategoryBrandRelationEntity();
+        categoryBrandRelationEntity.setCatelogName(categoryName);
+        baseMapper.updateCategoryName(catId,categoryName);
+    }
+
 
 }

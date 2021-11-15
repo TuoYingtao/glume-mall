@@ -3,6 +3,7 @@ package com.glume.glumemall.product.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 品牌&分类关联
@@ -13,5 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CategoryBrandRelationDao extends BaseMapper<CategoryBrandRelationEntity> {
-	
+
+    void updateCategoryName(@Param("catId") Long catId, @Param("categoryName") String categoryName);
 }

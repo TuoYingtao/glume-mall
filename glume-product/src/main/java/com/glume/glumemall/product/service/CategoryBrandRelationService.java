@@ -17,5 +17,9 @@ import java.util.Map;
 public interface CategoryBrandRelationService extends IService<CategoryBrandRelationEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void updateBrandName(Long brandId,String brandName);
+
+    void updateCategoryName(Long catId,String categoryName);
 }
 

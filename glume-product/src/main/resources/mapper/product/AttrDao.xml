@@ -8,6 +8,7 @@
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
         <result property="searchType" column="search_type"/>
+        <result property="valueType" column="value_type"/>
         <result property="icon" column="icon"/>
         <result property="valueSelect" column="value_select"/>
         <result property="attrType" column="attr_type"/>

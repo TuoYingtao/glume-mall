@@ -88,7 +88,7 @@ public class CategoryController {
             @ApiImplicitParam(name = "productCount",value = "商品数量",required = true,dataType = "Integer")
     })
     public R update(@Validated(UpdateGroup.class) CategoryEntity category){
-		categoryService.updateById(category);
+		categoryService.updateCategoryServiceById(category);
         return R.ok("修改成功!");
     }
 

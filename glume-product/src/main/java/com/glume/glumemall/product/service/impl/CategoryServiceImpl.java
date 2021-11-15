@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.dao.CategoryDao;
 import com.glume.glumemall.product.entity.CategoryEntity;
+import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import com.glume.glumemall.product.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,9 @@ import java.util.stream.Stream;
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -49,6 +56,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<Long> collect = dleCatIds.stream().map(CategoryEntity::getCatId).collect(Collectors.toList());
         // 批量删除分类
         baseMapper.deleteBatchIds(collect);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCategoryServiceById(CategoryEntity category) {
+        baseMapper.updateById(category);
+        if (StringUtils.isNotEmpty(category.getName())) {
+            categoryBrandRelationService.updateCategoryName(category.getCatId(),category.getName());
+        }
     }
 
     /**

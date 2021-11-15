@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 12/11/2021 17:44:07
+ Date: 15/11/2021 18:06:08
 */
 
 SET NAMES utf8mb4;
@@ -107,7 +107,7 @@ CREATE TABLE `pms_brand`  (
   `first_letter` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '检索首字母',
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`brand_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_brand
@@ -119,6 +119,8 @@ INSERT INTO `pms_brand` VALUES (12, 'iPhone', 'https://gulimall-hello.oss-cn-bei
 INSERT INTO `pms_brand` VALUES (13, 'iPhone 13 Pro Max', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-12/1636704184390', 'iPhone 13 Pro Max', 1, 'I', 1);
 INSERT INTO `pms_brand` VALUES (14, '索尼', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-12/1636704054277', '索尼大牌', 0, 'S', 1);
 INSERT INTO `pms_brand` VALUES (15, '测试', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-12/1636705999193', '测试Test12华为 13 苹果 iPhone', 1, 'C', 1);
+INSERT INTO `pms_brand` VALUES (16, '测试', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-15/1636939691298', 'fasdfdsf', 0, 'D', 3);
+INSERT INTO `pms_brand` VALUES (17, '测试22', 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-15/1636959065664', 'fslefase', 0, 'C', 3);
 
 -- ----------------------------
 -- Table structure for pms_category
@@ -306,7 +308,7 @@ INSERT INTO `pms_category` VALUES (162, '蔬菜', 20, 2, 1, 0, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (163, '全新整车', 21, 2, 1, 0, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (164, '二手车', 21, 2, 1, 0, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (165, '电子书', 22, 3, 1, 1, NULL, NULL, 0);
-INSERT INTO `pms_category` VALUES (166, '网络原创', 22, 3, 1, 0, NULL, NULL, 0);
+INSERT INTO `pms_category` VALUES (166, '网络原创', 22, 3, 1, 0, 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-15/1636955435162', '', 0);
 INSERT INTO `pms_category` VALUES (167, '数字杂志', 22, 3, 1, 2, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (168, '多媒体图书', 22, 3, 1, 3, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (169, '音乐', 23, 3, 1, 0, NULL, NULL, 0);
@@ -1564,8 +1566,8 @@ INSERT INTO `pms_category` VALUES (1420, 'SUV（二手）', 164, 3, 1, 0, NULL, 
 INSERT INTO `pms_category` VALUES (1421, '跑车（二手）', 164, 3, 1, 0, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (1422, '皮卡（二手）', 164, 3, 1, 0, NULL, NULL, 0);
 INSERT INTO `pms_category` VALUES (1423, '面包车（二手）', 164, 3, 1, 0, NULL, NULL, 0);
-INSERT INTO `pms_category` VALUES (1431, 'dsa323', 1, 2, 1, NULL, NULL, NULL, NULL);
-INSERT INTO `pms_category` VALUES (1432, 'fdsffdsadddd大萨达', 1431, 3, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `pms_category` VALUES (1431, 'dsa323', 1, 2, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `pms_category` VALUES (1432, 'fdsffdsadddd大萨达', 1431, 3, 0, NULL, NULL, NULL, NULL);
 INSERT INTO `pms_category` VALUES (1433, '测试99', 0, 1, 1, 0, 'test', NULL, 99);
 INSERT INTO `pms_category` VALUES (1434, '测试', 1, 18, 0, 18, 'https://glume-mall.oss-cn-shenzhen.aliyuncs.com/2021-11-10/1636527610612', '1', 13);
 
@@ -1586,7 +1588,6 @@ CREATE TABLE `pms_category_brand_relation`  (
 -- Records of pms_category_brand_relation
 -- ----------------------------
 INSERT INTO `pms_category_brand_relation` VALUES (13, 9, 225, '华为', '手机');
-INSERT INTO `pms_category_brand_relation` VALUES (15, 9, 250, '华为', '平板电视');
 INSERT INTO `pms_category_brand_relation` VALUES (16, 9, 449, '华为', '笔记本');
 INSERT INTO `pms_category_brand_relation` VALUES (17, 10, 449, '小米', '笔记本');
 INSERT INTO `pms_category_brand_relation` VALUES (18, 10, 225, '小米', '手机');
@@ -1599,6 +1600,10 @@ INSERT INTO `pms_category_brand_relation` VALUES (24, 11, 227, 'oppo', '合约�
 INSERT INTO `pms_category_brand_relation` VALUES (25, 12, 225, 'Apple', '手机');
 INSERT INTO `pms_category_brand_relation` VALUES (26, 12, 243, 'Apple', 'iPhone 配件');
 INSERT INTO `pms_category_brand_relation` VALUES (27, 12, 366, 'Apple', '智能手表');
+INSERT INTO `pms_category_brand_relation` VALUES (36, 15, 226, '测试', '对讲机');
+INSERT INTO `pms_category_brand_relation` VALUES (37, 15, 225, '测试', '手机');
+INSERT INTO `pms_category_brand_relation` VALUES (38, 15, 230, '测试', '办套餐');
+INSERT INTO `pms_category_brand_relation` VALUES (39, 15, 166, '测试', '网络原创');
 
 -- ----------------------------
 -- Table structure for pms_comment_replay

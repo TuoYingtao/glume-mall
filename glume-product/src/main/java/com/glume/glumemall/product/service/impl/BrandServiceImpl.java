@@ -4,6 +4,8 @@ import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
+import com.glume.glumemall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +17,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.glumemall.product.dao.BrandDao;
 import com.glume.glumemall.product.entity.BrandEntity;
 import com.glume.glumemall.product.service.BrandService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("brandService")
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
+
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -56,6 +62,15 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         Integer row = baseMapper.deleteBatchIds(brandId);
         if (row == 0) {
             throw new ServiceException("删除失败！");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateBrandById(BrandEntity brand) {
+        baseMapper.updateById(brand);
+        if (StringUtils.isNotEmpty(brand.getName())) {
+            categoryBrandRelationService.updateBrandName(brand.getBrandId(), brand.getName());
         }
     }
 

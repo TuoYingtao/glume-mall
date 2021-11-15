@@ -93,8 +93,7 @@ public class BrandController {
             @ApiImplicitParam(name = "sort",value = "排序",dataType = "Integer")
     })
     public R update(@Validated(UpdateGroup.class) BrandEntity brand){
-		brandService.updateById(brand);
-
+        brandService.updateBrandById(brand);
         return R.ok("更新成功！");
     }
 

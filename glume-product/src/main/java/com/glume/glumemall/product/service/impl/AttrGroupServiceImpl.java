@@ -21,16 +21,6 @@ import com.glume.glumemall.product.service.AttrGroupService;
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<AttrGroupEntity> page = this.page(
-                new Query<AttrGroupEntity>().getPage(params),
-                new QueryWrapper<AttrGroupEntity>()
-        );
-
-        return new PageUtils(page);
-    }
-
-    @Override
     public PageUtils queryPage(Map<String, Object> params, Long catelogId) {
         if (catelogId == 0) {
             IPage<AttrGroupEntity> attrGroupEntityIPage = this.page(new Query<AttrGroupEntity>().getPage(params),

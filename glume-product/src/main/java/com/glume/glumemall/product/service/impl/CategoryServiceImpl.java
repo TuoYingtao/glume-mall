@@ -39,6 +39,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCategoryServiceById(CategoryEntity category) {
+        baseMapper.updateById(category);
+        if (StringUtils.isNotEmpty(category.getName())) {
+            categoryBrandRelationService.updateCategoryName(category.getCatId(),category.getName());
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void removeMenuByIds(List<Long> catIds) {
         //TODO 1.检测当前删除的商品分类信息，是否被别的地方引用
 
@@ -56,15 +66,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<Long> collect = dleCatIds.stream().map(CategoryEntity::getCatId).collect(Collectors.toList());
         // 批量删除分类
         baseMapper.deleteBatchIds(collect);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateCategoryServiceById(CategoryEntity category) {
-        baseMapper.updateById(category);
-        if (StringUtils.isNotEmpty(category.getName())) {
-            categoryBrandRelationService.updateCategoryName(category.getCatId(),category.getName());
-        }
+        categoryBrandRelationService.removeCategoryRelationById(catIds);
     }
 
     /**
@@ -75,7 +77,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * @return
      */
     private List<CategoryEntity> dleCatIdsHandler(Long cateId,List<CategoryEntity> categoryEntities,List<CategoryEntity> dleCatIds) {
-        List<CategoryEntity> collect = categoryEntities.stream().filter(categoryEntity -> cateId.equals(categoryEntity.getCatId())).map(categoryEntity -> {
+        List<CategoryEntity> collect = categoryEntities.stream().filter(categoryEntity -> cateId.equals(categoryEntity.getParentCid())).map(categoryEntity -> {
             dleCatIds.addAll(dleCatIdsHandler(categoryEntity.getCatId(), categoryEntities,dleCatIds));
             return categoryEntity;
         }).distinct().collect(Collectors.toList());

@@ -56,13 +56,12 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void removeBrandByIds(List<Long> brandId) {
         //TODO 1. 检测当前删除的品牌信息，是否被别的地方引用
 
-        Integer row = baseMapper.deleteBatchIds(brandId);
-        if (row == 0) {
-            throw new ServiceException("删除失败！");
-        }
+        baseMapper.deleteBatchIds(brandId);
+        categoryBrandRelationService.removeBrandRelationById(brandId);
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -50,6 +51,24 @@ public class CategoryBrandRelationServiceimpl extends ServiceImpl<CategoryBrandR
         CategoryBrandRelationEntity categoryBrandRelationEntity = new CategoryBrandRelationEntity();
         categoryBrandRelationEntity.setCatelogName(categoryName);
         baseMapper.updateCategoryName(catId,categoryName);
+    }
+
+    /**
+     * 根据品牌ID做删除
+     * @param brandIds
+     */
+    @Override
+    public void removeBrandRelationById(List<Long> brandIds) {
+        brandIds.forEach(brandId -> baseMapper.delete(new QueryWrapper<CategoryBrandRelationEntity>().eq("brand_id",brandId)));
+    }
+
+    /**
+     * 根据分类ID做删除
+     * @param catIds
+     */
+    @Override
+    public void removeCategoryRelationById(List<Long> catIds) {
+        catIds.forEach(catId -> baseMapper.delete(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id",catId)));
     }
 
 

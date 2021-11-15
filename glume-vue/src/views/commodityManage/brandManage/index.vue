@@ -9,7 +9,7 @@
         <right-toolbar :showSearch.sync="showSearch" :isFlagShow="$route.meta.search" @queryTable="getList" />
       </el-row>
       <!--    内容展示-->
-      <table-box :loading="loading" :data="brandList" :tableColumn="tableColumn" @amendbrand="amendbrand" @deletebrand="deletebrand" @selection-change="handleSelectionChange"/>
+      <table-box :loading="loading" :data="brandList" :tableColumn="tableColumn" @mapping="mapping" @amendbrand="amendbrand" @deletebrand="deletebrand" @selection-change="handleSelectionChange"/>
       <pagination :page-sizes="[20,40,60,80]" v-show="total>0" :total="total" :page.sync="queryParams.page" :limit.sync="queryParams.limit" @pagination="getList"/>
     </el-card>
     <!-- 弹出层 -->
@@ -70,6 +70,30 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+  <!-- 弹窗 -->
+    <el-dialog title="品牌分类关联" :visible.sync="dialogTableVisible">
+      <el-row :gutter="10" class="mb8">
+        <el-cascader ref="cascader" size="mini" v-model="relationFrom.catelogId"
+                     :options="classifyTreeList"
+                     :props="props"
+                     @change="handleClassifyChange"/>
+        <el-button icon="el-icon-plus" size="mini" @click="addClassify">新增关系绑定</el-button>
+        <right-toolbar :showSearch.sync="showSearch" :isFlagShow="$route.meta.search" @queryTable="getRelationList" />
+      </el-row>
+      <el-table :data="relationData">
+        <el-table-column property="brandId" label="品牌ID" width="150"></el-table-column>
+        <el-table-column property="brandName" label="品牌名称" width="200"></el-table-column>
+        <el-table-column property="catelogId" label="分类ID" width="200"></el-table-column>
+        <el-table-column property="catelogName" label="分类名称" width="200"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="deleteRelation(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination :page-sizes="[20,40,60,80]" v-show="relationTotal>0" :total="relationTotal" :page.sync="relationQueryParams.page" :limit.sync="relationQueryParams.limit" @pagination="getRelationList"/>
+    </el-dialog>
   </layout-container>
 </template>
 
@@ -78,8 +102,16 @@
   import TableBox from '@/components/TableBox'
   import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
   import {MessageBox} from "element-ui";
-  import {addbrand, amendbrand, brandList, delbrand, querybrand} from "@/api/commodityManage/brand";
-  import {getOSSPolicy} from "@/api/commodityManage/classify";
+  import {
+    addbrand, addBrandClassify,
+    amendbrand,
+    brandClassifyList,
+    brandList,
+    delbrand,
+    deleteBrandClassify,
+    querybrand
+  } from "@/api/commodityManage/brand";
+  import {getBrandTree, getOSSPolicy} from "@/api/commodityManage/classify";
   export default {
     name: 'brandList',
     components: { LayoutContainer, SearchBox,TableBox },
@@ -93,7 +125,7 @@
           {label: '检索首字母',prop: 'firstLetter'},
           {label: '排序',prop: 'sort'},
           {label: '操作',size: 'mini',model: [
-              {name: '分类匹配',color: 'primary',onClick: 'primary',icon: "el-icon-connection"},
+              {name: '分类匹配',color: 'primary',onClick: 'mapping',icon: "el-icon-connection"},
               {name: '修改',color: 'warning',onClick: 'amendbrand',icon: "el-icon-edit"},
               {name: '删除',color: 'danger',onClick: 'deletebrand',icon: "el-icon-delete"}],type: 'bottom'},
         ],
@@ -125,13 +157,37 @@
           children: "children",
           label: "label"
         },
+        /* 关系列表 */
+        classifyTreeList: [],
+        props: {
+          value: "catId",
+          children: "children",
+          label: "name",
+        },
+        dialogTableVisible: false,
+        relationData: [],
+        relationTotal: null,
+        relationQueryParams: {
+          page: 1,
+          limit: 20,
+        },
+        relationFrom: {
+          catelogId: null,
+
+        }
       }
     },
     created() {
       this.getList();
       this.OSSPolicy();
+      this.getClassifyTree();
     },
     methods: {
+      getClassifyTree() {
+        getBrandTree().then(response => {
+          this.classifyTreeList = response.data;
+        })
+      },
       getList() {
         this.loading = true;
         brandList(this.queryParams).then(response => {
@@ -139,6 +195,18 @@
           this.total = response.data.totalCount;
           this.loading = false;
         })
+      },
+      getRelationList() {
+        brandClassifyList(this.relationQueryParams).then(response => {
+          this.relationData = response.data.list;
+        })
+      },
+      mapping(row) {
+        this.relationFrom.brandId = row.brandId;
+        this.relationFrom.brandName = row.name;
+        this.relationQueryParams.brandId = row.brandId;
+        this.dialogTableVisible = true;
+        this.getRelationList();
       },
       addData() {
         this.reset();
@@ -179,6 +247,42 @@
           return delbrand(row.brandId);
         }).then(() => {
           this.getList();
+          this.notSuccess("删除成功");
+        }).catch(() => {});
+      },
+      handleClassifyChange(e) {
+        let num = e.length - 1;
+        this.classifyTreeHandler(e[num],this.classifyTreeList);
+        this.relationFrom.catelogId = e[num];
+      },
+      classifyTreeHandler(id,all) {
+        all.forEach(item => {
+          if (item.catId == id) {
+            this.relationFrom.catelogName = item.name;
+          } else if (item.children && item.children.length > 0){
+            this.classifyTreeHandler(id,item.children)
+          }
+        })
+      },
+      addClassify() {
+        if (this.relationFrom.catelogId && this.relationFrom.catelogId != null) {
+          addBrandClassify(this.relationFrom).then(response => {
+            this.notSuccess("新增成功");
+            this.getRelationList();
+            this.relationFrom = {
+              brandId: this.relationFrom.brandId,
+              brandName: this.relationFrom.brandName,
+              catelogId: null,
+            }
+          })
+        }
+      },
+      deleteRelation(row) {
+        console.log(row)
+        MessageBox.confirm('是否确认删除分类名称为"' + row.catelogName + '"的数据项？').then(function() {
+          return deleteBrandClassify({ids: row.id});
+        }).then(() => {
+          this.getRelationList();
           this.notSuccess("删除成功");
         }).catch(() => {});
       },

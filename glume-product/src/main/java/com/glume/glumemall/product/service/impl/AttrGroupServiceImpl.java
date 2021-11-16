@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.glumemall.product.dao.AttrGroupDao;
 import com.glume.glumemall.product.entity.AttrGroupEntity;
 import com.glume.glumemall.product.service.AttrGroupService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("attrGroupService")
@@ -40,6 +41,7 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void removeAttrByIds(List<Long> attrGroupIds) {
         baseMapper.deleteBatchIds(attrGroupIds);
         SpringUtils.getBean(AttrAttrgroupRelationServiceImpl.class).deleteAttrgroupBatchIds(attrGroupIds);

@@ -36,4 +36,9 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
                 .in("attr_group_id", attrGroupIds)));
     }
 
+    @Override
+    public void deleteAttrBatchIds(List<Long> attrIds) {
+        baseMapper.delete(new QueryWrapper<AttrAttrgroupRelationEntity>().in("attr_id",attrIds));
+    }
+
 }

@@ -1,10 +1,8 @@
 package com.glume.glumemall.product.vo;
 
 import com.glume.glumemall.product.entity.AttrEntity;
-import com.glume.glumemall.product.entity.CategoryEntity;
 import lombok.Data;
 
-import java.util.List;
 
 
 /**
@@ -20,11 +18,11 @@ public class AttrRespVo extends AttrEntity {
      */
     private String catelogName;
     /**
+     * 组名ID
+     */
+    private Long attrGroupId;
+    /**
      * 组名
      */
     private String attrGroupName;
-    /**
-     * 分类路径
-     */
-    private List<CategoryEntity> categoryPath;
 }

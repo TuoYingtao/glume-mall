@@ -309,7 +309,7 @@ export default {
       })
     },
     handlerBrandTreeList(brandTreeList) {
-      this.handlerClassifyProperty(brandTreeList[0])
+      this.catId = 0;
       this.getAttrList();
       brandTreeList.forEach(item => {
         item.level = 1;
@@ -535,6 +535,7 @@ export default {
       this.getAttrList();
     },
     resetQuery() {
+      this.catId = 0;
       this.reset();
       this.getAttrList();
     },

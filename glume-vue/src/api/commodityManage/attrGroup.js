@@ -34,9 +34,26 @@ export function amendAttrGroup(data) {
 }
 /* 删除属性列表 */
 export function delAttrGroup(data) {
-  console.log(data)
   return request({
     url: `/product/attrgroup/delete`,
+    method: "DELETE",
+    data: qs.stringify(data)
+  })
+}
+
+/** 分组关系列表 */
+export function groupRelationList(attrGroupId) {
+  return request({
+    url: `/product/attrgroup/${attrGroupId}/attr/relation`,
+    method: "GET",
+  })
+}
+
+/** 删除分组关系 */
+export function deleteGroupRelation(data) {
+  console.log(data)
+  return request({
+    url: `/product/attrgroup/attr/relation/delete`,
     method: "DELETE",
     data: qs.stringify(data)
   })

@@ -124,7 +124,7 @@
           {label: '描述',prop: 'descript'},
           {label: '检索首字母',prop: 'firstLetter'},
           {label: '排序',prop: 'sort'},
-          {label: '操作',size: 'mini',model: [
+          {label: '操作',size: 'mini',width: "280",model: [
               {name: '分类匹配',color: 'primary',onClick: 'mapping',icon: "el-icon-connection"},
               {name: '修改',color: 'warning',onClick: 'amendbrand',icon: "el-icon-edit"},
               {name: '删除',color: 'danger',onClick: 'deletebrand',icon: "el-icon-delete"}],type: 'bottom'},

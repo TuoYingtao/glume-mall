@@ -83,7 +83,7 @@
                 <el-switch v-model="scope.row.enable == 1" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
               </template>
             </el-table-column>
-            <el-table-column label="操作" prop="sort">
+            <el-table-column label="操作" prop="sort" width="160">
               <template slot-scope="scope">
                 <el-button type="warning" size="mini" @click="amendattr(scope.row)">修改</el-button>
                 <el-button type="danger" size="mini" @click="attrDelClick(scope.row)">删除</el-button>

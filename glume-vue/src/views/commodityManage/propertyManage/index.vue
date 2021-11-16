@@ -56,6 +56,7 @@
             </el-table-column>
             <el-table-column label="操作" prop="sort">
               <template slot-scope="scope">
+                <el-button type="primary" size="mini" @click="mapping(scope.row)">分类匹配</el-button>
                 <el-button type="warning" size="mini" @click="amendAttrGroup(scope.row)">修改</el-button>
                 <el-button type="danger" size="mini" @click="attrDelClick(scope.row)">删除</el-button>
               </template>
@@ -68,7 +69,7 @@
     <price-dialog ref="RefDialog" :mobel-id="id"/>
 
     <!-- attr 弹窗 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isAttrOpen" width="28%" :before-close="attrFromHandleClose">
+    <el-dialog :title="dialogTitle" width="35%" :visible.sync="isAttrOpen" :before-close="attrFromHandleClose">
       <el-form ref="attrFrom" :model="attrFrom" :rules="TreeRules" size="medium" label-width="120px">
         <el-row>
           <el-col :span="24">
@@ -102,7 +103,7 @@
     </el-dialog>
 
     <!-- tree 弹窗 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
+    <el-dialog :title="dialogTitle" width="35%" :visible.sync="isTreeOpen" :before-close="treeFromHandleClose">
       <el-form ref="treeFrom" :model="treeFrom" :rules="TreeRules" size="medium" label-width="100px">
         <el-row>
           <el-col :span="24">
@@ -172,28 +173,38 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <!-- 弹窗 -->
+    <el-dialog title="品牌分类关联" width="30%" :visible.sync="dialogTableVisible">
+      <el-table :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" :data="relationData">
+        <el-table-column type="selection" width="80" align="center"/>
+        <el-table-column property="attrId" label="属性ID"/>
+        <el-table-column property="attrName" label="属性名"/>
+        <el-table-column property="valueSelect" label="可选值">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.valueSelect" placement="top-start">
+              <el-tag>{{ scope.row.valueSelect }}</el-tag>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button icon="el-icon-delete" type="danger" size="mini" @click="deleteRelation(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </layout-container>
 </template>
 
 <script>
-import {
-  getBrandTree,
-  amendBrandModel,
-  getOSSPolicy,
-  addBrandTree, amendBrandTree, delBrandTree, queryBrandTree
-} from "@/api/commodityManage/classify"
+import {getBrandTree, getOSSPolicy, addBrandTree, amendBrandTree, delBrandTree, queryBrandTree} from "@/api/commodityManage/classify"
 import PriceDialog from '@/views/system/brandOperate/components/dialog'
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {MessageBox} from "element-ui";
-import {
-  addAttrGroup,
-  amendAttrGroup,
-  delAttrGroup,
-  getAttrGroup,
-  queryAttrGroup
-} from "@/api/commodityManage/attrGroup";
+import {addAttrGroup, amendAttrGroup, delAttrGroup, getAttrGroup, queryAttrGroup, groupRelationList, deleteGroupRelation} from "@/api/commodityManage/attrGroup";
 import SearchBox from "@/components/searchBox";
 
 export default {
@@ -257,6 +268,10 @@ export default {
       attrList: [],
       title: "",
       total: null,
+
+      dialogTableVisible: false,
+      relationData: [],
+      attrGroupId: null,
     }
   },
   directives: {
@@ -298,6 +313,16 @@ export default {
         }
       })
     },
+    mapping(row) {
+      this.attrGroupId = row.attrGroupId;
+      this.dialogTableVisible = true;
+      this.getRelationList();
+    },
+    getRelationList() {
+      groupRelationList(this.attrGroupId).then(response => {
+        this.relationData = response.data;
+      })
+    },
     getAttrList() {
       this.loading = true;
       getAttrGroup(this.catId,this.queryParam).then(response => {
@@ -329,13 +354,6 @@ export default {
         }
         this.attrFrom.categoryPath.push(item.catId)
       })
-    },
-    handlerClassifyProperty(brandTree) {
-      if (brandTree.children && brandTree.children.length > 0) {
-        this.handlerClassifyProperty(brandTree.children[0])
-      } else {
-        this.catId = brandTree.catId
-      }
     },
     levelChildren(item,level) {
       item.children.forEach(child => {
@@ -420,6 +438,15 @@ export default {
     getQueryTreeInfo(catId) {
       queryBrandTree(catId).then(response => {
         this.treeFrom = response.data.category;
+      });
+    },
+    deleteRelation(row) {
+      MessageBox.confirm('是否确认删除名称为"' + row.attrName + '"的数据项？').then(function () {
+        return deleteGroupRelation({attrId: row.attrId, attrGroupId: this.attrGroupId});
+      }).then(() => {
+        this.getRelationList();
+        this.notSuccess("删除成功");
+      }).catch(() => {
       });
     },
     attrDelClick: function (row) {

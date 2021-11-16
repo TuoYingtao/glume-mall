@@ -5,17 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
 import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.product.entity.AttrEntity;
 import com.glume.glumemall.product.service.AttrService;
-import sun.rmi.runtime.Log;
 
 
 /**
@@ -38,7 +41,7 @@ public class AttrController {
      * 列表
      */
     @GetMapping("/list/{catelogId}")
-    @ApiOperation(value = "商品属性列表",notes = "商品属性列表")
+    @ApiOperation(value = "商品属性列表")
     public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId){
         PageUtils page = attrService.queryPage(params, catelogId);
         HashMap<Object, Object> data = new HashMap<>();
@@ -52,41 +55,42 @@ public class AttrController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrId}")
+    @GetMapping("/info/{attrId}")
+    @ApiOperation(value = "查询商品属性")
     public R info(@PathVariable("attrId") Long attrId){
 		AttrEntity attr = attrService.getById(attrId);
-
-        return R.ok().put("attr", attr);
+        return R.ok().put("data", attr);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody AttrEntity attr){
+    @PostMapping("/save")
+    @ApiOperation(value = "商品属性添加")
+    public R save(@Validated(AddGroup.class) AttrEntity attr){
 		attrService.save(attr);
-
-        return R.ok();
+        return R.ok("保存成功！");
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody AttrEntity attr){
+    @PutMapping("/update")
+    @ApiOperation(value = "修改商品属性")
+    public R update(@Validated(UpdateGroup.class) AttrEntity attr){
 		attrService.updateById(attr);
 
-        return R.ok();
+        return R.ok("更新成功！");
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] attrIds){
-		attrService.removeByIds(Arrays.asList(attrIds));
-
-        return R.ok();
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "删除商品属性")
+    public R delete(@Validated(IDGroup.class) Long[] attrIds){
+		attrService.removeAttrByIds(Arrays.asList(attrIds));
+        return R.ok("删除成功！");
     }
 
 }

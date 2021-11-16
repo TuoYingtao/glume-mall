@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 15/11/2021 18:06:08
+ Date: 16/11/2021 17:54:28
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `pms_attr`  (
   `catelog_id` bigint NULL DEFAULT NULL COMMENT '所属分类',
   `show_desc` tinyint NULL DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整',
   PRIMARY KEY (`attr_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_attr
@@ -43,11 +43,13 @@ INSERT INTO `pms_attr` VALUES (8, '上市年份', 0, 0, 'xxx', '2018;2019', 1, 1
 INSERT INTO `pms_attr` VALUES (9, '颜色', 0, 0, 'xxx', '黑色;白色;蓝色', 0, 1, 225, 0);
 INSERT INTO `pms_attr` VALUES (10, '内存', 0, 0, 'xxx', '4GB;6GB;8GB;12GB', 0, 1, 225, 0);
 INSERT INTO `pms_attr` VALUES (11, '机身颜色', 0, 0, 'xxx', '黑色;白色', 1, 1, 225, 1);
-INSERT INTO `pms_attr` VALUES (12, '版本', 0, 0, 'xxx', '', 0, 1, 225, 0);
+INSERT INTO `pms_attr` VALUES (12, '版本', 0, 0, 'xxx', '8', 0, 1, 225, 0);
 INSERT INTO `pms_attr` VALUES (13, '机身长度（mm）', 0, 0, 'xx', '158.3;135.9', 1, 1, 225, 0);
 INSERT INTO `pms_attr` VALUES (14, '机身材质工艺', 0, 1, 'xxx', '以官网信息为准;陶瓷;玻璃', 1, 1, 225, 0);
 INSERT INTO `pms_attr` VALUES (15, 'CPU品牌', 1, 0, 'xxx', '高通(Qualcomm);海思（Hisilicon）;以官网信息为准', 1, 1, 225, 1);
 INSERT INTO `pms_attr` VALUES (16, 'CPU型号', 1, 0, 'xxx', '骁龙665;骁龙845;骁龙855;骁龙730;HUAWEI Kirin 980;HUAWEI Kirin 970', 1, 1, 225, 0);
+INSERT INTO `pms_attr` VALUES (17, 'Test', 1, 1, 'Xxx', '测试,无解,wuji', 1, 1, 166, 1);
+INSERT INTO `pms_attr` VALUES (19, '策色色粉色', 0, 1, 'Xxxx', '阀撒,丰顺丰,阀手动阀', 1, 1, 166, 1);
 
 -- ----------------------------
 -- Table structure for pms_attr_attrgroup_relation
@@ -71,6 +73,11 @@ INSERT INTO `pms_attr_attrgroup_relation` VALUES (27, 13, 2, NULL);
 INSERT INTO `pms_attr_attrgroup_relation` VALUES (28, 14, 2, NULL);
 INSERT INTO `pms_attr_attrgroup_relation` VALUES (29, 15, 7, NULL);
 INSERT INTO `pms_attr_attrgroup_relation` VALUES (30, 16, 7, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (31, 17, 12, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (33, 12, 2, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (34, 9, 2, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (35, 10, 2, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (36, 19, 12, NULL);
 
 -- ----------------------------
 -- Table structure for pms_attr_group
@@ -93,6 +100,7 @@ INSERT INTO `pms_attr_group` VALUES (1, '主体', 0, '主体', 'dd', 225);
 INSERT INTO `pms_attr_group` VALUES (2, '基本信息', 0, '基本信息', 'xx', 225);
 INSERT INTO `pms_attr_group` VALUES (4, '屏幕', 0, '屏幕', 'xx', 233);
 INSERT INTO `pms_attr_group` VALUES (7, '主芯片', 0, '主芯片', 'xx', 225);
+INSERT INTO `pms_attr_group` VALUES (12, '网络主体', 1, '网络主体', 'Xxx', 166);
 
 -- ----------------------------
 -- Table structure for pms_brand
@@ -107,7 +115,7 @@ CREATE TABLE `pms_brand`  (
   `first_letter` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '检索首字母',
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`brand_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_brand
@@ -1582,7 +1590,7 @@ CREATE TABLE `pms_category_brand_relation`  (
   `brand_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `catelog_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pms_category_brand_relation

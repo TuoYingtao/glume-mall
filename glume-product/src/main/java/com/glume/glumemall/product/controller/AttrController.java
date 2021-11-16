@@ -12,12 +12,12 @@ import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
 import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryService;
+import com.glume.glumemall.product.vo.AttrRespVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.glume.glumemall.product.entity.AttrEntity;
 import com.glume.glumemall.product.service.AttrService;
 
 
@@ -58,8 +58,8 @@ public class AttrController {
     @GetMapping("/info/{attrId}")
     @ApiOperation(value = "查询商品属性")
     public R info(@PathVariable("attrId") Long attrId){
-		AttrEntity attr = attrService.getById(attrId);
-        return R.ok().put("data", attr);
+        AttrRespVo infoById = attrService.getInfoById(attrId);
+        return R.ok().put("data", infoById);
     }
 
     /**
@@ -67,8 +67,8 @@ public class AttrController {
      */
     @PostMapping("/save")
     @ApiOperation(value = "商品属性添加")
-    public R save(@Validated(AddGroup.class) AttrEntity attr){
-		attrService.save(attr);
+    public R save(@Validated(AddGroup.class) AttrRespVo attrVo){
+		attrService.AttrSave(attrVo);
         return R.ok("保存成功！");
     }
 
@@ -77,9 +77,8 @@ public class AttrController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "修改商品属性")
-    public R update(@Validated(UpdateGroup.class) AttrEntity attr){
-		attrService.updateById(attr);
-
+    public R update(@Validated(UpdateGroup.class) AttrRespVo attrVo){
+        attrService.updateAttrById(attrVo);
         return R.ok("更新成功！");
     }
 

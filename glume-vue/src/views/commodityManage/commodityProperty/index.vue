@@ -280,7 +280,9 @@ export default {
   },
   data() {
     return {
-      queryDataModel: [{type: "default",label: "关键字查询",prop: "key"}],
+      queryDataModel: [{type: "default",label: "关键字查询",prop: "key"},
+        {type: "select",label: "属性类型",prop: "attrType",data: [
+          {id: 0,name: "销售属性"}, {id: 1,name: "基本属性"}, {id: 2,name: "既是销售属性又是基本属性"}]}],
       showSearch: true,
       queryParam: {page: 1, limit: 10},
       id: null,

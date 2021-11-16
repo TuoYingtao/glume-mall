@@ -42,20 +42,22 @@
           </el-row>
           <el-table v-loading="loading" :data="attrList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" :key="domKey2">
             <el-table-column type="selection" width="80" align="center"/>
-            <el-table-column label="属性名" prop="attrName"/>
+            <el-table-column label="分类名称" prop="catelogName"/>
+            <el-table-column label="分组名称" prop="attrGroupName"/>
+            <el-table-column label="属性名称" prop="attrName"/>
             <el-table-column label="检索" prop="searchType">
               <template slot-scope="scope">
                 <i class="el-icon-error" v-if="scope.row.searchType == 0"></i>
                 <i class="el-icon-success" v-else-if="scope.row.searchType == 1"></i>
               </template>
             </el-table-column>
+            <el-table-column label="图标" prop="icon"/>
             <el-table-column label="值类型" prop="valueType">
               <template slot-scope="scope">
                 <el-tag type="success" v-if="scope.row.valueType == 0">单个值</el-tag>
                 <el-tag type="success" v-else-if="scope.row.valueType == 1">多个值</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="图标" prop="icon"/>
             <el-table-column label="值列表" prop="valueSelect">
               <template slot-scope="scope">
                 <el-tooltip class="item" effect="dark" :content="scope.row.valueSelect" placement="top-start">
@@ -98,6 +100,22 @@
     <el-dialog :title="dialogTitle" :visible.sync="isAttrOpen" width="28%" :before-close="attrFromHandleClose">
       <el-form ref="attrFrom" :model="attrFrom" :rules="rules" size="medium" label-width="120px">
         <el-row>
+          <el-col :span="24">
+            <el-form-item label="分类路径：" prop="attrName">
+              <el-cascader style="width: 100%" ref="cascader" v-model="attrFrom.catelogId"
+                           :options="classifyTreeList"
+                           :props="attrProps"
+                           @change="handleClassifyChange"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="分组名称：" prop="attrName">
+              <el-cascader style="width: 100%" ref="cascader" v-model="attrFrom.attrGroupId"
+                           :options="groupList"
+                           :props="groupProps"
+                           @change="handleGroupChange"/>
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="属性名：" prop="attrName">
               <el-input v-model="attrFrom.attrName"/>
@@ -250,6 +268,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {MessageBox} from "element-ui";
 import {addAttr, amendAttr, delAttr, getAttr, queryAttr} from "@/api/commodityManage/attr";
 import SearchBox from "@/components/searchBox";
+import {getAttrGroup} from "@/api/commodityManage/attrGroup";
 
 export default {
   name: 'index',
@@ -305,11 +324,18 @@ export default {
         enable: 0
       },
       isAttrOpen: false,
+      classifyTreeList: [],
       attrProps: {
-        label: "name",
         value: "catId",
+        children: "children",
+        label: "name",
       },
       attrFromCatId: [2,34,225],
+      groupList: [],
+      groupProps: {
+        value: "attrGroupId",
+        label: "attrGroupName",
+      },
       dialogTitle: "",
 
       domKey: 0,
@@ -344,8 +370,14 @@ export default {
   created() {
     this.getBrandTree();
     this.OSSPolicy();
+    this.getClassifyTree();
   },
   methods: {
+    getClassifyTree() {
+      getBrandTree().then(response => {
+        this.classifyTreeList = response.data;
+      })
+    },
     getBrandTree() {
       getBrandTree().then(response => {
         this.brandTreeList = response.data;
@@ -369,16 +401,18 @@ export default {
     getAttrList() {
       this.loading = true;
       getAttr(this.catId,this.queryParam).then(response => {
-        console.log(response)
         this.attrList = response.data.page.list;
         this.total = response.data.page.totalCount;
         this.categoryPathHandler(response.data.categoryPath);
         this.loading = false;
         this.handlerBrandModel(this.attrList);
       })
+      getAttrGroup(this.catId,{page: 1,limit: 200}).then(response => {
+        this.groupList = response.data.page.list;
+      })
     },
     handlerBrandTreeList(brandTreeList) {
-      this.handlerClassifyProperty(brandTreeList[0])
+      this.catId = 0;
       this.getAttrList();
       brandTreeList.forEach(item => {
         item.level = 1;
@@ -398,13 +432,6 @@ export default {
         }
         this.attrFrom.categoryPath.push(item.catId)
       })
-    },
-    handlerClassifyProperty(brandTree) {
-      if (brandTree.children && brandTree.children.length > 0) {
-        this.handlerClassifyProperty(brandTree.children[0])
-      } else {
-        this.catId = brandTree.catId
-      }
     },
     levelChildren(item,level) {
       item.children.forEach(child => {
@@ -591,8 +618,25 @@ export default {
       console.log(file);
     },
     uploadSuccess(response, file, fileList) {
-      console.log("上传成功！")
       this.treeFrom.icon = "https://glume-mall.oss-cn-shenzhen.aliyuncs.com/" + this.uploadPath;
+    },
+    handleGroupChange(e) {
+      let num = e.length - 1;
+      this.attrFrom.attrGroupId = e[num];
+    },
+    handleClassifyChange(e) {
+      let num = e.length - 1;
+      this.classifyTreeHandler(e[num],this.classifyTreeList);
+      this.attrFrom.catelogId = e[num];
+    },
+    classifyTreeHandler(id,all) {
+      all.forEach(item => {
+        if (item.catId == id) {
+          this.attrFrom.catelogName = item.name;
+        } else if (item.children && item.children.length > 0){
+          this.classifyTreeHandler(id,item.children)
+        }
+      })
     },
     handlerItem(key,row) {
       this.attrList.forEach(item => {
@@ -616,6 +660,7 @@ export default {
       this.treeFrom = {}
     },
     reset() {
+      this.catId = 0;
       this.dialogTitle = "";
       this.queryParam = {
         page: 1,

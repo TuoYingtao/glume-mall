@@ -11,8 +11,11 @@ import com.glume.common.core.annotation.valid.UpdateGroup;
 import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
+import com.glume.glumemall.product.entity.AttrEntity;
 import com.glume.glumemall.product.entity.CategoryEntity;
+import com.glume.glumemall.product.service.AttrService;
 import com.glume.glumemall.product.service.CategoryService;
+import com.glume.glumemall.product.vo.AttrGroupRelationVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +41,9 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+    @Autowired
+    AttrService attrService;
+
     /**
      * 列表
      */
@@ -51,6 +57,24 @@ public class AttrGroupController {
         data.put("categoryPath",list);
         data.put("page",page);
         return R.ok().put("data", data);
+    }
+
+    /**
+     * 获取分组关联数据
+     */
+    @GetMapping("/{attrGroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrGroupId") Long attrGroupId) {
+        List<AttrEntity> entityList = attrService.getRelationAttr(attrGroupId);
+        return R.ok().put("data", entityList);
+    }
+
+    /**
+     * 删除分组关联记录
+     */
+    @DeleteMapping("/attr/relation/delete")
+    public R deleteRelation(AttrGroupRelationVo[] ids) {
+        attrService.deleteRelation(ids);
+        return R.ok("删除成功！");
     }
 
     /**

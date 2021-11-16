@@ -3,6 +3,7 @@ package com.glume.glumemall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.entity.AttrEntity;
+import com.glume.glumemall.product.vo.AttrGroupRelationVo;
 import com.glume.glumemall.product.vo.AttrRespVo;
 
 import java.util.List;
@@ -26,5 +27,9 @@ public interface AttrService extends IService<AttrEntity> {
     void updateAttrById(AttrRespVo attrVo);
 
     void AttrSave(AttrRespVo attrVo);
+
+    List<AttrEntity> getRelationAttr(Long attrGroupId);
+
+    void deleteRelation(AttrGroupRelationVo[] attrGroupVo);
 }
 

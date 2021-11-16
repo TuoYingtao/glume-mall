@@ -52,7 +52,6 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PageUtils queryPage(Map<String, Object> params, Long catelogId) {
-        IPage<AttrEntity> page = null;
         QueryWrapper<AttrEntity> attrEntityQueryWrapper = new QueryWrapper<AttrEntity>();
         if (StringUtils.isNotNull(params.get("key"))) {
             String key = params.get("key").toString();
@@ -60,12 +59,8 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 obj.like("attr_name",key).or().like("value_select",key).or().like("icon",key);
             });
         }
-        if (catelogId == 0) {
-            page = this.page(new Query<AttrEntity>().getPage(params), attrEntityQueryWrapper);
-        } else {
-            attrEntityQueryWrapper.eq("catelog_id", catelogId);
-            page = this.page(new Query<AttrEntity>().getPage(params),attrEntityQueryWrapper);
-        }
+        if (catelogId != 0) attrEntityQueryWrapper.eq("catelog_id", catelogId);
+        IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params),attrEntityQueryWrapper);
         PageUtils pageUtils = new PageUtils(page);
         List<AttrEntity> records = page.getRecords();
         List<AttrRespVo> list = records.stream().map(attrEntity -> {
@@ -121,18 +116,30 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateAttrById(AttrRespVo attrVo) {
-        baseMapper.updateById(attrVo);
+        AttrEntity attrEntity = new AttrEntity();
+        BeanUtils.copyProperties(attrVo,attrEntity);
+        baseMapper.updateById(attrEntity);
         if (StringUtils.isNotNull(attrVo.getAttrGroupId())) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            attrAttrgroupRelationEntity.setAttrId(attrVo.getAttrId());
             attrAttrgroupRelationEntity.setAttrGroupId(attrVo.getAttrGroupId());
-            relationDao.update(attrAttrgroupRelationEntity,new UpdateWrapper<AttrAttrgroupRelationEntity>().eq("attr_id",attrVo.getAttrId()));
+            Integer count = relationDao.selectCount(new QueryWrapper<AttrAttrgroupRelationEntity>()
+                    .eq("attr_id", attrEntity.getAttrId()));
+            if (count > 0) {
+                relationDao.update(attrAttrgroupRelationEntity,new UpdateWrapper<AttrAttrgroupRelationEntity>()
+                        .eq("attr_id",attrEntity.getAttrId()));
+            } else {
+                relationDao.insert(attrAttrgroupRelationEntity);
+            }
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void AttrSave(AttrRespVo attrVo) {
-        baseMapper.insert(attrVo);
+        AttrEntity attrEntity = new AttrEntity();
+        BeanUtils.copyProperties(attrEntity,attrVo);
+        baseMapper.insert(attrEntity);
         if (StringUtils.isNotNull(attrVo.getAttrGroupId())) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrId(attrVo.getAttrId());

@@ -76,7 +76,7 @@
               <el-input v-model="attrFrom.attrGroupName"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="属性分组描述：" prop="descript">
               <el-input v-model="attrFrom.descript" />
             </el-form-item>
@@ -86,7 +86,7 @@
               <el-input v-model="attrFrom.icon" />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="12">
             <el-form-item label="属性分组排序：" prop="sort">
               <el-input-number v-model="attrFrom.sort" controls-position="right" :min="0" />
             </el-form-item>
@@ -225,6 +225,8 @@ export default {
         sort: [{ required: true, message: "排序不能为空", trigger: "blur" }],
         icon: [{ required: true, message: "图标地址不能为空", trigger: "blur" }],
         productCount: [{ required: true, message: "商品数量不能为空", trigger: "blur" }],
+        attrGroupName: [{ required: true, message: "属性分组名称不能为空", trigger: "blur" }],
+        descript: [{ required: true, message: "属性分组描述不能为空", trigger: "blur" }],
       },
       uploadPath: "",
       uploadParams: {},

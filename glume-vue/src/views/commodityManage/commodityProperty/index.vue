@@ -36,7 +36,7 @@
           <div class="table-title-text">{{ title }}</div>
           <el-row :gutter="10" class="mb8">
             <el-col :span="10">
-              <el-button icon="el-icon-plus" size="mini" @click="addAttrGroup()">添加</el-button>
+              <el-button icon="el-icon-plus" size="mini" @click="addattr()">添加</el-button>
             </el-col>
             <right-toolbar :show-search.sync="showSearch" :is-flag-show="$route.meta.search" @queryTable="getAttrList"/>
           </el-row>
@@ -45,29 +45,35 @@
             <el-table-column label="属性名" prop="attrName"/>
             <el-table-column label="检索" prop="searchType">
               <template slot-scope="scope">
-                <span class="text-table" v-if="scope.row.searchType == 0">不需要</span>
-                <span class="text-table" v-else-if="scope.row.searchType == 1">需要</span>
+                <i class="el-icon-error" v-if="scope.row.searchType == 0"></i>
+                <i class="el-icon-success" v-else-if="scope.row.searchType == 1"></i>
               </template>
             </el-table-column>
             <el-table-column label="值类型" prop="valueType">
               <template slot-scope="scope">
-                <span class="text-table" v-if="scope.row.valueType == 0">单个值</span>
-                <span class="text-table" v-else-if="scope.row.valueType == 1">多个值</span>
+                <el-tag type="success" v-if="scope.row.valueType == 0">单个值</el-tag>
+                <el-tag type="success" v-else-if="scope.row.valueType == 1">多个值</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="图标" prop="icon"/>
-            <el-table-column label="值列表" prop="valueSelect"/>
+            <el-table-column label="值列表" prop="valueSelect">
+              <template slot-scope="scope">
+                <el-tooltip class="item" effect="dark" :content="scope.row.valueSelect" placement="top-start">
+                  <el-tag>{{ scope.row.valueSelect }}</el-tag>
+                </el-tooltip>
+              </template>
+            </el-table-column>
             <el-table-column label="属性类型" prop="attrType">
               <template slot-scope="scope">
-                <span class="text-table" v-if="scope.row.attrType == 0">销售属性</span>
-                <span class="text-table" v-else-if="scope.row.attrType == 1">基本属性</span>
-                <span class="text-table" v-else-if="scope.row.attrType == 2">既是销售属性又是基本属性</span>
+                <el-tag type="success" v-if="scope.row.attrType == 0">销售属性</el-tag>
+                <el-tag type="success" v-else-if="scope.row.attrType == 1">基本属性</el-tag>
+                <el-tag type="success" v-else-if="scope.row.attrType == 2">既是销售属性又是基本属性</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="快速展示" prop="showDesc">
               <template slot-scope="scope">
-                <span class="text-table" v-if="scope.row.showDesc == 0">否</span>
-                <span class="text-table" v-else-if="scope.row.showDesc == 1">是</span>
+                <i class="el-icon-error" v-if="scope.row.showDesc == 0"></i>
+                <i class="el-icon-success" v-else-if="scope.row.showDesc == 1"></i>
               </template>
             </el-table-column>
             <el-table-column label="启用状态" prop="enable">
@@ -77,7 +83,7 @@
             </el-table-column>
             <el-table-column label="操作" prop="sort">
               <template slot-scope="scope">
-                <el-button type="warning" size="mini" @click="amendAttrGroup(scope.row)">修改</el-button>
+                <el-button type="warning" size="mini" @click="amendattr(scope.row)">修改</el-button>
                 <el-button type="danger" size="mini" @click="attrDelClick(scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -90,7 +96,7 @@
 
     <!-- attr 弹窗 -->
     <el-dialog :title="dialogTitle" :visible.sync="isAttrOpen" width="28%" :before-close="attrFromHandleClose">
-      <el-form ref="attrFrom" :model="attrFrom" :rules="attrRules" size="medium" label-width="120px">
+      <el-form ref="attrFrom" :model="attrFrom" :rules="rules" size="medium" label-width="120px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="属性名：" prop="attrName">
@@ -159,7 +165,7 @@
 
     <!-- tree 弹窗 -->
     <el-dialog :title="dialogTitle" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
-      <el-form ref="treeFrom" :model="treeFrom" :rules="TreeRules" size="medium" label-width="100px">
+      <el-form ref="treeFrom" :model="treeFrom" :rules="rules" size="medium" label-width="100px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="上级商品：">
@@ -242,7 +248,7 @@ import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {MessageBox} from "element-ui";
-import {amendAttr, getAttr, queryAttr} from "@/api/commodityManage/attr";
+import {addAttr, amendAttr, delAttr, getAttr, queryAttr} from "@/api/commodityManage/attr";
 import SearchBox from "@/components/searchBox";
 
 export default {
@@ -268,14 +274,11 @@ export default {
       treeFrom: {},
       treeOptions: [],
       brandTreeList: [],
-      TreeRules: {
+      rules: {
         name: [{ required: true, message: "分类名称不能为空", trigger: "blur" }],
         catLevel: [{ required: true, message: "层级不能为空", trigger: "blur" }],
         sort: [{ required: true, message: "排序不能为空", trigger: "blur" }],
-        icon: [{ required: true, message: "图标地址不能为空", trigger: "blur" }],
         productCount: [{ required: true, message: "商品数量不能为空", trigger: "blur" }],
-      },
-      attrRules: {
         attrName: [{ required: true, message: "属性名不能为空", trigger: "blur" }],
         valueSelect: [{ required: true, message: "值列表不能为空", trigger: "blur" }],
         icon: [{ required: true, message: "图标不能为空", trigger: "blur" }],
@@ -452,20 +455,21 @@ export default {
     cascaderChange(value) {
       this.attrFrom.catelogId = value;
     },
-    queryAttrGroupInfo(attrGroupId) {
-      queryAttr(attrGroupId).then(response => {
-        this.attrFrom = response.data
+    queryattrInfo(attrId) {
+      queryAttr(attrId).then(response => {
+        this.attrFrom = response.data;
+        this.attrFrom.valueSelect = this.attrFrom.valueSelect.split(",");
       })
     },
-    addAttrGroup() {
+    addattr() {
       this.attrReset()
       this.dialogTitle = "添加属性"
       this.isAttrOpen = true;
     },
-    amendAttrGroup(row) {
+    amendattr(row) {
       this.attrReset()
       this.dialogTitle = "修改属性"
-      this.queryAttrGroupInfo(row.attrGroupId);
+      this.queryattrInfo(row.attrId);
       this.isAttrOpen = true;
     },
     treeAddClick(row) {
@@ -489,8 +493,8 @@ export default {
       });
     },
     attrDelClick: function (row) {
-      MessageBox.confirm('是否确认删除名称为"' + row.attrGroupName + '"的数据项？').then(function () {
-        return delAttr({attrGroupIds: row.attrGroupId});
+      MessageBox.confirm('是否确认删除名称为"' + row.attrName + '"的数据项？').then(function () {
+        return delAttr({attrIds: row.attrId});
       }).then(() => {
         this.getAttrList();
         this.notSuccess("删除成功");
@@ -508,7 +512,8 @@ export default {
     attrFromSubmitForm() {
       this.$refs["attrFrom"].validate(valid => {
         if (valid) {
-          if (this.attrFrom.attrGroupId != undefined) {
+          this.attrFrom.valueSelect = this.attrFrom.valueSelect.toString();
+          if (this.attrFrom.attrId != undefined) {
             this.attrFrom.categoryPath = []
             amendAttr(this.attrFrom).then(response => {
               this.notSuccess("修改成功");

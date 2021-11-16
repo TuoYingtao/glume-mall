@@ -53,13 +53,17 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Transactional(rollbackFor = Exception.class)
     public PageUtils queryPage(Map<String, Object> params, Long catelogId) {
         QueryWrapper<AttrEntity> attrEntityQueryWrapper = new QueryWrapper<AttrEntity>();
+        if (catelogId != 0) attrEntityQueryWrapper.eq("catelog_id", catelogId);
+        if (StringUtils.isNotNull(params.get("attrType"))) {
+            String attrType = params.get("attrType").toString();
+            attrEntityQueryWrapper.eq("attr_type",attrType);
+        }
         if (StringUtils.isNotNull(params.get("key"))) {
             String key = params.get("key").toString();
             attrEntityQueryWrapper.and(obj -> {
                 obj.like("attr_name",key).or().like("value_select",key).or().like("icon",key);
             });
         }
-        if (catelogId != 0) attrEntityQueryWrapper.eq("catelog_id", catelogId);
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params),attrEntityQueryWrapper);
         PageUtils pageUtils = new PageUtils(page);
         List<AttrEntity> records = page.getRecords();

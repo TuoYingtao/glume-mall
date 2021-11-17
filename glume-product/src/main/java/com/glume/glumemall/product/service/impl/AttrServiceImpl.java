@@ -155,7 +155,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     }
 
     /**
-     * 更具分组ID查询所有关联数据
+     * 根据分组ID查询所有关联数据
      * @param attrGroupId
      * @return
      */
@@ -165,6 +165,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrGroupId));
         List<Long> attrIds = attrgroupRelationEntities.stream().map(attrAttrgroupRelationEntity ->
                 attrAttrgroupRelationEntity.getAttrId()).collect(Collectors.toList());
+        if(!StringUtils.isNotNull(attrIds) && attrIds.size() == 0) {
+            return null;
+        }
         List<AttrEntity> entityList = this.listByIds(attrIds);
         return entityList;
     }

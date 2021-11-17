@@ -97,7 +97,7 @@
     <price-dialog ref="RefDialog" :mobel-id="id"/>
 
     <!-- attr 弹窗 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isAttrOpen" width="28%" :before-close="attrFromHandleClose">
+    <el-dialog :title="dialogTitle" :visible.sync="isAttrOpen" width="35%" :before-close="attrFromHandleClose">
       <el-form ref="attrFrom" :model="attrFrom" :rules="rules" size="medium" label-width="120px">
         <el-row>
           <el-col :span="24">
@@ -182,7 +182,7 @@
     </el-dialog>
 
     <!-- tree 弹窗 -->
-    <el-dialog :title="dialogTitle" :visible.sync="isTreeOpen" width="28%" :before-close="treeFromHandleClose">
+    <el-dialog :title="dialogTitle" :visible.sync="isTreeOpen" width="35%" :before-close="treeFromHandleClose">
       <el-form ref="treeFrom" :model="treeFrom" :rules="rules" size="medium" label-width="100px">
         <el-row>
           <el-col :span="24">

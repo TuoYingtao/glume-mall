@@ -441,12 +441,14 @@ export default {
       });
     },
     deleteRelation(row) {
+      let param = {ids: [{attrId: row.attrId, attrGroupId: this.attrGroupId}]};
       MessageBox.confirm('是否确认删除名称为"' + row.attrName + '"的数据项？').then(function () {
-        return deleteGroupRelation({attrId: row.attrId, attrGroupId: this.attrGroupId});
+        return deleteGroupRelation(param);
       }).then(() => {
         this.getRelationList();
         this.notSuccess("删除成功");
-      }).catch(() => {
+      }).catch((err) => {
+        console.log(err)
       });
     },
     attrDelClick: function (row) {

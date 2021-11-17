@@ -69,10 +69,20 @@ public class AttrGroupController {
     }
 
     /**
+     * 获取分组没有关联数据
+     */
+    @GetMapping("/{attrGroupId}/attr/relation")
+    public R notAttrRelation(@RequestParam Map<String,Object> params,
+                             @PathVariable("attrGroupId") Long attrGroupId) {
+        PageUtils notRelationAttr = attrService.getNotRelationAttr(params, attrGroupId);
+        return R.ok().put("data", notRelationAttr);
+    }
+
+    /**
      * 删除分组关联记录
      */
     @DeleteMapping("/attr/relation/delete")
-    public R deleteRelation(AttrGroupRelationVo[] ids) {
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] ids) {
         attrService.deleteRelation(ids);
         return R.ok("删除成功！");
     }

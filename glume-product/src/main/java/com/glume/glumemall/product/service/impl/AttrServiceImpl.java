@@ -173,6 +173,33 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     }
 
     /**
+     * 根据分组ID查询所有没有关联数据
+     * @param attrGroupId
+     * @return
+     */
+    @Override
+    public PageUtils getNotRelationAttr(Map<String,Object> params, Long attrGroupId) {
+        AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrGroupId);
+        Long catelogId = attrGroupEntity.getCatelogId();
+        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId)
+                .ne("attr_group_id",attrGroupId));
+        List<Long> list = attrGroupEntities.stream().map(AttrGroupEntity::getAttrGroupId).collect(Collectors.toList());
+        QueryWrapper<AttrAttrgroupRelationEntity> relationEntityQueryWrapper = new QueryWrapper<AttrAttrgroupRelationEntity>();
+        if (StringUtils.isNotNull(list) && list.size() > 0) {
+            relationEntityQueryWrapper.in("attr_group_id", list);
+        }
+        List<AttrAttrgroupRelationEntity> relationEntities = relationDao.selectList(relationEntityQueryWrapper);
+        List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId);
+        if (StringUtils.isNotNull(attrIds) && attrIds.size() > 0) {
+            wrapper.notIn("attr_id", attrIds);
+        }
+        IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
+        PageUtils pageUtils = new PageUtils(page);
+        return pageUtils;
+    }
+
+    /**
      * 删除关联关系
      * @param attrGroupVo
      */

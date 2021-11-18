@@ -144,11 +144,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     @Transactional(rollbackFor = Exception.class)
     public void AttrSave(AttrRespVo attrVo) {
         AttrEntity attrEntity = new AttrEntity();
-        BeanUtils.copyProperties(attrEntity,attrVo);
+        BeanUtils.copyProperties(attrVo,attrEntity);
         baseMapper.insert(attrEntity);
         if (StringUtils.isNotNull(attrVo.getAttrGroupId())) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
-            attrAttrgroupRelationEntity.setAttrId(attrVo.getAttrId());
+            attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
             attrAttrgroupRelationEntity.setAttrGroupId(attrVo.getAttrGroupId());
             relationDao.insert(attrAttrgroupRelationEntity);
         }
@@ -181,8 +181,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     public PageUtils getNotRelationAttr(Map<String,Object> params, Long attrGroupId) {
         AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrGroupId);
         Long catelogId = attrGroupEntity.getCatelogId();
-        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId)
-                .ne("attr_group_id",attrGroupId));
+        List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
         List<Long> list = attrGroupEntities.stream().map(AttrGroupEntity::getAttrGroupId).collect(Collectors.toList());
         QueryWrapper<AttrAttrgroupRelationEntity> relationEntityQueryWrapper = new QueryWrapper<AttrAttrgroupRelationEntity>();
         if (StringUtils.isNotNull(list) && list.size() > 0) {

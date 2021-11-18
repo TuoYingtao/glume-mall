@@ -79,6 +79,17 @@ public class AttrGroupController {
     }
 
     /**
+     * 添加属性分组关系
+     */
+    @PostMapping("/add/attr/relation")
+    public R addAttrGroupRelation(Long[] attrId,Long attrGroupId) {
+        attrService.saveAttrGroupRelationBatch(attrId,attrGroupId);
+        return R.ok("添加属性分组关系成功！");
+    }
+
+
+
+    /**
      * 删除分组关联记录
      */
     @DeleteMapping("/attr/relation/delete")

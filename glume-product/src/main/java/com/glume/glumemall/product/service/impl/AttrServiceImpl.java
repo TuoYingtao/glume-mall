@@ -202,6 +202,22 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     }
 
     /**
+     * 保存属性分组关系
+     * @param attrId 属性ID集合
+     * @param attrGroupId 分组ID
+     */
+    @Override
+    public void saveAttrGroupRelationBatch(Long[] attrId, Long attrGroupId) {
+        List<AttrAttrgroupRelationEntity> relationEntities = Arrays.asList(attrId).stream().map(aLong -> {
+            AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
+            attrAttrgroupRelationEntity.setAttrId(aLong);
+            attrAttrgroupRelationEntity.setAttrGroupId(attrGroupId);
+            return attrAttrgroupRelationEntity;
+        }).collect(Collectors.toList());
+        attrAttrgroupRelationService.saveBatch(relationEntities);
+    }
+
+    /**
      * 删除关联关系
      * @param attrGroupVo
      */

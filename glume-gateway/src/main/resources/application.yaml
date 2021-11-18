@@ -6,6 +6,7 @@ spring:
   cloud:
     gateway:
       routes:
+        # 产品服务路由
         - id: product_route
           uri: lb://glume-product
           predicates:
@@ -13,6 +14,15 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
 
+        # 会员服务路由
+        - id: member_router
+          uri: lb://glume-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
+        # 第三方服务路由
         - id: third_party_route
           uri: lb://glume-third-party
           predicates:
@@ -20,6 +30,7 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
 
+        # admin服务路由
         - id: admin_route
           uri: lb://glume-admin
           predicates:

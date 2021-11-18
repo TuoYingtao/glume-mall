@@ -163,9 +163,12 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     public List<AttrEntity> getRelationAttr(Long attrGroupId) {
         List<AttrAttrgroupRelationEntity> attrgroupRelationEntities =
                 relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", attrGroupId));
+        if (!StringUtils.isNotEmpty(attrgroupRelationEntities) && attrgroupRelationEntities.size() == 0) {
+            return null;
+        }
         List<Long> attrIds = attrgroupRelationEntities.stream().map(attrAttrgroupRelationEntity ->
                 attrAttrgroupRelationEntity.getAttrId()).collect(Collectors.toList());
-        if(!StringUtils.isNotNull(attrIds) && attrIds.size() == 0) {
+        if(!StringUtils.isNotEmpty(attrIds) && attrIds.size() == 0) {
             return null;
         }
         List<AttrEntity> entityList = this.listByIds(attrIds);
@@ -184,13 +187,13 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         List<AttrGroupEntity> attrGroupEntities = attrGroupDao.selectList(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
         List<Long> list = attrGroupEntities.stream().map(AttrGroupEntity::getAttrGroupId).collect(Collectors.toList());
         QueryWrapper<AttrAttrgroupRelationEntity> relationEntityQueryWrapper = new QueryWrapper<AttrAttrgroupRelationEntity>();
-        if (StringUtils.isNotNull(list) && list.size() > 0) {
+        if (StringUtils.isNotEmpty(list) && list.size() > 0) {
             relationEntityQueryWrapper.in("attr_group_id", list);
         }
         List<AttrAttrgroupRelationEntity> relationEntities = relationDao.selectList(relationEntityQueryWrapper);
         List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
         QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId);
-        if (StringUtils.isNotNull(attrIds) && attrIds.size() > 0) {
+        if (StringUtils.isNotEmpty(attrIds) && attrIds.size() > 0) {
             wrapper.notIn("attr_id", attrIds);
         }
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);

@@ -48,7 +48,7 @@
             <span>{{ parseTime(scope.row.createTime,'{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="300">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleAdd(scope.row)">新增</el-button>
             <el-button size="mini" type="warning" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>

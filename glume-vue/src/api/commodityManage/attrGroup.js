@@ -49,6 +49,14 @@ export function groupRelationList(attrGroupId) {
   })
 }
 
+/** 没有分组关系列表 */
+export function groupNotRelationList(attrGroupId) {
+  return request({
+    url: `/product/attrgroup/${attrGroupId}/notattr/relation`,
+    method: "GET",
+  })
+}
+
 /** 删除分组关系 */
 export function deleteGroupRelation(data) {
   console.log(data)

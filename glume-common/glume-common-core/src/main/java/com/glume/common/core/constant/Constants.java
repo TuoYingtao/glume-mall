@@ -92,6 +92,35 @@ public class Constants {
     }
 
     /**
+     * 属性类型
+     */
+    public enum AttrType {
+
+        MARKET_ATTR_TYPE(0, "销售属性"),
+
+        BASE_ATTR_TYPE(1, "基本属性"),
+
+        MARKET_BASE_TYPE(2,"既是销售属性又是基本属性");
+
+        private Integer value;
+
+        private String msg;
+
+        AttrType(Integer value,String msg) {
+            this.value = value;
+            this.msg = msg;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
+
+    /**
      * 定时任务状态
      */
     public enum ScheduleStatus {

@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80025
+ Source Server Version : 80026
  Source Host           : localhost:3306
  Source Schema         : glumemall_ums
 
  Target Server Type    : MySQL
- Target Server Version : 80025
+ Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 15/10/2021 17:49:21
+ Date: 18/11/2021 23:22:50
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `ums_growth_change_history`  (
   `note` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `source_type` tinyint NULL DEFAULT NULL COMMENT '积分来源[0-购物，1-管理员修改]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '成长值变化历史记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '成长值变化历史记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_growth_change_history
@@ -47,7 +47,7 @@ CREATE TABLE `ums_integration_change_history`  (
   `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `source_tyoe` tinyint NULL DEFAULT NULL COMMENT '来源[0->购物；1->管理员修改;2->活动]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '积分变化历史记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '积分变化历史记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_integration_change_history
@@ -77,7 +77,7 @@ CREATE TABLE `ums_member`  (
   `status` tinyint NULL DEFAULT NULL COMMENT '启用状态',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member
@@ -95,7 +95,7 @@ CREATE TABLE `ums_member_collect_spu`  (
   `spu_img` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'spu_img',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT 'create_time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收藏的商品' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收藏的商品' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_collect_spu
@@ -112,7 +112,7 @@ CREATE TABLE `ums_member_collect_subject`  (
   `subject_img` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'subject_img',
   `subject_urll` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '活动url',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收藏的专题活动' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收藏的专题活动' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_collect_subject
@@ -129,16 +129,17 @@ CREATE TABLE `ums_member_level`  (
   `default_status` tinyint NULL DEFAULT NULL COMMENT '是否为默认等级[0->不是；1->是]',
   `free_freight_point` decimal(18, 4) NULL DEFAULT NULL COMMENT '免运费标准',
   `comment_growth_point` int NULL DEFAULT NULL COMMENT '每次评价获取的成长值',
-  `priviledge_free_freight` tinyint NULL DEFAULT NULL COMMENT '是否有免邮特权',
-  `priviledge_member_price` tinyint NULL DEFAULT NULL COMMENT '是否有会员价格特权',
-  `priviledge_birthday` tinyint NULL DEFAULT NULL COMMENT '是否有生日特权',
+  `priviledge_free_freight` tinyint NULL DEFAULT NULL COMMENT '是否有免邮特权[0->没有；1->有]',
+  `priviledge_member_price` tinyint NULL DEFAULT NULL COMMENT '是否有会员价格特权[0->没有；1->有]',
+  `priviledge_birthday` tinyint NULL DEFAULT NULL COMMENT '是否有生日特权[0->没有；1->有]',
   `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员等级' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员等级' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_level
 -- ----------------------------
+INSERT INTO `ums_member_level` VALUES (1, '普通会员', 10, 0, 299.0000, 20, 0, 0, 0, '普通注册用户会员');
 
 -- ----------------------------
 -- Table structure for ums_member_login_log
@@ -152,7 +153,7 @@ CREATE TABLE `ums_member_login_log`  (
   `city` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'city',
   `login_type` tinyint(1) NULL DEFAULT NULL COMMENT '登录类型[1-web，2-app]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员登录记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员登录记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_login_log
@@ -175,7 +176,7 @@ CREATE TABLE `ums_member_receive_address`  (
   `areacode` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '省市区代码',
   `default_status` tinyint(1) NULL DEFAULT NULL COMMENT '是否默认',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收货地址' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收货地址' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_receive_address
@@ -202,7 +203,7 @@ CREATE TABLE `ums_member_statistics_info`  (
   `collect_comment_count` int NULL DEFAULT NULL COMMENT '收藏的评论数量',
   `invite_friend_count` int NULL DEFAULT NULL COMMENT '邀请的朋友数量',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员统计信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员统计信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_statistics_info

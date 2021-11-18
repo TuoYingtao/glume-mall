@@ -57,9 +57,12 @@ export default {
       this.getRelationList();
     },
     getRelationList() {
-      console.log("BB",this.attrGroupId)
       groupRelationList(this.attrGroupId).then(response => {
-        this.relationData = response.data;
+        if (response.data != null) {
+          this.relationData = response.data;
+        } else {
+          this.$emit('addAttrGroupRelation')
+        }
       })
     },
     addAttrGroupRelation() {

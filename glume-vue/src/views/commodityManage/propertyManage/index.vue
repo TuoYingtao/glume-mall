@@ -56,7 +56,7 @@
             </el-table-column>
             <el-table-column label="操作" prop="sort">
               <template slot-scope="scope">
-                <el-button type="primary" size="mini" @click="mapping(scope.row)">分类匹配</el-button>
+                <el-button type="primary" size="mini" @click="mapping(scope.row)">属性关联</el-button>
                 <el-button type="warning" size="mini" @click="amendAttrGroup(scope.row)">修改</el-button>
                 <el-button type="danger" size="mini" @click="attrDelClick(scope.row)">删除</el-button>
               </template>
@@ -175,25 +175,10 @@
     </el-dialog>
 
     <!-- 弹窗 -->
-    <el-dialog title="品牌分类关联" width="30%" :visible.sync="dialogTableVisible">
-      <el-table :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" :data="relationData">
-        <el-table-column type="selection" width="80" align="center"/>
-        <el-table-column property="attrId" label="属性ID"/>
-        <el-table-column property="attrName" label="属性名"/>
-        <el-table-column property="valueSelect" label="可选值">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.valueSelect" placement="top-start">
-              <el-tag>{{ scope.row.valueSelect }}</el-tag>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button icon="el-icon-delete" type="danger" size="mini" @click="deleteRelation(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
+    <group-property-relation-dialog ref="groupPropertyRelationDialog"
+                                    :attrGroupIds="attrGroupId"
+                                    @addAttrGroupRelation="addAttrGroupRelation"/>
+    <add-group-relation-dialog ref="addGroupRelationDialog" :attrGroupId="attrGroupId"/>
   </layout-container>
 </template>
 
@@ -204,8 +189,10 @@ import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {MessageBox} from "element-ui";
-import {addAttrGroup, amendAttrGroup, delAttrGroup, getAttrGroup, queryAttrGroup, groupRelationList, deleteGroupRelation} from "@/api/commodityManage/attrGroup";
+import {addAttrGroup, amendAttrGroup, delAttrGroup, getAttrGroup, queryAttrGroup, groupRelationList, deleteGroupRelation, groupNotRelationList} from "@/api/commodityManage/attrGroup";
 import SearchBox from "@/components/searchBox";
+import groupPropertyRelationDialog from "@/views/commodityManage/propertyManage/children/groupPropertyRelationDialog";
+import addGroupRelationDialog from "@/views/commodityManage/propertyManage/children/addGroupRelationDialog";
 
 export default {
   name: 'index',
@@ -213,7 +200,9 @@ export default {
     LayoutContainer,
     PriceDialog,
     Treeselect,
-    SearchBox
+    SearchBox,
+    groupPropertyRelationDialog,
+    addGroupRelationDialog,
   },
   data() {
     return {
@@ -269,8 +258,6 @@ export default {
       title: "",
       total: null,
 
-      dialogTableVisible: false,
-      relationData: [],
       attrGroupId: null,
     }
   },
@@ -315,13 +302,10 @@ export default {
     },
     mapping(row) {
       this.attrGroupId = row.attrGroupId;
-      this.dialogTableVisible = true;
-      this.getRelationList();
+      this.$refs['groupPropertyRelationDialog'].open(this.attrGroupId);
     },
-    getRelationList() {
-      groupRelationList(this.attrGroupId).then(response => {
-        this.relationData = response.data;
-      })
+    addAttrGroupRelation() {
+      this.$refs['addGroupRelationDialog'].open();
     },
     getAttrList() {
       this.loading = true;
@@ -438,17 +422,6 @@ export default {
     getQueryTreeInfo(catId) {
       queryBrandTree(catId).then(response => {
         this.treeFrom = response.data.category;
-      });
-    },
-    deleteRelation(row) {
-      let param = {ids: [{attrId: row.attrId, attrGroupId: this.attrGroupId}]};
-      MessageBox.confirm('是否确认删除名称为"' + row.attrName + '"的数据项？').then(function () {
-        return deleteGroupRelation(param);
-      }).then(() => {
-        this.getRelationList();
-        this.notSuccess("删除成功");
-      }).catch((err) => {
-        console.log(err)
       });
     },
     attrDelClick: function (row) {

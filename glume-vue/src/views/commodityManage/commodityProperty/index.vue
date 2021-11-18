@@ -101,22 +101,6 @@
       <el-form ref="attrFrom" :model="attrFrom" :rules="rules" size="medium" label-width="120px">
         <el-row>
           <el-col :span="24">
-            <el-form-item label="分类路径：" prop="attrName">
-              <el-cascader style="width: 100%" ref="cascader" v-model="attrFrom.catelogId"
-                           :options="classifyTreeList"
-                           :props="attrProps"
-                           @change="handleClassifyChange"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="分组名称：" prop="attrName">
-              <el-cascader style="width: 100%" ref="cascader" v-model="attrFrom.attrGroupId"
-                           :options="groupList"
-                           :props="groupProps"
-                           @change="handleGroupChange"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
             <el-form-item label="属性名：" prop="attrName">
               <el-input v-model="attrFrom.attrName"/>
             </el-form-item>
@@ -169,6 +153,22 @@
                 <el-radio :label="0">否</el-radio>
                 <el-radio :label="1">是</el-radio>
               </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="分类路径：" prop="attrName">
+              <el-cascader style="width: 100%" ref="cascader" v-model="attrFrom.catelogId"
+                           :options="classifyTreeList"
+                           :props="attrProps"
+                           @change="handleClassifyChange"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="分组名称：">
+              <el-cascader :disabled="attrFrom.attrType == 1" style="width: 100%" ref="cascader" v-model="attrFrom.attrGroupId"
+                           :options="groupList"
+                           :props="groupProps"
+                           @change="handleGroupChange"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -409,9 +409,6 @@ export default {
         this.loading = false;
         this.handlerBrandModel(this.attrList);
       })
-      getAttrGroup(this.catId,{page: 1,limit: 200}).then(response => {
-        this.groupList = response.data.page.list;
-      })
     },
     handlerBrandTreeList(brandTreeList) {
       this.catId = 0;
@@ -462,6 +459,7 @@ export default {
     handleNodeClick(data,node,component) {
       this.reset();
       this.catId = data.catId;
+      this.attrFrom.catelogId = data.catId;
       this.getAttrList();
     },
     onInput(node,data) {
@@ -484,23 +482,27 @@ export default {
     cascaderChange(value) {
       this.attrFrom.catelogId = value;
     },
-    queryattrInfo(attrId) {
-      queryAttr(attrId).then(response => {
-        this.attrFrom = response.data;
-        this.attrFrom.valueSelect = this.attrFrom.valueSelect.split(",");
-      })
-    },
+    /* 打开添加属性弹窗 */
     addattr() {
       this.attrReset()
       this.dialogTitle = "添加属性"
       this.isAttrOpen = true;
     },
+    /* 打开修改属性弹窗 */
     amendattr(row) {
       this.attrReset()
       this.dialogTitle = "修改属性"
       this.queryattrInfo(row.attrId);
       this.isAttrOpen = true;
     },
+    /* 查询属性详情 */
+    queryattrInfo(attrId) {
+      queryAttr(attrId).then(response => {
+        this.attrFrom = response.data;
+        this.attrFrom.valueSelect = this.attrFrom.valueSelect.split(",");
+      })
+    },
+    /* 打开添加分类弹窗 */
     treeAddClick(row) {
       this.treeReset()
       this.dialogTitle = "添加分类"
@@ -508,6 +510,7 @@ export default {
       this.getTreeselect()
       this.isTreeOpen = true
     },
+    /* 打开修改分类弹窗 */
     treeAmendClick(row) {
       this.treeReset()
       this.dialogTitle = "修改分类"
@@ -550,7 +553,6 @@ export default {
               this.getAttrList();
             });
           } else {
-            this.attrFrom.catelogId = this.catId;
             addAttr(this.attrFrom).then(response => {
               this.notSuccess("新增成功");
               this.isAttrOpen = false;
@@ -623,13 +625,18 @@ export default {
       this.treeFrom.icon = "https://glume-mall.oss-cn-shenzhen.aliyuncs.com/" + this.uploadPath;
     },
     handleGroupChange(e) {
-      let num = e.length - 1;
-      this.attrFrom.attrGroupId = e[num];
+      if (e != undefined) {
+        let num = e.length - 1;
+        this.attrFrom.attrGroupId = e[num];
+      }
     },
     handleClassifyChange(e) {
       let num = e.length - 1;
       this.classifyTreeHandler(e[num],this.classifyTreeList);
       this.attrFrom.catelogId = e[num];
+      getAttrGroup(this.attrFrom.catelogId,{page: 1,limit: 200}).then(response => {
+        this.groupList = response.data.page.list;
+      })
     },
     classifyTreeHandler(id,all) {
       all.forEach(item => {
@@ -652,6 +659,7 @@ export default {
       this.getAttrList();
     },
     resetQuery() {
+      this.attrFrom.catelogId = null;
       this.reset();
       this.getAttrList();
     },
@@ -669,6 +677,7 @@ export default {
         limit: 10
       }
       this.attrFrom = {
+        catelogId: this.attrFrom.catelogId,
         searchType: 0,
         showDesc: 0,
         enable: 0

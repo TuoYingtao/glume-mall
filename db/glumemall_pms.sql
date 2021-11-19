@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80026
+ Source Server Version : 80025
  Source Host           : localhost:3306
  Source Schema         : glumemall_pms
 
  Target Server Type    : MySQL
- Target Server Version : 80026
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 18/11/2021 23:23:05
+ Date: 19/11/2021 17:57:51
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `pms_attr`  (
   `catelog_id` bigint NULL DEFAULT NULL COMMENT '所属分类',
   `show_desc` tinyint NULL DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整',
   PRIMARY KEY (`attr_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品属性' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_attr
@@ -50,6 +50,9 @@ INSERT INTO `pms_attr` VALUES (15, 'CPU品牌', 1, 0, 'xxx', '高通(Qualcomm);�
 INSERT INTO `pms_attr` VALUES (16, 'CPU型号', 1, 0, 'xxx', '骁龙665;骁龙845;骁龙855;骁龙730;HUAWEI Kirin 980;HUAWEI Kirin 970', 1, 1, 225, 0);
 INSERT INTO `pms_attr` VALUES (17, 'Test', 1, 1, 'Xxx', '测试,无解,wuji', 1, 1, 166, 1);
 INSERT INTO `pms_attr` VALUES (19, '策色色粉色', 0, 1, 'Xxxx', '阀撒,丰顺丰,阀手动阀', 1, 1, 166, 1);
+INSERT INTO `pms_attr` VALUES (28, 'A1', 1, 0, 'Xxx', 'casd', 0, 1, 166, 1);
+INSERT INTO `pms_attr` VALUES (29, 'Addsf', 1, 0, 'Xxxx', 'A', 2, 1, 166, 1);
+INSERT INTO `pms_attr` VALUES (30, 'G@2', 1, 0, 'Xgg', 'SF', 1, 1, 166, 1);
 
 -- ----------------------------
 -- Table structure for pms_attr_attrgroup_relation
@@ -78,6 +81,8 @@ INSERT INTO `pms_attr_attrgroup_relation` VALUES (33, 12, 2, NULL);
 INSERT INTO `pms_attr_attrgroup_relation` VALUES (34, 9, 2, NULL);
 INSERT INTO `pms_attr_attrgroup_relation` VALUES (35, 10, 2, NULL);
 INSERT INTO `pms_attr_attrgroup_relation` VALUES (36, 19, 12, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (42, 28, 12, NULL);
+INSERT INTO `pms_attr_attrgroup_relation` VALUES (44, 29, 12, NULL);
 
 -- ----------------------------
 -- Table structure for pms_attr_group
@@ -115,7 +120,7 @@ CREATE TABLE `pms_brand`  (
   `first_letter` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '检索首字母',
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`brand_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_brand
@@ -1590,7 +1595,7 @@ CREATE TABLE `pms_category_brand_relation`  (
   `brand_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `catelog_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_category_brand_relation
@@ -1641,7 +1646,7 @@ CREATE TABLE `pms_product_attr_value`  (
   `attr_sort` int NULL DEFAULT NULL COMMENT '顺序',
   `quick_show` tinyint NULL DEFAULT NULL COMMENT '快速展示【是否展示在介绍上；0-否 1-是】',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu属性值' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu属性值' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_product_attr_value
@@ -1671,7 +1676,7 @@ CREATE TABLE `pms_sku_images`  (
   `img_sort` int NULL DEFAULT NULL COMMENT '排序',
   `default_img` int NULL DEFAULT NULL COMMENT '默认图[0 - 不是默认图，1 - 是默认图]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku图片' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku图片' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_sku_images
@@ -1804,7 +1809,7 @@ CREATE TABLE `pms_sku_info`  (
   `price` decimal(18, 4) NULL DEFAULT NULL COMMENT '价格',
   `sale_count` bigint NULL DEFAULT NULL COMMENT '销量',
   PRIMARY KEY (`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_sku_info
@@ -1848,7 +1853,7 @@ CREATE TABLE `pms_sku_sale_attr_value`  (
   `attr_value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '销售属性值',
   `attr_sort` int NULL DEFAULT NULL COMMENT '顺序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku销售属性&值' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'sku销售属性&值' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_sku_sale_attr_value
@@ -1946,7 +1951,7 @@ CREATE TABLE `pms_spu_images`  (
   `img_sort` int NULL DEFAULT NULL COMMENT '顺序',
   `default_img` tinyint NULL DEFAULT NULL COMMENT '是否默认图',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu图片' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu图片' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_spu_images
@@ -1984,7 +1989,7 @@ CREATE TABLE `pms_spu_info`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_spu_info

@@ -199,7 +199,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
         QueryWrapper<AttrEntity> wrapper = new QueryWrapper<AttrEntity>().eq("catelog_id", catelogId);
         if (StringUtils.isNotEmpty(attrIds) && attrIds.size() > 0) {
-            wrapper.notIn("attr_id", attrIds);
+            wrapper.notIn("attr_id", attrIds).and(attrEntityQueryWrapper -> {
+                attrEntityQueryWrapper.notIn("attr_type",Constants.AttrType.BASE_ATTR_TYPE.getValue());
+            });
         }
         IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), wrapper);
         PageUtils pageUtils = new PageUtils(page);

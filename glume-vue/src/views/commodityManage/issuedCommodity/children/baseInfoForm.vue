@@ -10,7 +10,7 @@
 
         <el-col :span="24">
           <el-form-item label="商品描述">
-            <el-input v-model="form.name" placeholder="请输入商品描述"/>
+            <el-input v-model="form.describe" placeholder="请输入商品描述"/>
           </el-form-item>
         </el-col>
 
@@ -26,7 +26,7 @@
 
         <el-col :span="24">
           <el-form-item label="选择品牌">
-            <el-select style="width: 100%" v-model="form.brandId" filterable @change="brandChange" placeholder="请选择品牌">
+            <el-select style="width: 100%" v-model="form.brandName" filterable @change="brandChange" placeholder="请选择品牌">
               <el-option v-for="(item,index) in classifyBrandList" :key="index" :label="item.name" :value="item.brandId"/>
             </el-select>
           </el-form-item>
@@ -35,7 +35,7 @@
         <el-col :span="24">
           <el-form-item label="商品重量（Kg）">
             <el-input-number style="width: 100%" :precision="3"
-                             v-model="form.freeFreightPoint"
+                             v-model="form.weight"
                              controls-position="right"
                              :min="0" placeholder="请输入商品重量（Kg）"/>
           </el-form-item>
@@ -43,7 +43,7 @@
 
         <el-col :span="12">
           <el-form-item label="设置金币">
-            <el-input-number style="width: 100%" v-model="form.freeFreightPoint"
+            <el-input-number style="width: 100%" v-model="form.gold"
                              controls-position="right"
                              :min="0" placeholder="请输入设置金币"/>
           </el-form-item>
@@ -51,7 +51,7 @@
 
         <el-col :span="12">
           <el-form-item label="设置成长值">
-            <el-input-number style="width: 100%" v-model="form.freeFreightPoint"
+            <el-input-number style="width: 100%" v-model="form.growthValue"
                              controls-position="right"
                              :min="0" placeholder="请输入设置成长值"/>
           </el-form-item>
@@ -100,6 +100,7 @@
 <script>
 import {getBrandTree, getOSSPolicy} from "@/api/commodityManage/classify";
 import {classifyBrand} from "@/api/commodityManage/brand";
+import {mapActions} from "vuex";
 
 export default {
   name: "baseInfoForm",
@@ -129,8 +130,10 @@ export default {
     this.OSSPolicy()
   },
   methods: {
+    ...mapActions(["setBaseInfoForm"]),
     next() {
       this.submitUpload();
+      this.setBaseInfoForm(this.form);
       this.$emit("next")
     },
     getClassifyTree() {
@@ -151,6 +154,11 @@ export default {
     },
     brandChange(e) {
       this.form.brandId = e;
+      this.classifyBrandList.forEach(item => {
+        if (item.brandId == e) {
+          this.form.brandId = item.brandName;
+        }
+      })
     },
     uploadSuccess(response, file, fileList) {
       console.log("uploadSuccess",response, file, fileList)

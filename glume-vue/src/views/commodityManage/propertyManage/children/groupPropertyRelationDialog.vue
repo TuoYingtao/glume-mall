@@ -69,7 +69,7 @@ export default {
       this.$emit('addAttrGroupRelation')
     },
     deleteRelation(row) {
-      let param = {ids: [{attrId: row.attrId, attrGroupId: this.attrGroupId}]};
+      let param = [{attrId: row.attrId, attrGroupId: this.attrGroupId}];
       MessageBox.confirm('是否确认删除名称为"' + row.attrName + '"的数据项？').then(function () {
         return deleteGroupRelation(param);
       }).then(() => {

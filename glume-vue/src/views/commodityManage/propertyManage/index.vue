@@ -76,7 +76,9 @@
     <group-property-relation-dialog ref="groupPropertyRelationDialog"
                                     :attrGroupIds="attrGroupId"
                                     @addAttrGroupRelation="addAttrGroupRelation"/>
-    <add-group-relation-dialog ref="addGroupRelationDialog" :attrGroupId="attrGroupId"/>
+    <add-group-relation-dialog ref="addGroupRelationDialog"
+                               :attrGroupId="attrGroupId"
+                               @flushGroupRelation="flushGroupRelation"/>
   </layout-container>
 </template>
 
@@ -171,6 +173,9 @@ export default {
     },
     addAttrGroupRelation() {
       this.$refs['addGroupRelationDialog'].open();
+    },
+    flushGroupRelation() {
+      this.$refs['groupPropertyRelationDialog'].getRelationList()
     },
     categoryPathHandler(categoryPath) {
       this.attrFrom.categoryPath = []

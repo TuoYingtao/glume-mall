@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="新增分组属性关联" width="30%" :visible.sync="dialogTableVisible">
+    <el-dialog title="新增分组属性关联" width="30%" :visible.sync="dialogTableVisible" :before-close="close">
       <el-table :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" :data="relationData">
         <el-table-column type="selection" width="80" align="center"/>
         <el-table-column property="attrId" label="属性ID"/>
@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button icon="el-icon-plus" type="success" size="mini" @click="deleteRelation(scope.row)">添加</el-button>
+            <el-button icon="el-icon-plus" type="success" size="mini" @click="addPropertyRelation(scope.row)">添加</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {groupNotRelationList} from "@/api/commodityManage/attrGroup";
+import {addNotRelationList, groupNotRelationList} from "@/api/commodityManage/attrGroup";
 
 export default {
   name: "addGroupRelationDialog",
@@ -49,12 +49,19 @@ export default {
         this.total = response.data.totalCount;
       })
     },
+    addPropertyRelation(row) {
+      addNotRelationList({attrId: row.attrId,attrGroupId: this.attrGroupId}).then(response => {
+        this.notSuccess("添加成功");
+        this.getList();
+      })
+    },
     open() {
       this.getList();
       this.dialogTableVisible = true;
     },
     close() {
       this.dialogTableVisible = false;
+      this.$emit("flushGroupRelation");
     }
   }
 }

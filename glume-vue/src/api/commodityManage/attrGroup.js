@@ -57,6 +57,15 @@ export function groupNotRelationList(attrGroupId) {
   })
 }
 
+/** 添加没有分组关系列表 */
+export function addNotRelationList(data) {
+  return request({
+    url: `/product/attrgroup/add/attr/relation`,
+    method: "POST",
+    data: qs.stringify(data)
+  })
+}
+
 /** 删除分组关系 */
 export function deleteGroupRelation(data) {
   console.log(data)

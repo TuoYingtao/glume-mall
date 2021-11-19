@@ -63,3 +63,10 @@ export function addBrandClassify(data) {
     data: qs.stringify(data)
   })
 }
+/* 获取分类品牌列表 */
+export function classifyBrand(catelogId) {
+  return request({
+    url: `/product/brand/${catelogId}/brand`,
+    method: "GET",
+  })
+}

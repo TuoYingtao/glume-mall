@@ -34,8 +34,9 @@ module.exports = {
     host: '0.0.0.0',
     https: false,
     port: port,
-    open: true, //配置自动启动浏览器
+    open: false, //配置自动启动浏览器
     hotOnly: true, // 热更新
+
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {

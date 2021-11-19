@@ -14,5 +14,7 @@ const getters = {
   menuRoutes: state => state.permission.menuRoutes,
   permissions: state => state.user.permissions,
   is_dev: state => state.user.is_dev,
+  // 发布商品
+  baseInfoForm: state => state.issuedCommodity.baseInfoForm,
 }
 export default getters

@@ -10,7 +10,8 @@
       </el-steps>
     </el-card>
     <el-card class="box-card">
-      <base-info-form ref="baseInfoForm" @next="next"/>
+      <base-info-form v-show="stepsActive == 0" ref="baseInfoForm" @next="next"/>
+      <size-params v-show="stepsActive == 1" ref="sizeParams"/>
     </el-card>
   </layout-container>
 </template>
@@ -18,19 +19,29 @@
 <script>
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import baseInfoForm from "@/views/commodityManage/issuedCommodity/children/baseInfoForm";
+import sizeParams from "./children/sizeParams";
 export default {
   name: "index",
-  components: {LayoutContainer,baseInfoForm},
+  components: {LayoutContainer,baseInfoForm,sizeParams},
   data() {
     return {
-      stepsActive: 0
+      stepsActive: 0,
     }
   },
-  created() {
+  watch: {
+    stepsActive: {
+      handler(val) {
+        switch (val) {
+          case 1:
+            return this.$refs["sizeParams"].attrGroupWithAttrs();
+          default: false;
+        }
+      }
+    }
   },
   methods: {
     next() {
-      // if (this.stepsActive++ > 5) this.stepsActive = 0;
+      if (this.stepsActive++ > 5) this.stepsActive = 0;
     }
   }
 }

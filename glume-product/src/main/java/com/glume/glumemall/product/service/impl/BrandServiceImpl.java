@@ -4,12 +4,15 @@ import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
+import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -71,6 +74,18 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         if (StringUtils.isNotEmpty(brand.getName())) {
             categoryBrandRelationService.updateBrandName(brand.getBrandId(), brand.getName());
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<BrandEntity> getClassifyBrand(Long catelogId) {
+        List<BrandEntity> brandEntities = null;
+        List<CategoryBrandRelationEntity> brandRelationEntities = categoryBrandRelationService.relationCatelogIdList(catelogId);
+        if (StringUtils.isNotEmpty(brandRelationEntities) && brandRelationEntities.size() > 0) {
+            List<Long> brandIds = brandRelationEntities.stream().map(CategoryBrandRelationEntity::getBrandId).collect(Collectors.toList());
+            brandEntities = baseMapper.selectBatchIds(brandIds);
+        }
+        return brandEntities;
     }
 
 }

@@ -23,5 +23,7 @@ public interface BrandService extends IService<BrandEntity> {
     void removeBrandByIds(List<Long> brandId);
 
     void updateBrandById(BrandEntity brand);
+
+    List<BrandEntity> getClassifyBrand(Long catelogId);
 }
 

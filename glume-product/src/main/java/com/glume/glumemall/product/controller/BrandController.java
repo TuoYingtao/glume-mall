@@ -2,6 +2,7 @@ package com.glume.glumemall.product.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.glume.common.core.annotation.valid.AddGroup;
@@ -104,6 +105,15 @@ public class BrandController {
     public R delete(@PathVariable("brandIds") Long[] brandIds){
 		brandService.removeBrandByIds(Arrays.asList(brandIds));
         return R.ok("删除成功！");
+    }
+
+    /**
+     * 根据分类ID获取品牌列表
+     */
+    @GetMapping("/{catelogId}/brand")
+    public R classifyBrand(@PathVariable("catelogId") Long catelogId) {
+        List<BrandEntity> classifyBrand = brandService.getClassifyBrand(catelogId);
+        return R.ok().put("data",classifyBrand);
     }
 
 }

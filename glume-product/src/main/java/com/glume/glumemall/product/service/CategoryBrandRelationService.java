@@ -26,5 +26,7 @@ public interface CategoryBrandRelationService extends IService<CategoryBrandRela
     void removeBrandRelationById(List<Long> brandIds);
 
     void removeCategoryRelationById(List<Long> catIds);
+
+    List<CategoryBrandRelationEntity> relationCatelogIdList(Long catelogId);
 }
 

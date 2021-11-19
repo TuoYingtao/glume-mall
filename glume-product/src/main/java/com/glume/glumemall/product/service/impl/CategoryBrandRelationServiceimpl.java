@@ -9,6 +9,7 @@ import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.dao.CategoryBrandRelationDao;
+import com.glume.glumemall.product.entity.BrandEntity;
 import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,13 @@ public class CategoryBrandRelationServiceimpl extends ServiceImpl<CategoryBrandR
     @Override
     public void removeCategoryRelationById(List<Long> catIds) {
         catIds.forEach(catId -> baseMapper.delete(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id",catId)));
+    }
+
+
+    @Override
+    public List<CategoryBrandRelationEntity> relationCatelogIdList(Long catelogId) {
+        List<CategoryBrandRelationEntity> brandRelationEntities = baseMapper.selectList(new QueryWrapper<CategoryBrandRelationEntity>().eq("catelog_id", catelogId));
+        return brandRelationEntities;
     }
 
 

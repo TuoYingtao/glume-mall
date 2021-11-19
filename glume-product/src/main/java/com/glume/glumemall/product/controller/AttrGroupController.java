@@ -16,6 +16,7 @@ import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.AttrService;
 import com.glume.glumemall.product.service.CategoryService;
 import com.glume.glumemall.product.vo.AttrGroupRelationVo;
+import com.glume.glumemall.product.vo.AttrGroupWithAttrVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -87,8 +88,6 @@ public class AttrGroupController {
         return R.ok("添加属性分组关系成功！");
     }
 
-
-
     /**
      * 删除分组关联记录
      */
@@ -156,4 +155,12 @@ public class AttrGroupController {
         return R.ok();
     }
 
+    /**
+     * 获取分类下的所有分组以及它的属性
+     */
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttrs(@PathVariable("catelogId") Long catelogId) {
+        List<AttrGroupWithAttrVo> attrGroupWithAttrsBy = attrGroupService.getAttrGroupWithAttrsBy(catelogId);
+        return R.ok().put("data",attrGroupWithAttrsBy);
+    }
 }

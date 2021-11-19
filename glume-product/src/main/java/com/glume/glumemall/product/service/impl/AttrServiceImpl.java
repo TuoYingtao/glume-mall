@@ -1,6 +1,7 @@
 package com.glume.glumemall.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.glume.common.core.constant.Constants;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
@@ -125,7 +126,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         AttrEntity attrEntity = new AttrEntity();
         BeanUtils.copyProperties(attrVo,attrEntity);
         baseMapper.updateById(attrEntity);
-        if (StringUtils.isNotNull(attrVo.getAttrGroupId())) {
+        if (StringUtils.isNotNull(attrVo.getAttrGroupId()) && (
+                Constants.AttrType.MARKET_ATTR_TYPE.getValue().equals(attrEntity.getAttrType()) ||
+                    Constants.AttrType.MARKET_BASE_TYPE.getValue().equals(attrEntity.getAttrType()))) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrId(attrVo.getAttrId());
             attrAttrgroupRelationEntity.setAttrGroupId(attrVo.getAttrGroupId());
@@ -146,7 +149,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         AttrEntity attrEntity = new AttrEntity();
         BeanUtils.copyProperties(attrVo,attrEntity);
         baseMapper.insert(attrEntity);
-        if (StringUtils.isNotNull(attrVo.getAttrGroupId())) {
+        if (StringUtils.isNotNull(attrVo.getAttrGroupId()) && (
+                Constants.AttrType.MARKET_ATTR_TYPE.getValue().equals(attrEntity.getAttrType()) ||
+                    Constants.AttrType.MARKET_BASE_TYPE.getValue().equals(attrEntity.getAttrType()))) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
             attrAttrgroupRelationEntity.setAttrGroupId(attrVo.getAttrGroupId());

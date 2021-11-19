@@ -549,12 +549,14 @@ export default {
             this.attrFrom.categoryPath = []
             amendAttr(this.attrFrom).then(response => {
               this.notSuccess("修改成功");
+              this.attrFrom.catelogId = null;
               this.isAttrOpen = false;
               this.getAttrList();
             });
           } else {
             addAttr(this.attrFrom).then(response => {
               this.notSuccess("新增成功");
+              this.attrFrom.catelogId = null;
               this.isAttrOpen = false;
               this.getAttrList();
             });

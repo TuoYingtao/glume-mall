@@ -33,11 +33,11 @@
         </el-col>
 
         <el-col :span="24">
-          <el-form-item label="商品重量（Kg）">
+          <el-form-item label="商品重量（g）">
             <el-input-number style="width: 100%" :precision="3"
                              v-model="form.weight"
                              controls-position="right"
-                             :min="0" placeholder="请输入商品重量（Kg）"/>
+                             :min="0" placeholder="请输入商品重量（g）"/>
           </el-form-item>
         </el-col>
 
@@ -59,37 +59,21 @@
 
         <el-col :span="24">
           <el-form-item label="商品介绍">
-            <el-upload ref="upload" :action="uploadParams.host"
-                       :file-list="fileList"
-                       :data="uploadParams"
-                       :on-success="uploadSuccess"
-                       :on-progress="onProgress"
-                       :before-upload="beforeUpload"
-                       list-type="picture-card"
-                       :auto-upload="false"
-                       :multiple="true">
-              <i slot="default" class="el-icon-plus"></i>
-              <div slot="trigger" slot-scope="{file}" v-if="imageShow">
-                <img class="el-upload-list__item-thumbnail" :src="file.url">
-              </div>
-              <div slot="file" slot-scope="{file}" v-if="!imageShow">
-                <img class="el-upload-list__item-thumbnail" :src="file.url">
-                <span class="el-upload-list__item-actions">
-                  <span class="el-upload-list__item-preview"@click="handlePictureCardPreview(file)">
-                    <i class="el-icon-zoom-in"></i>
-                  </span>
-                </span>
-              </div>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
+            <upload ref="productUpload" @uploadSuccess="productImage"/>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="24">
+          <el-form-item label="图集">
+            <upload ref="imagesUpload" @uploadSuccess="images"/>
           </el-form-item>
         </el-col>
 
         <el-col :span="24">
           <el-form-item>
-            <el-button style="margin-top: 12px;" @click="next">下一步</el-button>
+            <div class="button-box">
+              <el-button class="nextButton" type="primary" @click="next">下一步</el-button>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -98,15 +82,20 @@
 </template>
 
 <script>
-import {getBrandTree, getOSSPolicy} from "@/api/commodityManage/classify";
+import {getBrandTree} from "@/api/commodityManage/classify";
 import {classifyBrand} from "@/api/commodityManage/brand";
 import {mapActions} from "vuex";
+import upload from "@/components/Upload/upload";
 
 export default {
   name: "baseInfoForm",
+  components: {upload},
   data() {
     return {
-      form: {},
+      form: {
+        productImage: [],
+        images: [],
+      },
       classifyTreeList: [],
       classifyBrandList: [],
       attrProps: {
@@ -114,25 +103,18 @@ export default {
         children: "children",
         label: "name",
       },
-      uploadParams: {
-        host: "",
-      },
-      dialogImageUrl: '',
-      disabled: false,
-      dialogVisible:false,
-      imageShow: true,
-      fileList: [],
-      updateImagePathName: []
     }
   },
   created() {
     this.getClassifyTree();
-    this.OSSPolicy()
+  },
+  mounted() {
+    this.$refs['productUpload'].OSSPolicy();
+    this.$refs['imagesUpload'].OSSPolicy();
   },
   methods: {
     ...mapActions(["setBaseInfoForm"]),
     next() {
-      this.submitUpload();
       this.setBaseInfoForm(this.form);
       this.$emit("next")
     },
@@ -160,44 +142,11 @@ export default {
         }
       })
     },
-    uploadSuccess(response, file, fileList) {
-      console.log("uploadSuccess",response, file, fileList)
-      this.treeFrom.icon = "https://glume-mall.oss-cn-shenzhen.aliyuncs.com/" + this.uploadPath;
+    productImage(e) {
+      this.form.productImage.push(e);
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    onProgress(event, file, fileList) {
-      console.log("onProgress",event, file, fileList);
-      // this.imageShow = false
-    },
-    /**
-     * 上传图片之前
-     */
-    beforeUpload(file) {
-      console.log("beforeUpload",file)
-    },
-    /**
-     * 上传图片
-     */
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-    OSSPolicy() {
-      getOSSPolicy().then(response => {
-        this.updateImagePathName.push(response.data.dir + "/" + new Date().getTime())
-        let len = this.updateImagePathName - 1;
-        this.uploadParams = {
-          host: response.data.host,
-          OSSAccessKeyId: response.data.accessid,
-          key: this.updateImagePathName[len],
-          signature: response.data.signature,
-          policy: response.data.policy,
-          // 设置服务端返回状态码为200，不设置则默认返回状态码204。
-          success_action_status: 200,
-        }
-      })
+    images(e) {
+      this.form.images.push(e);
     }
   }
 }
@@ -206,5 +155,14 @@ export default {
 <style scoped>
 .baseInfoForm {
   padding: 0 25%;
+}
+.button-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nextButton {
+  width: 200px;
+  margin-top: 12px;
 }
 </style>

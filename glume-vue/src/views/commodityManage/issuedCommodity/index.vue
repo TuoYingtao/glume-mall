@@ -11,7 +11,8 @@
     </el-card>
     <el-card class="box-card">
       <base-info-form v-show="stepsActive == 0" ref="baseInfoForm" @next="next"/>
-      <size-params v-show="stepsActive == 1" ref="sizeParams"/>
+      <size-params v-show="stepsActive == 1" ref="sizeParams" @next="next" @back="back"/>
+      <market-property v-show="stepsActive == 2" ref="marketProperty" @next="next" @back="back"/>
     </el-card>
   </layout-container>
 </template>
@@ -19,10 +20,11 @@
 <script>
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import baseInfoForm from "@/views/commodityManage/issuedCommodity/children/baseInfoForm";
-import sizeParams from "./children/sizeParams";
+import sizeParams from "@/views/commodityManage/issuedCommodity/children/sizeParams";
+import marketProperty from "@/views/commodityManage/issuedCommodity/children/marketProperty";
 export default {
-  name: "index",
-  components: {LayoutContainer,baseInfoForm,sizeParams},
+  name: "issuedCommodity",
+  components: {LayoutContainer,baseInfoForm,sizeParams,marketProperty},
   data() {
     return {
       stepsActive: 0,
@@ -34,6 +36,8 @@ export default {
         switch (val) {
           case 1:
             return this.$refs["sizeParams"].attrGroupWithAttrs();
+          case 2:
+            return this.$refs["marketProperty"].sizeParamDataHandler();
           default: false;
         }
       }
@@ -41,7 +45,10 @@ export default {
   },
   methods: {
     next() {
-      if (this.stepsActive++ > 5) this.stepsActive = 0;
+      if (this.stepsActive < 5) this.stepsActive++;
+    },
+    back() {
+      if (this.stepsActive > 0) this.stepsActive--;
     }
   }
 }

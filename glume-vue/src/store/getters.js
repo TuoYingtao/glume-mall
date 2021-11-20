@@ -16,5 +16,6 @@ const getters = {
   is_dev: state => state.user.is_dev,
   // 发布商品
   baseInfoForm: state => state.issuedCommodity.baseInfoForm,
+  sizeParamData: state => state.issuedCommodity.sizeParamData,
 }
 export default getters

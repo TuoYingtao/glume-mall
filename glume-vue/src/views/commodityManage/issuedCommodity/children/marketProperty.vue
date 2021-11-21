@@ -4,13 +4,13 @@
       <span>选择销售属性</span>
       <el-form ref="form">
         <el-form-item v-for="(attr,attrIndex) in marketPropertyData" :key="attr.attrId" :label="attr.attrName">
-          <el-checkbox-group v-model="attr.marketProperty.newTempSaleAttrs">
+          <el-checkbox-group v-model="marketData[attrIndex].newTempSaleAttrs">
             <el-checkbox v-if="attr.valueSelect != ''" v-for="val in valueSelectHandler(attr.valueSelect)" :key="val" :label="val"/>
             <div style="margin-left:20px;display:inline">
-              <el-button v-show="!attr.marketProperty.inputVisible" class="button-new-tag" size="mini" @click="showInput(attr.attrId)">+自定义</el-button>
-              <el-input v-show="attr.marketProperty.inputVisible" v-model="attr.marketProperty.newValueSelect" :ref="'saveTagInput'+attr.attrId" size="mini" style="width:150px"
-                        @keyup.enter.native="handleInputConfirm(attr.attrId)"
-                        @blur="handleInputConfirm(attr.attrId)"/>
+              <el-button v-show="!marketData[attrIndex].inputVisible" class="button-new-tag" size="mini" @click="showInput(attr.attrId,attrIndex)">+自定义</el-button>
+              <el-input v-show="marketData[attrIndex].inputVisible" v-model="marketData[attrIndex].newValueSelect" :ref="'saveTagInput'+attr.attrId" size="mini" style="width:150px"
+                        @keyup.enter.native="handleInputConfirm(attr.attrId,attrIndex)"
+                        @blur="handleInputConfirm(attr.attrId,attrIndex)"/>
             </div>
           </el-checkbox-group>
         </el-form-item>
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       marketPropertyData: [],
+      marketData: [],
     }
   },
   computed: {
@@ -40,28 +41,29 @@ export default {
   methods: {
     ...mapActions(['setMarketPropertyData']),
     next() {
-      this.setMarketPropertyData(this.marketPropertyData)
+      this.setMarketPropertyData(this.marketData)
       this.$emit("next")
     },
     back() {
       this.$emit("back")
     },
-    showInput(attrId) {
+    showInput(attrId,attrIndex) {
+      this.marketData[attrIndex].inputVisible = !this.marketData[attrIndex].inputVisible
       this.marketPropertyData.forEach(item => {
         if (item.attrId == attrId) {
           item.marketProperty.inputVisible = !item.marketProperty.inputVisible;
         }
       })
     },
-    handleInputConfirm(attrId) {
+    handleInputConfirm(attrId,attrIndex) {
       this.marketPropertyData.forEach(item => {
-        if (item.attrId == attrId && item.marketProperty.newValueSelect != "") {
-          item.valueSelect = item.valueSelect + `;${item.marketProperty.newValueSelect}`;
-          item.marketProperty.inputVisible = !item.marketProperty.inputVisible;
-          this.$set(item.marketProperty, 'newValueSelect', "");
+        if (item.attrId == attrId && this.marketData[attrIndex].newValueSelect != "") {
+          item.valueSelect = item.valueSelect + `;${this.marketData[attrIndex].newValueSelect}`;
+          this.marketData[attrIndex].newValueSelect = "";
+
         }
       })
-      console.log(this.marketPropertyData)
+      this.marketData[attrIndex].inputVisible = !this.marketData[attrIndex].inputVisible
     },
     sizeParamDataHandler() {
       if (this.sizeParamData && this.sizeParamData.length > 0) {
@@ -72,12 +74,14 @@ export default {
             marketPropertyData.push(...attrs)
           }
         })
+        let num = 0;
         marketPropertyData.forEach(item => {
-          this.$set(item, 'marketProperty', {
+          this.$set(this.marketData,num,{
             newTempSaleAttrs: [],
             newValueSelect: "",
             inputVisible: false,
           })
+          num++;
         })
         this.marketPropertyData = marketPropertyData;
       }

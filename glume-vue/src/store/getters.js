@@ -17,5 +17,6 @@ const getters = {
   // 发布商品
   baseInfoForm: state => state.issuedCommodity.baseInfoForm,
   sizeParamData: state => state.issuedCommodity.sizeParamData,
+  marketPropertyData: state => state.issuedCommodity.marketPropertyData,
 }
 export default getters

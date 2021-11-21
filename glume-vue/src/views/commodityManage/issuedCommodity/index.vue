@@ -13,6 +13,7 @@
       <base-info-form v-show="stepsActive == 0" ref="baseInfoForm" @next="next"/>
       <size-params v-show="stepsActive == 1" ref="sizeParams" @next="next" @back="back"/>
       <market-property v-show="stepsActive == 2" ref="marketProperty" @next="next" @back="back"/>
+      <s-k-u-info v-show="stepsActive == 3" ref="SKUInfo" @next="next" @back="back" />
     </el-card>
   </layout-container>
 </template>
@@ -22,9 +23,10 @@ import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import baseInfoForm from "@/views/commodityManage/issuedCommodity/children/baseInfoForm";
 import sizeParams from "@/views/commodityManage/issuedCommodity/children/sizeParams";
 import marketProperty from "@/views/commodityManage/issuedCommodity/children/marketProperty";
+import SKUInfo from "@/views/commodityManage/issuedCommodity/children/SKUInfo";
 export default {
   name: "issuedCommodity",
-  components: {LayoutContainer,baseInfoForm,sizeParams,marketProperty},
+  components: {LayoutContainer,baseInfoForm,sizeParams,marketProperty,SKUInfo},
   data() {
     return {
       stepsActive: 0,
@@ -38,6 +40,8 @@ export default {
             return this.$refs["sizeParams"].attrGroupWithAttrs();
           case 2:
             return this.$refs["marketProperty"].sizeParamDataHandler();
+          case 3:
+            return this.$refs["SKUInfo"].tableHandlerData();
           default: false;
         }
       }

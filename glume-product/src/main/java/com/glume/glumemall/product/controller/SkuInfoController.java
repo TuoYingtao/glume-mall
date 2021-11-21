@@ -57,7 +57,6 @@ public class SkuInfoController {
     @RequestMapping("/save")
     public R save(@RequestBody SkuInfoEntity skuInfo){
 		skuInfoService.save(skuInfo);
-
         return R.ok();
     }
 

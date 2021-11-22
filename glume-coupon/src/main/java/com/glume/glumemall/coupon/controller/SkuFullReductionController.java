@@ -3,12 +3,9 @@ package com.glume.glumemall.coupon.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.glume.common.core.to.SkuReductionTo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.coupon.entity.SkuFullReductionEntity;
 import com.glume.glumemall.coupon.service.SkuFullReductionService;
@@ -29,6 +26,16 @@ import com.glume.common.core.utils.R;
 public class SkuFullReductionController {
     @Autowired
     private SkuFullReductionService skuFullReductionService;
+
+    /**
+     * 满减打折
+     */
+    @PostMapping("/saveInfo")
+    public R saveInfo(@RequestBody SkuReductionTo skuReductionTo){
+        skuFullReductionService.saveSkuReduction(skuReductionTo);
+
+        return R.ok("保存成功！");
+    }
 
     /**
      * 列表

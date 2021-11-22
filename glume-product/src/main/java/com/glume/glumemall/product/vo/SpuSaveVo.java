@@ -47,6 +47,9 @@ public class SpuSaveVo {
    */
   private List<String> images;
 
+  /**
+   * 积分
+   */
   private Bounds bounds;
   /**
    * spu属性值

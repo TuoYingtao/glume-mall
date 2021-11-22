@@ -66,6 +66,32 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         return new PageUtils(page);
     }
 
+    @Override
+    public PageUtils queryPageByCondition(Map<String, Object> params) {
+        QueryWrapper<SpuInfoEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotNull(params.get("key"))) {
+            String key = params.get("key").toString();
+            wrapper.and(w -> {
+                w.eq("id",key).or().like("spu_name",key);
+            });
+        }
+        if (StringUtils.isNotNull(params.get("status"))) {
+            String status = params.get("status").toString();
+            wrapper.eq("publish_status",status);
+        }
+        if (StringUtils.isNotNull(params.get("brandId")) && !"0".equalsIgnoreCase(params.get("brandId").toString())) {
+            String brandId = params.get("brandId").toString();
+            wrapper.eq("brand_id",brandId);
+        }
+        if (StringUtils.isNotNull(params.get("catelogId")) && !"0".equalsIgnoreCase(params.get("catelogId").toString())) {
+            String catelogId = params.get("catelogId").toString();
+            wrapper.eq("catelog_id",catelogId);
+        }
+        IPage<SpuInfoEntity> page = this.page(new Query<SpuInfoEntity>().getPage(params),wrapper);
+
+        return new PageUtils(page);
+    }
+
     // TODO 事务回滚、远程调用超时、远程服务异常待处理
     @Override
     @Transactional

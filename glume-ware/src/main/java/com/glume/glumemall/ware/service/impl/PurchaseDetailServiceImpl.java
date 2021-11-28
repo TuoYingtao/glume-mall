@@ -1,6 +1,9 @@
 package com.glume.glumemall.ware.service.impl;
 
+import com.glume.common.core.utils.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,12 +21,32 @@ public class PurchaseDetailServiceImpl extends ServiceImpl<PurchaseDetailDao, Pu
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<PurchaseDetailEntity> page = this.page(
-                new Query<PurchaseDetailEntity>().getPage(params),
-                new QueryWrapper<PurchaseDetailEntity>()
-        );
+        QueryWrapper<PurchaseDetailEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotNull(params.get("key"))) {
+            String key = params.get("key").toString();
+            wrapper.and(wr -> {
+                wr.eq("purchase_id",key)
+                        .or().eq("sku_id",key)
+                        .or().eq("sku_name",key)
+                        .or().eq("sku_price",key);
+            });
+        }
+        if (StringUtils.isNotNull("status")){
+            wrapper.eq("status",params.get("status"));
+        }
+        if (StringUtils.isNotNull("wareId")) {
+            wrapper.eq("ware_id",params.get("wareId"));
+        }
+        IPage<PurchaseDetailEntity> page = this.page(new Query<PurchaseDetailEntity>().getPage(params), wrapper);
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<PurchaseDetailEntity> listDetaliByPurchaseId(Long id) {
+
+        List<PurchaseDetailEntity> detailEntities = this.list(new QueryWrapper<PurchaseDetailEntity>().eq("purchase_id", id));
+        return detailEntities;
     }
 
 }

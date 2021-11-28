@@ -1,5 +1,6 @@
 package com.glume.glumemall.ware.service.impl;
 
+import com.glume.common.core.utils.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,11 +19,15 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<WareInfoEntity> page = this.page(
-                new Query<WareInfoEntity>().getPage(params),
-                new QueryWrapper<WareInfoEntity>()
-        );
-
+        QueryWrapper<WareInfoEntity> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotNull(params.get("key"))) {
+            String key = params.get("key").toString();
+            wrapper.eq("id",key)
+                    .or().like("name",key)
+                    .or().like("address",key)
+                    .or().like("areacode",key);
+        }
+        IPage<WareInfoEntity> page = this.page(new Query<WareInfoEntity>().getPage(params), wrapper);
         return new PageUtils(page);
     }
 

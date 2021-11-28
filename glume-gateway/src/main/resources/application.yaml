@@ -14,6 +14,14 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
 
+        # 库存服务路由
+        - id: glume-ware
+          uri: lb://glume-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
         # 会员服务路由
         - id: member_router
           uri: lb://glume-member

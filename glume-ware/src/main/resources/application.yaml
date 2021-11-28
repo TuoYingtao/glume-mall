@@ -1,13 +1,29 @@
 server:
   port: 11000
 spring:
+  application:
+    name: glume-ware
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/glumemall_wms?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto #主键自增
+      # 逻辑删除：1-显示 0-不显示
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+swagger:
+  enabled: true
+jwt:
+  header: "Authorization"
+logging:
+  level:
+    com.glume.glumemall: debug

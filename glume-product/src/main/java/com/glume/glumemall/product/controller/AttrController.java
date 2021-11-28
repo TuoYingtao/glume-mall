@@ -11,7 +11,9 @@ import com.glume.common.core.annotation.valid.UpdateGroup;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
 import com.glume.glumemall.product.entity.CategoryEntity;
+import com.glume.glumemall.product.entity.ProductAttrValueEntity;
 import com.glume.glumemall.product.service.CategoryService;
+import com.glume.glumemall.product.service.ProductAttrValueService;
 import com.glume.glumemall.product.vo.AttrRespVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,15 @@ public class AttrController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    ProductAttrValueService productAttrValueService;
+
+    @GetMapping("/base/lsitforspu/{spuId}")
+    public R baseAttrListForSPU(@PathVariable("spuId") Long spuId) {
+        List<ProductAttrValueEntity> entityList = productAttrValueService.baseAttrListforSPU(spuId);
+        return R.ok().put("data",entityList);
+    }
 
     /**
      * 列表

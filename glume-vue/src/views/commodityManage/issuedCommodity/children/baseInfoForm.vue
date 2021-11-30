@@ -4,19 +4,19 @@
       <el-row>
         <el-col :span="24">
           <el-form-item label="商品名称">
-            <el-input v-model="form.name" placeholder="请输入商品名称"/>
+            <el-input v-model="form.spuName" placeholder="请输入商品名称"/>
           </el-form-item>
         </el-col>
 
         <el-col :span="24">
           <el-form-item label="商品描述">
-            <el-input v-model="form.describe" placeholder="请输入商品描述"/>
+            <el-input v-model="form.spuDescription" placeholder="请输入商品描述"/>
           </el-form-item>
         </el-col>
 
         <el-col :span="24">
           <el-form-item label="选择分类">
-            <el-cascader style="width: 100%" ref="cascader" v-model="form.catelogId"
+            <el-cascader style="width: 100%" ref="cascader" v-model="form.catalogId"
                          :options="classifyTreeList"
                          :props="attrProps"
                          @change="handleClassifyChange"
@@ -43,7 +43,7 @@
 
         <el-col :span="12">
           <el-form-item label="设置金币">
-            <el-input-number style="width: 100%" v-model="form.gold"
+            <el-input-number style="width: 100%" v-model="form.bounds.buyBounds"
                              controls-position="right"
                              :min="0" placeholder="请输入设置金币"/>
           </el-form-item>
@@ -51,7 +51,7 @@
 
         <el-col :span="12">
           <el-form-item label="设置成长值">
-            <el-input-number style="width: 100%" v-model="form.growthValue"
+            <el-input-number style="width: 100%" v-model="form.bounds.growBounds"
                              controls-position="right"
                              :min="0" placeholder="请输入设置成长值"/>
           </el-form-item>
@@ -93,8 +93,9 @@ export default {
   data() {
     return {
       form: {
-        productImage: [],
+        decript: [],
         images: [],
+        bounds: {}
       },
       classifyTreeList: [],
       classifyBrandList: [],
@@ -124,13 +125,13 @@ export default {
       })
     },
     getClassifyBrand() {
-      classifyBrand(this.form.catelogId).then(response => {
+      classifyBrand(this.form.catalogId).then(response => {
         this.classifyBrandList = response.data;
       })
     },
     handleClassifyChange(e) {
       let num = e.length - 1;
-      this.form.catelogId = e[num];
+      this.form.catalogId = e[num];
       this.getClassifyBrand();
       this.form.brandId = null;
     },
@@ -143,7 +144,7 @@ export default {
       })
     },
     productImage(e) {
-      this.form.productImage.push(e);
+      this.form.decript.push(e);
     },
     images(e) {
       this.form.images.push(e);

@@ -8,10 +8,10 @@
               <el-form-item :label="item.attrName">
                 <el-select style="width: 80%;" :multiple="item.valueType == 1" filterable allow-create default-first-option
                            :placeholder="`请选择或输入${item.attrName}值（${item.valueType == 1 ? '多选' : '单选'}）`"
-                            v-model="item.sizeParams.newValueSelect">
+                            v-model="item.baseAttrs.attrValues">
                   <el-option v-for="(val,index) in valueSelectHandler(item.valueSelect)" :key="index" :label="val" :value="val"/>
                 </el-select>
-                <el-checkbox style="padding-left: 20px" v-model="item.sizeParams.showDesc" :true-label="1" :false-label="0">快速展示</el-checkbox>
+                <el-checkbox style="padding-left: 20px" v-model="item.baseAttrs.showDesc" :true-label="1" :false-label="0">快速展示</el-checkbox>
               </el-form-item>
             </el-form>
           </el-col>
@@ -50,7 +50,7 @@ export default {
       this.$emit("back")
     },
     attrGroupWithAttrs() {
-      getAttrGroupWithAttrs(this.baseInfoForm.catelogId).then(response => {
+      getAttrGroupWithAttrs(this.baseInfoForm.catalogId).then(response => {
         this.sizeParamData = response.data;
         this.sizeParamDataHandler();
       })
@@ -59,8 +59,8 @@ export default {
       this.sizeParamData.forEach(item => {
         if (item.attrs.length > 0) {
           item.attrs.map(attrItem => {
-            this.$set(attrItem, 'sizeParams', {
-              newValueSelect: [],
+            this.$set(attrItem, 'baseAttrs', {
+              attrValues: [],
               showDesc: "",
             })
           })

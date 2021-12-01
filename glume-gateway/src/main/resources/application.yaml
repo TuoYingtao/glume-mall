@@ -45,6 +45,11 @@ spring:
             - Path=/api/admin/**
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
+        - id: glume_host_route
+          uri: lb://glume-product
+          predicates:
+            - Host=glumemall.com,**.glumemall.com
     nacos:
       discovery:
         server-addr: localhost:8848

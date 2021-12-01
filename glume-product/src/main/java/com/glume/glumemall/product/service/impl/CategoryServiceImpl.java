@@ -16,13 +16,12 @@ import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import com.glume.glumemall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import javax.annotation.Resource;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,7 +33,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Autowired
     CategoryBrandRelationService categoryBrandRelationService;
 
-    @Autowired
+    @Resource
     RedisTemplate<String,Object> redisTemplate;
 
     @Override
@@ -117,16 +116,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         String uuid = UUID.randomUUID().toString();
         Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", uuid,300,TimeUnit.SECONDS);
         if (lock) {
+            System.out.println("Redis 分布式加锁成功！");
             // 加锁成功....执行业务
-            List<CategoryEntity> catalogDB = getCategoryDataFromDB();
-            // 删除锁：获取lock锁值进行对比，相同则删除，为了保证原子性使用官方提供的Lua脚本进行解锁
-            // TODO 获取lock锁值进行对比，相同则删除，为了保证原子性使用官方提供的Lua脚本进行解锁
-            redisTemplate.delete("lock");
+            List<CategoryEntity> catalogDB;
+            try {
+                catalogDB = getCategoryDataFromDB();
+            } finally {
+                System.out.println("Redis 分布式删除锁");
+                // 删除锁：获取lock锁值进行对比，相同则删除，为了保证原子性使用官方提供的Lua脚本进行解锁
+                String script = "if redis.call('get',KEYS[1]) == ARGV[1] then return redis.call('del',KEYS[1]) else return 0 end";
+                Long execute = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class), Arrays.asList("lock"), uuid);
+            }
             return catalogDB;
         } else {
+            System.out.println("Redis 分布式加锁失败！");
             // 加锁失败....重试
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -1,8 +1,11 @@
 package com.glume.glumemall.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
@@ -12,12 +15,15 @@ import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import com.glume.glumemall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,6 +33,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -86,6 +95,62 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public List<CategoryEntity> listWithTree() {
+        /**
+         * 1.空结果缓存： 解决缓存穿透
+         * 2.设置过期时间（加随机值）：解决缓存雪崩
+         * 3.加锁：解决缓存击穿
+         */
+        Object allCatalogTree = SpringUtils.getBean(RedisUtils.class).get("allCatalogTree");
+        if (StringUtils.isEmpty((String) allCatalogTree)) {
+            System.out.println("缓存不命中！");
+            List<CategoryEntity> catalogDB = getCatalogDBRedisLock();
+            return catalogDB;
+        }
+        List<CategoryEntity> entities = JSON.parseObject(allCatalogTree.toString(), new TypeReference<List<CategoryEntity>>() {});
+        return entities;
+    }
+
+    /** 分布式锁 */
+    private List<CategoryEntity> getCatalogDBRedisLock() {
+        /** Redis “占坑”：解决缓存击穿 */
+        // 设置锁的同时添加过期时间保证原子性，避免死锁问题
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", uuid,300,TimeUnit.SECONDS);
+        if (lock) {
+            // 加锁成功....执行业务
+            List<CategoryEntity> catalogDB = getCategoryDataFromDB();
+            // 删除锁：获取lock锁值进行对比，相同则删除，为了保证原子性使用官方提供的Lua脚本进行解锁
+            // TODO 获取lock锁值进行对比，相同则删除，为了保证原子性使用官方提供的Lua脚本进行解锁
+            redisTemplate.delete("lock");
+            return catalogDB;
+        } else {
+            // 加锁失败....重试
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return getCatalogDBRedisLock();
+        }
+    }
+
+    /** 本地锁 */
+    private List<CategoryEntity> getCatalogDBLocalLock() {
+        /** 加锁：解决缓存击穿 */
+        synchronized(this) {
+            return getCategoryDataFromDB();
+        }
+    }
+
+    private List<CategoryEntity> getCategoryDataFromDB() {
+        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
+        Object allCatalogTree = redisUtils.get("allCatalogTree");
+        if (StringUtils.isNotEmpty((String) allCatalogTree)) {
+            System.out.println("缓存命中！");
+            return JSON.parseObject(allCatalogTree.toString(), new TypeReference<List<CategoryEntity>>() {
+            });
+        }
+        System.out.println("查询DB！");
         // 1.查询所有分类
         List<CategoryEntity> entities = baseMapper.selectList(null);
         // 2.组装父子树形结构
@@ -96,12 +161,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             return categoryEntity;
         });
         Stream<CategoryEntity> sortedMenus = levelMenusMap1.sorted((menu1, menu2) -> (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
-        List<CategoryEntity> list = sortedMenus.collect(Collectors.toList());
-        return list;
+        List<CategoryEntity> catalogDB = sortedMenus.collect(Collectors.toList());
+        String s = JSON.toJSONString(catalogDB);
+        redisUtils.set("allCatalogTree", s, 60 * 60);
+        return catalogDB;
     }
 
     /* 递归查找所有菜单的子菜单 */
-    public List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all) {
+    private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all) {
         List<CategoryEntity> children = all.stream().filter(categoryEntity -> categoryEntity.getParentCid() == root.getCatId())
                 .map(categoryEntity -> {
                     // 1.找到子菜单

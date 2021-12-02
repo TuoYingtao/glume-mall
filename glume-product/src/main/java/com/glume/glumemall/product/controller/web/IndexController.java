@@ -1,4 +1,4 @@
-package com.glume.glumemall.product.controller;
+package com.glume.glumemall.product.controller.web;
 
 import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryService;

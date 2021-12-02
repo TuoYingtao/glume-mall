@@ -41,6 +41,11 @@
             <artifactId>redisson</artifactId>
             <version>3.16.1</version>
         </dependency>
+        <!-- Spring Cache整合简化缓存开发 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -7,6 +7,7 @@ import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.entity.CategoryBrandRelationEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
     @Autowired
     CategoryBrandRelationService categoryBrandRelationService;
 
+    @Cacheable(value = {"category"},key = "#root.method.name")
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         QueryWrapper<BrandEntity> wrapper = new QueryWrapper<>();

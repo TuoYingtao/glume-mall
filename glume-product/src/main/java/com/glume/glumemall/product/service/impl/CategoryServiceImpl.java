@@ -14,6 +14,9 @@ import com.glume.glumemall.product.dao.CategoryDao;
 import com.glume.glumemall.product.entity.CategoryEntity;
 import com.glume.glumemall.product.service.CategoryBrandRelationService;
 import com.glume.glumemall.product.service.CategoryService;
+import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -35,6 +38,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Resource
     RedisTemplate<String,Object> redisTemplate;
+
+    @Autowired
+    RedissonClient redisson;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -109,7 +115,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return entities;
     }
 
-    /** 分布式锁 */
+    /** 分布式锁：Redisson */
+    private List<CategoryEntity> getCatalogDBRedissonLock() {
+        RReadWriteLock lock = redisson.getReadWriteLock("product-catalog");
+        RLock rLock = lock.readLock();
+        List<CategoryEntity> catalogDB = null;
+        try {
+            rLock.lock();
+            System.out.println("Redis 分布式加锁成功！");
+            // 加锁成功....执行业务
+            catalogDB = getCategoryDataFromDB();
+        } finally {
+            rLock.unlock();
+        }
+        return catalogDB;
+    }
+
+    /** 分布式锁 简单版 */
     private List<CategoryEntity> getCatalogDBRedisLock() {
         /** Redis “占坑”：解决缓存击穿 */
         // 设置锁的同时添加过期时间保证原子性，避免死锁问题

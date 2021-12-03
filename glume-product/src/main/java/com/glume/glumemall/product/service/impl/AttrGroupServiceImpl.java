@@ -7,6 +7,7 @@ import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.entity.AttrEntity;
 import com.glume.glumemall.product.service.AttrService;
 import com.glume.glumemall.product.vo.AttrGroupWithAttrVo;
+import com.glume.glumemall.product.vo.item.SpuItemAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,13 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             return groupWithAttrVos;
         }
         return null;
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVo> getAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId) {
+        // 查询当前SUP下的所有信息以及分组的属性值
+        List<SpuItemAttrGroupVo> vos = baseMapper.getAttrGroupWithAttrsBySpuId(spuId,catalogId);
+        return vos;
     }
 
 }

@@ -3,22 +3,38 @@ package com.glume.glumemall.product.service.impl;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
-import com.glume.glumemall.product.entity.SpuInfoEntity;
+import com.glume.glumemall.product.entity.*;
+import com.glume.glumemall.product.service.*;
+import com.glume.glumemall.product.vo.item.ItemSaleAttrsVo;
+import com.glume.glumemall.product.vo.item.SkuItemVo;
+import com.glume.glumemall.product.vo.item.SpuItemAttrGroupVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.glume.glumemall.product.dao.SkuInfoDao;
-import com.glume.glumemall.product.entity.SkuInfoEntity;
-import com.glume.glumemall.product.service.SkuInfoService;
 
 
 @Service("skuInfoService")
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> implements SkuInfoService {
+
+    @Autowired
+    SkuImagesService skuImagesService;
+
+    @Autowired
+    SpuInfoDescService spuInfoDescService;
+
+    @Autowired
+    AttrGroupService attrGroupService;
+
+    @Autowired
+    SkuSaleAttrValueService skuSaleAttrValueService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -69,6 +85,33 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Override
     public void saveSkuInfo(SkuInfoEntity skuInfoEntity) {
         baseMapper.insert(skuInfoEntity);
+    }
+
+    @Override
+    public SkuItemVo item(Long skuId) {
+        SkuItemVo skuItemVo = new SkuItemVo();
+        // sku基本信息 pms_sku_info
+        SkuInfoEntity skuInfoEntity = baseMapper.selectById(skuId);
+        skuItemVo.setInfo(skuInfoEntity);
+        Long spuId = skuInfoEntity.getSpuId();
+        Long catalogId = skuInfoEntity.getCatalogId();
+
+        // sku图片信息 pms_sku_images
+        List<SkuImagesEntity> images = skuImagesService.getImagesBySkuId(skuId);
+        skuItemVo.setImages(images);
+
+        // spu销售属性组合
+        List<ItemSaleAttrsVo> saleAttrVos = skuSaleAttrValueService.getSaleAttrsBySpuId(spuId);
+        skuItemVo.setSaleAttr(saleAttrVos);
+
+        // spu介绍
+        SpuInfoDescEntity spuInfoDescEntity = spuInfoDescService.getById(spuId);
+        skuItemVo.setDesp(spuInfoDescEntity);
+
+        // spu规格参数
+        List<SpuItemAttrGroupVo> attrGroupVos = attrGroupService.getAttrGroupWithAttrsBySpuId(spuId,catalogId);
+        skuItemVo.setGroupAttrs(attrGroupVos);
+        return skuItemVo;
     }
 
 }

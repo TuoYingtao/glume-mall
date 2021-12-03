@@ -8,6 +8,7 @@ import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.dao.SkuSaleAttrValueDao;
 import com.glume.glumemall.product.entity.SkuSaleAttrValueEntity;
 import com.glume.glumemall.product.service.SkuSaleAttrValueService;
+import com.glume.glumemall.product.vo.item.ItemSaleAttrsVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,12 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
     @Override
     public void saveSkuSaleAttr(List<SkuSaleAttrValueEntity> attrValueEntities) {
         this.saveBatch(attrValueEntities);
+    }
+
+    @Override
+    public List<ItemSaleAttrsVo> getSaleAttrsBySpuId(Long spuId) {
+        List<ItemSaleAttrsVo> saleAttrsVos = baseMapper.getSaleAttrsBySpuId(spuId);
+        return saleAttrsVos;
     }
 
 }

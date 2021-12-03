@@ -33,4 +33,10 @@ public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesDao, SkuImagesEnt
         this.saveBatch(skuImagesEntityList);
     }
 
+    @Override
+    public List<SkuImagesEntity> getImagesBySkuId(Long skuId) {
+        List<SkuImagesEntity> imagesEntities = baseMapper.selectList(new QueryWrapper<SkuImagesEntity>().eq("sku_id", skuId));
+        return imagesEntities;
+    }
+
 }

@@ -13,5 +13,26 @@
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
 
+    <resultMap id="spuItemAttrGroupVo" type="com.glume.glumemall.product.vo.item.SpuItemAttrGroupVo">
+        <result property="groupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.glume.glumemall.product.vo.item.SpuBaseAttrVo">
+            <result property="attrName" column="attr_id"/>
+            <result property="attrValues" column="attr_value"/>
+        </collection>
+    </resultMap>
+    <select id="getAttrGroupWithAttrsBySpuId" resultMap="spuItemAttrGroupVo">
+        SELECT ag.`attr_group_id`,
+               ag.`attr_group_name`,
+               aar.`attr_id`,
+               attr.`attr_name`,
+               pav.`attr_value`,
+               pav.`spu_id`
+        FROM `pms_attr_group` ag
+                 LEFT JOIN `pms_attr_attrgroup_relation` aar ON aar.`attr_group_id` = ag.`attr_group_id`
+                 LEFT JOIN `pms_attr` attr ON attr.`attr_id` = aar.`attr_id`
+                 LEFT JOIN `pms_product_attr_value` pav ON pav.`attr_id` = attr.`attr_id`
+        WHERE ag.`catelog_id` = #{catalogId} AND pav.`spu_id` = #{spuId}
+    </select>
+
 
 </mapper>

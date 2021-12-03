@@ -2,6 +2,8 @@ package com.glume.glumemall.product.vo.item;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 商品销售属性详情
  */
@@ -18,6 +20,6 @@ public class ItemSaleAttrsVo {
     /**
      * 属性值
      */
-    private String attrValues;
+    private List<AttrValueWithSkuIdVo> attrValues;
 
 }

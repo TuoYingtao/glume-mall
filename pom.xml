@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>glume-auth-server</module>
         <module>glume-admin</module>
         <module>glume-gateway</module>
         <module>glume-common</module>

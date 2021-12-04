@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -126,6 +127,16 @@ public class GlobalExceptionHandler {
         }
         LOGGER.error("请求地址'{}',校验异常'{}'", requestURI, e.getMessage(), e);
         return R.error(HttpStatus.BAD_REQUEST,String.join(",",msgList));
+    }
+
+    /**
+     * SQL异常
+     */
+    @ExceptionHandler(SQLException.class)
+    public R handleSQLException(SQLException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        LOGGER.error("请求地址'{}'，发生SQL异常",requestURI,e);
+        return R.error(HttpStatus.ERROR,e.getMessage());
     }
 
     /**

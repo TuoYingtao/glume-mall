@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScans;
 @SpringBootApplication
 @ComponentScans({
 		@ComponentScan("com.glume.common.core"),
+		@ComponentScan("com.glume.common.validator.config")
 })
 public class GlumeAuthServerApplication {
 

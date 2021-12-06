@@ -17,6 +17,11 @@
 			<artifactId>glume-common-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.glume.common.validator</groupId>
+			<artifactId>glume-common-validator</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

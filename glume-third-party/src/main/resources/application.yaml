@@ -8,8 +8,16 @@ spring:
       discovery:
         server-addr: localhost:8848
 
-# alibaba oss 对象存储
+# alibaba 服务
 alibaba:
   cloud:
+    # oss 对象存储
     oss:
       bucket: glume-mall
+    # 短信服务
+    sms:
+      host: https://jumsendsms.market.alicloudapi.com
+      path: /sms/send-upgrade
+      template-id: M72CB42894
+      appcode: e4ea93264877482cb458447c5ef8b830
+

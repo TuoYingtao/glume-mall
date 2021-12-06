@@ -84,4 +84,28 @@ public class HttpStatus
      * 接口未实现
      */
     public static final int NOT_IMPLEMENTED = 501;
+
+    /**
+     * 自定义HTTP常量
+     */
+    public enum BizCodeEnum {
+        SMS_CODE_EXCEPTION(10001,"短信验证码获取频率太高！");
+
+        private final Integer code;
+
+        private final String msg;
+
+        BizCodeEnum(Integer code,String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
 }

@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80026
+ Source Server Version : 80025
  Source Host           : localhost:3306
  Source Schema         : nacos
 
  Target Server Type    : MySQL
- Target Server Version : 80026
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 18/11/2021 23:23:38
+ Date: 06/12/2021 18:05:05
 */
 
 SET NAMES utf8mb4;
@@ -200,7 +200,6 @@ CREATE TABLE `his_config_info`  (
 -- ----------------------------
 -- Records of his_config_info
 -- ----------------------------
-INSERT INTO `his_config_info` VALUES (0, 35, 'oss.yaml', 'DEFAULT_GROUP', '', '# alibaba oss 对象存储\r\nalibaba:\r\n  cloud:\r\n    access-key: LTAI5t6UPxQqej4JDx19V4XB\r\n    secret-key: UuMiYBfgjyrnf5KWEfflxmRL1nXSgN\r\n    oss:\r\n      endpoint: oss-cn-shenzhen.aliyuncs.com', '14a763cc0ed6d4e788341a673be588f2', '2021-11-04 17:29:07', '2021-11-04 09:29:08', NULL, '0:0:0:0:0:0:0:1', 'I', '4cc5ba66-dbba-40b7-bb98-709cd26fad66');
 
 -- ----------------------------
 -- Table structure for permissions
@@ -848,7 +847,7 @@ CREATE TABLE `tenant_info`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_tenant_info_kptenantid`(`kp`, `tenant_id`) USING BTREE,
   INDEX `idx_tenant_id`(`tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tenant_info
@@ -862,6 +861,7 @@ INSERT INTO `tenant_info` VALUES (6, '1', '93e4a05e-b268-4598-8f2d-3a47ff36edf9'
 INSERT INTO `tenant_info` VALUES (7, '1', '510cd728-988e-4e39-9142-9ee7f8f7b383', 'admin', '后台系统服务', 'nacos', 1634268513303, 1634268513303);
 INSERT INTO `tenant_info` VALUES (8, '1', '4cc5ba66-dbba-40b7-bb98-709cd26fad66', 'thirdParty', '第三方服务', 'nacos', 1636017876281, 1636017876281);
 INSERT INTO `tenant_info` VALUES (9, '1', 'dd58c327-a299-44cf-b8d2-2cf4aa9a50f1', 'member', '会员服务', 'nacos', 1637242828440, 1637242828440);
+INSERT INTO `tenant_info` VALUES (10, '1', '33ca79ca-4a0d-4b29-ac29-d62749a62f1a', 'authServer', '认证中心', 'nacos', 1638756657965, 1638756657965);
 
 -- ----------------------------
 -- Table structure for users

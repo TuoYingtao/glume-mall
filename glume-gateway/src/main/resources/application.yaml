@@ -46,15 +46,15 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
 
-        - id: glume_host_route
-          uri: lb://glume-product
-          predicates:
-            - Host=glumemall.com,**.glumemall.com
-
         - id: glume_auth_route
           uri: lb://glume-auth-server
           predicates:
             - Host=auth.glumemall.com
+
+        - id: glume_host_route
+          uri: lb://glume-product
+          predicates:
+            - Host=glumemall.com,**.glumemall.com
     nacos:
       discovery:
         server-addr: localhost:8848

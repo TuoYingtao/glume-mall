@@ -1,9 +1,14 @@
 package com.glume.glumemall.thirdparty.component;
 
+import com.alibaba.fastjson.JSON;
+import com.glume.common.core.constant.HttpStatus;
 import com.glume.glumemall.thirdparty.util.HttpUtils;
 import lombok.Data;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +24,7 @@ import java.util.Map;
 @Data
 @Component
 public class SmsComponent {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SmsComponent.class);
 
     /**
      * 请求地址
@@ -50,9 +56,11 @@ public class SmsComponent {
 
         try {
             HttpResponse response = HttpUtils.doPost(host, path, method, headers, querys, bodys);
-            System.out.println(response.toString());
-            //获取response的body
-            System.out.println(EntityUtils.toString(response.getEntity()));
+            String body = EntityUtils.toString(response.getEntity());
+            Map map = JSON.parseObject(body, Map.class);
+            if (HttpStatus.SUCCESS != Integer.parseInt(map.get("code").toString())) {
+                LOGGER.error("阿里短信服务=>body：{}",body);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

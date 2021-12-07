@@ -3,13 +3,13 @@ package com.glume.glumemall.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.glume.common.core.constant.HttpStatus;
+import com.glume.glumemall.member.exception.MobileExsitException;
+import com.glume.glumemall.member.exception.UserNameExsitException;
 import com.glume.glumemall.member.feign.CouponFeignService;
+import com.glume.glumemall.member.vo.MemberRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.member.entity.MemberEntity;
 import com.glume.glumemall.member.service.MemberService;
@@ -40,6 +40,18 @@ public class MemberController {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("张三");
         return R.ok().put("member",memberEntity).put("coupons",couponFeignService.memberCoupons().get("coupons"));
+    }
+
+    @PostMapping("/register")
+    public R register(@RequestBody MemberRegisterVo memberRegisterVo) {
+        try {
+            memberService.register(memberRegisterVo);
+        } catch (MobileExsitException e) {
+            return R.error(HttpStatus.BizCodeEnum.MOBILE_EXIST_EXCEPTION.getCode(), HttpStatus.BizCodeEnum.MOBILE_EXIST_EXCEPTION.getMsg());
+        } catch (UserNameExsitException e) {
+            return R.error(HttpStatus.BizCodeEnum.USER_EXIST_EXCEPTION.getCode(), HttpStatus.BizCodeEnum.USER_EXIST_EXCEPTION.getMsg());
+        }
+        return R.ok();
     }
 
     /**

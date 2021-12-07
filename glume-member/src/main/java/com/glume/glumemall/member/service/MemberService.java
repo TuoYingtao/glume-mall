@@ -3,6 +3,9 @@ package com.glume.glumemall.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.member.entity.MemberEntity;
+import com.glume.glumemall.member.exception.MobileExsitException;
+import com.glume.glumemall.member.exception.UserNameExsitException;
+import com.glume.glumemall.member.vo.MemberRegisterVo;
 
 import java.util.Map;
 
@@ -16,5 +19,11 @@ import java.util.Map;
 public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void register(MemberRegisterVo memberRegisterVo);
+
+    void checkMobileUnique(String mobile) throws MobileExsitException;
+
+    void checkUsernameUnique(String username) throws UserNameExsitException;
 }
 

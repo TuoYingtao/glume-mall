@@ -6,6 +6,7 @@ import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.authserver.feign.MemberFeignService;
 import com.glume.glumemall.authserver.feign.ThirdPartFeignService;
+import com.glume.glumemall.authserver.vo.UserLoginVo;
 import com.glume.glumemall.authserver.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -98,6 +99,19 @@ public class LoginController {
             errors.put("msg","验证码不正确！");
             redirectAttributes.addFlashAttribute("errors",errors);
             return "redirect:http://auth.glumemall.com/register.html";
+        }
+    }
+
+    @PostMapping("/login")
+    public String login(UserLoginVo userLoginVo,RedirectAttributes redirectAttributes) {
+        R login = memberFeignService.login(userLoginVo);
+        if (HttpStatus.SUCCESS == login.getCode()) {
+            return "redirect:http://glumemall.com";
+        } else {
+            Map<String,Object> errors = new HashMap<>();
+            errors.put("msg",login.get("msg"));
+            redirectAttributes.addFlashAttribute("errors",errors);
+            return "redirect:http://auth.glumemall.com/login.html";
         }
     }
 }

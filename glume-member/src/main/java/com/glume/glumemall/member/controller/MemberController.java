@@ -4,9 +4,11 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.member.exception.MobileExsitException;
 import com.glume.glumemall.member.exception.UserNameExsitException;
 import com.glume.glumemall.member.feign.CouponFeignService;
+import com.glume.glumemall.member.vo.MemberLoginVo;
 import com.glume.glumemall.member.vo.MemberRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,16 @@ public class MemberController {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setNickname("张三");
         return R.ok().put("member",memberEntity).put("coupons",couponFeignService.memberCoupons().get("coupons"));
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo loginVo){
+        MemberEntity memberEntity = memberService.login(loginVo);
+        if (StringUtils.isNotNull(memberEntity)) {
+            return R.ok();
+        } else {
+            return R.error(HttpStatus.BizCodeEnum.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(), HttpStatus.BizCodeEnum.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
     }
 
     @PostMapping("/register")

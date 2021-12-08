@@ -1,9 +1,11 @@
 package com.glume.glumemall.member.service.impl;
 
+import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.member.dao.MemberLevelDao;
 import com.glume.glumemall.member.entity.MemberLevelEntity;
 import com.glume.glumemall.member.exception.MobileExsitException;
 import com.glume.glumemall.member.exception.UserNameExsitException;
+import com.glume.glumemall.member.vo.MemberLoginVo;
 import com.glume.glumemall.member.vo.MemberRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,6 +65,25 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         Integer count = baseMapper.selectCount(new QueryWrapper<MemberEntity>().eq("username", username));
         if (count > 0) {
             throw new UserNameExsitException();
+        }
+    }
+
+    @Override
+    public MemberEntity login(MemberLoginVo loginVo) {
+        String loginacct = loginVo.getLoginacct();
+        String password = loginVo.getPassword();
+        MemberEntity memberEntity = baseMapper.selectOne(new QueryWrapper<MemberEntity>().eq("username", loginacct).or().eq("mobile", loginacct));
+        if (StringUtils.isNotNull(memberEntity)) {
+            String passwordDB = memberEntity.getPassword();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            boolean matches = passwordEncoder.matches(password, passwordDB);
+            if (matches) {
+                return memberEntity;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 

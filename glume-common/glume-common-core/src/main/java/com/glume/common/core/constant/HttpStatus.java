@@ -91,7 +91,8 @@ public class HttpStatus
     public enum BizCodeEnum {
         SMS_CODE_EXCEPTION(10001,"短信验证码获取频率太高！"),
         USER_EXIST_EXCEPTION(15001,"用户已存在!"),
-        MOBILE_EXIST_EXCEPTION(15002,"手机号已存在！");
+        MOBILE_EXIST_EXCEPTION(15002,"手机号已存在！"),
+        LOGINACCT_PASSWORD_INVAILD_EXCEPTION(15003,"账号密码错误！");
 
         private final Integer code;
 

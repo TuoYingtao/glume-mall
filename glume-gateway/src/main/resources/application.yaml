@@ -53,6 +53,12 @@ spring:
           predicates:
             - Host=auth.glumemall.com
 
+        # 购物车路由
+        - id: glume_cart
+          uri: lb://glume-cart
+          predicates:
+            - Host=cart.glumemall.com
+
         # 订单路由
         - id: glume_order_route
           uri: lb://glume-order

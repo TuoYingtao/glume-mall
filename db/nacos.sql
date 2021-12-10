@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 06/12/2021 18:05:05
+ Date: 10/12/2021 17:54:54
 */
 
 SET NAMES utf8mb4;
@@ -847,7 +847,7 @@ CREATE TABLE `tenant_info`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_tenant_info_kptenantid`(`kp`, `tenant_id`) USING BTREE,
   INDEX `idx_tenant_id`(`tenant_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'tenant_info' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tenant_info
@@ -862,6 +862,8 @@ INSERT INTO `tenant_info` VALUES (7, '1', '510cd728-988e-4e39-9142-9ee7f8f7b383'
 INSERT INTO `tenant_info` VALUES (8, '1', '4cc5ba66-dbba-40b7-bb98-709cd26fad66', 'thirdParty', '第三方服务', 'nacos', 1636017876281, 1636017876281);
 INSERT INTO `tenant_info` VALUES (9, '1', 'dd58c327-a299-44cf-b8d2-2cf4aa9a50f1', 'member', '会员服务', 'nacos', 1637242828440, 1637242828440);
 INSERT INTO `tenant_info` VALUES (10, '1', '33ca79ca-4a0d-4b29-ac29-d62749a62f1a', 'authServer', '认证中心', 'nacos', 1638756657965, 1638756657965);
+INSERT INTO `tenant_info` VALUES (11, '1', '20694050-ad2f-4c24-9a84-1bdbacccdc4a', 'order', 'order', 'nacos', 1639112825210, 1639112825210);
+INSERT INTO `tenant_info` VALUES (12, '1', '687553a0-5f12-4b31-b31f-d145ebdbe398', 'cart', 'cart', 'nacos', 1639122796892, 1639122796892);
 
 -- ----------------------------
 -- Table structure for users

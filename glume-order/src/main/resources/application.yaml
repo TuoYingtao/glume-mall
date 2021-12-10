@@ -1,11 +1,17 @@
 server:
   port: 9010
 spring:
+  application:
+    name: glume-order
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/glumemall_oms?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
   rabbitmq:
     host: localhost
     port: 5672
@@ -17,6 +23,11 @@ spring:
     listener:
       simple:
         acknowledge-mode: manual # 开启手动确认ACK消息；避免多条消息在宕机的时候丢失；（默认为自动确认回复）
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

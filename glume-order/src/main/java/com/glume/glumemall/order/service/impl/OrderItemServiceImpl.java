@@ -9,6 +9,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import java.io.IOException;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,13 +45,24 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemDao, OrderItemEnt
      */
     @RabbitHandler
     public void recieveMessage(Message message, OrderReturnReasonEntity content, Channel channel) {
-//        LOGGER.info("接受到消息...{}",message);
         LOGGER.info("接受到消息...==>内容：{}",content);
+        /** 签收货物；手动确认ACK */
+        long deliveryTag = message.getMessageProperties().getDeliveryTag();
+        try {
+            if (deliveryTag % 2 == 0) {
+                /** 确认接受 basicAck( id，是否为批量确认); */
+                channel.basicAck(deliveryTag,false);
+            } else {
+                /** 拒绝接受 basicNack( id，是否为批量拒绝，是否重写放回requeue中); */
+                channel.basicNack(deliveryTag,false,false);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RabbitHandler
     public void recieveMessage(Message message, OrderEntity content, Channel channel) {
-//        LOGGER.info("接受到消息...{}",message);
         LOGGER.info("接受到消息...==>内容：{}",content);
     }
 

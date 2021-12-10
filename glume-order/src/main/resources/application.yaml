@@ -14,6 +14,9 @@ spring:
     publisher-returns: true             # 开启发送端消息抵达队列确认
     template:
       mandatory: true   # 只要抵达队列，以异步发送优先回调 ReturnConfirm
+    listener:
+      simple:
+        acknowledge-mode: manual # 开启手动确认ACK消息；避免多条消息在宕机的时候丢失；（默认为自动确认回复）
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

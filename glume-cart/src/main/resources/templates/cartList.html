@@ -23,8 +23,8 @@
 
 					</ul>
 					<ul class="header-right">
-						<li><a href="../登录页面\index.html" style="color: red;">你好，请登录</a></li>
-						<li><a href="../注册页面\index.html">免费注册</a></li>
+						<li><a href="../登录页面/index.html" style="color: red;">你好，请登录</a></li>
+						<li><a href="../注册页面/index.html">免费注册</a></li>
 						<li class="spacer"></li>
 						<li><a href="">我的订单</a></li>
 						<li class="spacer"></li>
@@ -52,7 +52,7 @@
 						<input type="button" value="搜索" class="one_right_btn">
 					</div>
 				</div>
-				<div class="one_search_load" th:if="${userId}==null">
+				<div class="one_search_load"  if="${userId}==null">
 					<img src="/static/cart/img/shop_07.jpg" class="one_load_wraing">
 					<span>您还没有登录！登录后购物车的商品将保存到您账号中</span>
 					<a href="#"><input type="button" onclick="login()" value="立即登录" class="one_load_btn"></a>
@@ -81,32 +81,32 @@
 
 				<div class="One_ShopCon">
 					<ul>
-						<li th:each="cartInfo:${cartList}">
+						<li  each="cartInfo:${cartList}">
 							<div> </div>
 
 							<div>
 								<ol>
-									<li><input type="checkbox" class="check" th:value="${cartInfo.skuId}" onchange="checkSku(this)" th:checked="(${cartInfo.isChecked}==1)?'true':'false'" /></li>
+									<li><input type="checkbox" class="check"  value="${cartInfo.skuId}" onchange="checkSku(this)"  checked="(${cartInfo.isChecked}==1)?'true':'false'" /></li>
 									<li>
-										<dt><img th:src="${cartInfo.imgUrl}" src="img\shop1.jpg" alt=""></dt>
-										<dd th:onclick="'toItem('+${cartInfo.skuId}+')'">
+										<dt><img src="img/shop1.jpg" alt=""></dt>
+										<dd  onclick="'toItem('+${cartInfo.skuId}+')'">
 											<p>
-												<span th:text="${cartInfo.skuName}">TCL 55A950C 55英寸32核</span>
+												<span  text="${cartInfo.skuName}">TCL 55A950C 55英寸32核</span>
 											</p>
 										</dd>
 									</li>
 									<li>
-										<p class="dj" th:text="'￥'+${cartInfo.skuPrice}">4599.00</p>
+										<p class="dj"  text="'￥'+${cartInfo.skuPrice}">4599.00</p>
 									</li>
 									<li>
 										<p>
 											<span>-</span>
-											<span th:text="${cartInfo.skuNum}">5</span>
+											<span  text="${cartInfo.skuNum}">5</span>
 											<span>+</span>
 										</p>
 									</li>
 									<li style="font-weight:bold">
-										<p class="zj" th:text="'￥'+${cartInfo.totalPrice}">￥22995.00</p>
+										<p class="zj"  text="'￥'+${cartInfo.totalPrice}">￥22995.00</p>
 									</li>
 									<li>
 										<p>删除</p>
@@ -121,7 +121,7 @@
                         <ol>
                             <li><input type="checkbox"  class="check"></li>
                             <li>
-                                <dt><img src="img\shop1.jpg" alt=""></dt>
+                                <dt><img src="img/shop1.jpg" alt=""></dt>
                                 <dd>
                                     <p>
 
@@ -596,7 +596,7 @@
 		})
 		//选中当前商品背景变色
 		$(".check").each(function(index) {
-			$(".check").eq(index).click(function() {
+			$(".check").eq(cartList).click(function() {
 				if ($(this).is(":checked")) {
 					$(this).parent().parent().parent().css("background", "#fff4e8");
 					$(this).parent().parent().parent().parent().children("div:last-child").css("background", "#fff4e8")
@@ -761,9 +761,9 @@
 					return
 				}
 				toggle = false
-				index++;
-				if (index > $('.fade li').length - 1) {
-					index = 0;
+				cartList++;
+				if (cartList > $('.fade li').length - 1) {
+					cartList = 0;
 				}
 
 			});
@@ -774,12 +774,12 @@
 					return
 				}
 				toggle = false
-				index--;
-				if (index < 0) {
-					index = $('.fade li').length - 1;
+				cartList--;
+				if (cartList < 0) {
+					cartList = $('.fade li').length - 1;
 				}
-				$('.pagination ul li').eq(index).addClass('active').siblings().removeClass('active')
-				$(".slider>ul>li").eq(index).fadeIn(500, function() {
+				$('.pagination ul li').eq(cartList).addClass('active').siblings().removeClass('active')
+				$(".slider>ul>li").eq(cartList).fadeIn(500, function() {
 					toggle = true
 				}).siblings("li").fadeOut(500);
 			});

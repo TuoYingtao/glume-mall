@@ -16,6 +16,7 @@
         <module>glume-common</module>
         <module>glume-coupon</module>
         <module>glume-member</module>
+        <module>glume-cart</module>
         <module>glume-order</module>
         <module>glume-product</module>
         <module>glume-ware</module>

@@ -1,0 +1,14 @@
+server:
+  port: 30000
+spring:
+  application:
+    name: glume-cart
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false

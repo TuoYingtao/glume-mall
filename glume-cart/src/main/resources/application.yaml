@@ -12,3 +12,10 @@ spring:
     suffix: .html
     encoding: UTF-8
     cache: false
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  session:
+    store-type: redis
+    timeout: 10m

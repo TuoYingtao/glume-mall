@@ -12,9 +12,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.glume.common</groupId>
-            <artifactId>glume-common</artifactId>
+            <groupId>com.glume.common.core</groupId>
+            <artifactId>glume-common-core</artifactId>
             <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -36,6 +37,14 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
         <dependency>

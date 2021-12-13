@@ -16,6 +16,9 @@ spring:
     database: 0
     host: localhost
     port: 6379
+  session:
+    store-type: redis
+    timeout: 30m
 common:
   validator:
     failFast: false

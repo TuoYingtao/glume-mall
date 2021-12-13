@@ -48,7 +48,7 @@ public class MemberController {
     public R login(@RequestBody MemberLoginVo loginVo){
         MemberEntity memberEntity = memberService.login(loginVo);
         if (StringUtils.isNotNull(memberEntity)) {
-            return R.ok();
+            return R.ok().put("data",memberEntity);
         } else {
             return R.error(HttpStatus.BizCodeEnum.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(), HttpStatus.BizCodeEnum.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
         }

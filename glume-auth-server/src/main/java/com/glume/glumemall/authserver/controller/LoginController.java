@@ -1,11 +1,13 @@
 package com.glume.glumemall.authserver.controller;
 
+import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.constant.AuthServerConstant;
 import com.glume.common.core.constant.HttpStatus;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.authserver.feign.MemberFeignService;
 import com.glume.glumemall.authserver.feign.ThirdPartFeignService;
+import com.glume.glumemall.authserver.vo.MemberRespVo;
 import com.glume.glumemall.authserver.vo.UserLoginVo;
 import com.glume.glumemall.authserver.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -103,13 +106,16 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginVo userLoginVo,RedirectAttributes redirectAttributes) {
+    public String login(UserLoginVo userLoginVo, RedirectAttributes redirectAttributes, HttpSession session) {
         R login = memberFeignService.login(userLoginVo);
         if (HttpStatus.SUCCESS == login.getCode()) {
-            return "redirect:http://glumemall.com";
+            MemberRespVo data = login.getData("data", new TypeReference<MemberRespVo>() {
+            });
+            session.setAttribute(AuthServerConstant.LOGIN_USER,data);
+            return "redirect:http://cart.glumemall.com/cart.html";
         } else {
             Map<String,Object> errors = new HashMap<>();
-            errors.put("msg",login.get("msg"));
+            errors.put("msg",login.getData("msg",new TypeReference<String>(){}));
             redirectAttributes.addFlashAttribute("errors",errors);
             return "redirect:http://auth.glumemall.com/login.html";
         }

@@ -18,7 +18,7 @@
 					<ul class="header-left">
 						<li>
 
-							<a href="">首页</a>
+							<a href="http://glumemall.com/index.html">首页</a>
 						</li>
 
 					</ul>
@@ -44,8 +44,8 @@
 			<div class="one_sousuo">
 				<div class="one_search_top">
 					<div class="one_top_left">
-						<a href="../" class="one_left_logo"><img src="/static/cart/img/logo1.jpg"></a>
-						<a href="#" class="one_left_link">购物车</a>
+						<a href="http://glumemall.com/index.html" class="one_left_logo"><img src="/static/cart/img/logo1.jpg"></a>
+						<a href="http://cart.glumemall.com/cart.html" class="one_left_link">购物车</a>
 					</div>
 					<div class="one_top_right">
 						<input type="text" class="one_right_txt" placeholder="" onfocus="this.placeholder=''" onblur="this.placeholder='' ">
@@ -55,7 +55,7 @@
 				<div class="one_search_load"  if="${userId}==null">
 					<img src="/static/cart/img/shop_07.jpg" class="one_load_wraing">
 					<span>您还没有登录！登录后购物车的商品将保存到您账号中</span>
-					<a href="#"><input type="button" onclick="login()" value="立即登录" class="one_load_btn"></a>
+					<a href="http://auth.glumemall.com/login.html"><input type="button" onclick="login()" value="立即登录" class="one_load_btn"></a>
 				</div>
 			</div>
 		</div>
@@ -86,27 +86,27 @@
 
 							<div>
 								<ol>
-									<li><input type="checkbox" class="check"  value="${cartInfo.skuId}" onchange="checkSku(this)"  checked="(${cartInfo.isChecked}==1)?'true':'false'" /></li>
+									<li><input type="checkbox" class="check"  value="${cartInfo.skuId}" onchange="checkSku(this)" checked="(${item.checked}==1)?'true':'false'" /></li>
 									<li>
 										<dt><img src="/static/cart/img/shop1.jpg" alt=""></dt>
-										<dd  onclick="'toItem('+${cartInfo.skuId}+')'">
+										<dd onclick="'toItem('+${item.skuId}+')'">
 											<p>
-												<span  text="${cartInfo.skuName}">TCL 55A950C 55英寸32核</span>
+												<span text="${item.skuName}">TCL 55A950C 55英寸32核</span>
 											</p>
 										</dd>
 									</li>
 									<li>
-										<p class="dj"  text="'￥'+${cartInfo.skuPrice}">4599.00</p>
+										<p class="dj" text="'￥'+${item.skuPrice}">4599.00</p>
 									</li>
 									<li>
 										<p>
 											<span>-</span>
-											<span  text="${cartInfo.skuNum}">5</span>
+											<span text="${item.skuNum}">5</span>
 											<span>+</span>
 										</p>
 									</li>
 									<li style="font-weight:bold">
-										<p class="zj"  text="'￥'+${cartInfo.totalPrice}">￥22995.00</p>
+										<p class="zj" text="'￥'+${item.totalPrice}">￥22995.00</p>
 									</li>
 									<li>
 										<p>删除</p>

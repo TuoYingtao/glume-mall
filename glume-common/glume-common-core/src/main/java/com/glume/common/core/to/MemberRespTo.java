@@ -1,4 +1,4 @@
-package com.glume.glumemall.glumecart.vo;
+package com.glume.common.core.to;
 
 import lombok.Data;
 
@@ -6,12 +6,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 用户登录信息
  * @author tuoyingtao
  * @create 2021-12-13 11:25
  */
 @Data
-public class MemberRespVo implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class MemberRespTo implements Serializable {
+    private final long serialVersionUID = 1L;
 
     /**
      * id

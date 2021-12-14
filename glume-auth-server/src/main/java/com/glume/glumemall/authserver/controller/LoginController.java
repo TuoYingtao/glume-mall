@@ -3,11 +3,11 @@ package com.glume.glumemall.authserver.controller;
 import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.constant.AuthServerConstant;
 import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.to.MemberRespTo;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.authserver.feign.MemberFeignService;
 import com.glume.glumemall.authserver.feign.ThirdPartFeignService;
-import com.glume.glumemall.authserver.vo.MemberRespVo;
 import com.glume.glumemall.authserver.vo.UserLoginVo;
 import com.glume.glumemall.authserver.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +109,7 @@ public class LoginController {
     public String login(UserLoginVo userLoginVo, RedirectAttributes redirectAttributes, HttpSession session) {
         R login = memberFeignService.login(userLoginVo);
         if (HttpStatus.SUCCESS == login.getCode()) {
-            MemberRespVo data = login.getData("data", new TypeReference<MemberRespVo>() {
+            MemberRespTo data = login.getData("data", new TypeReference<MemberRespTo>() {
             });
             session.setAttribute(AuthServerConstant.LOGIN_USER,data);
             return "redirect:http://cart.glumemall.com/cart.html";

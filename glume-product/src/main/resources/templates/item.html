@@ -56,7 +56,10 @@
                 </li>
             </ul>
             <ul class="header_ul_right">
-                <li style="border: 0;"><a href="../登录页面\index.html" class="aa">你好，请登录</a></li>
+                <li style="border: 0;">
+                    <a href="http://auth.glumemall.com/login.html" class="aa" th:if="${session.loginUser == null}">你好，请登录</a>
+                    <a class="aa" th:if="${session.loginUser != null}">欢迎，[[${ session.loginUser.nickname }]]</a>
+                </li>
                 <li><a href="../注册页面\index.html" style="color: red;">免费注册</a> |</li>
                 <li><a href="javascript:;" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="javascript:;">我的京东</a><span class="glyphicon glyphicon-menu-down">|</span>
@@ -252,7 +255,7 @@
             <div class="nav_top">
                 <div class="nav_top_one"><a href="#"><img src="/static/item/img/111.png"/></a></div>
                 <div class="nav_top_two"><input type="text"/><button>搜索</button></div>
-                <div class="nav_top_three"><a href="../JD_Shop/One_JDshop.html">我的购物车</a><span class="glyphicon glyphicon-shopping-cart"></span>
+                <div class="nav_top_three"><a href="http://cart.glumemall.com/cart.html">我的购物车</a><span class="glyphicon glyphicon-shopping-cart"></span>
                     <div class="nav_top_three_1">
                         <img src="/static/item/img/44.png"/>购物车还没有商品，赶紧选购吧！
                     </div>
@@ -607,7 +610,7 @@
 
                 <div class="box-btns clear">
                     <div class="box-btns-one">
-                        <input type="text" name="" id="" value="1" />
+                        <input type="text" name="" id="input_num" value="1" />
                         <div class="box-btns-one1">
 
                             <div>
@@ -624,8 +627,8 @@
                         </div>
                     </div>
                     <div class="box-btns-two">
-                        <a href="../商品分类\index.html">
-                            立即预约
+                        <a href="#" id="addToCartA" th:attr="skuId=${item.info.skuId}">
+                            加入购物车
                         </a>
                     </div>
                     <div class="box-btns-three">
@@ -1287,5 +1290,11 @@
         }
         location.href = `http://item.glumemall.com/${filterEle[0]}.html`
     })
+    $("#addToCartA").click(function () {
+        let num = $("#input_num").val();
+        let skuId = $(this).attr("skuId");
+        location.href = `http://cart.glumemall.com/addToCart?skuId=${skuId}&num=${num}`
+        return false;
+    });
 </script>
 </html>

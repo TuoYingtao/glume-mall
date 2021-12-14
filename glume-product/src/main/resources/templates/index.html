@@ -96,13 +96,13 @@
       <ul>
         <li>
           <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
-          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
+          <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/login.html">你好，请登录</a>
         </li>
         <li>
-          <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
+          <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/register.html" class="li_2">免费注册</a>
         </li>
         <li>
-          <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
+          <a th:if="${session.loginUser != null}" href="http://auth.glumemall.com/loguot.html" class="li_2">立即退出</a>
         </li>
         <span>|</span>
         <li>
@@ -124,7 +124,7 @@
     <div class="header_ico">
       <div class="header_gw">
         <img src="/static/index/img/img_15.png" />
-        <span><a href="http://cart.gulimall.com/cart.html">我的购物车</a></span>
+        <span><a href="http://cart.glumemall.com/cart.html">我的购物车</a></span>
         <span>0</span>
       </div>
       <div class="header_ko">
@@ -162,7 +162,7 @@
     <nav>
       <ul>
         <li>
-          <a href="#">秒杀</a>
+          <a href="http://glumemall.com/1.html">秒杀</a>
         </li>
         <li>
           <a href="#">优惠券</a>

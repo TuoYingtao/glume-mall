@@ -1,6 +1,7 @@
 package com.glume.glumemall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.glume.common.core.utils.R;
@@ -8,12 +9,7 @@ import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.product.entity.SkuSaleAttrValueEntity;
 import com.glume.glumemall.product.service.SkuSaleAttrValueService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -28,6 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class SkuSaleAttrValueController {
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    /**
+     * 获取SKU所有属性信息列表
+     */
+    @GetMapping("/stringlsit/{skuId}")
+    public List<String> getSkuSaleAttrValue(@PathVariable("skuId") Long skuId) {
+        return skuSaleAttrValueService.getSkuSaleAttrValueAsStringList(skuId);
+    }
 
     /**
      * 列表

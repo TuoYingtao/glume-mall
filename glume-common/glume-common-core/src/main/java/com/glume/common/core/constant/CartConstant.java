@@ -6,5 +6,8 @@ package com.glume.common.core.constant;
  */
 public class CartConstant {
 
+    /** 临时用户 */
     public static final String TEMP_USER_COOKIE_KEY = "user-key";
+    /** Cookie 过期时间 */
+    public static final int TEMP_USER_COOKIE_TIMEOUT = 60 * 60 * 24 * 30;
 }

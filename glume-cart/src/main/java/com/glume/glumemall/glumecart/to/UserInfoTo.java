@@ -17,4 +17,8 @@ public class UserInfoTo {
      * 用户KEy
      */
     private String userKey;
+    /**
+     * 是否分配的有临时用户
+     */
+    private Boolean isTempUser = false;
 }

@@ -28,6 +28,13 @@ spring:
     suffix: .html
     encoding: UTF-8
     cache: false
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+  session:
+    store-type: redis
+    timeout: 30m
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

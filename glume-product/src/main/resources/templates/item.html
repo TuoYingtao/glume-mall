@@ -56,11 +56,13 @@
                 </li>
             </ul>
             <ul class="header_ul_right">
-                <li style="border: 0;">
-                    <a href="http://auth.glumemall.com/login.html" class="aa" th:if="${session.loginUser == null}">你好，请登录</a>
-                    <a class="aa" th:if="${session.loginUser != null}">欢迎，[[${ session.loginUser.nickname }]]</a>
+                <li>
+                    <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+                    <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/login.html">你好，请登录</a>
                 </li>
-                <li><a href="../注册页面\index.html" style="color: red;">免费注册</a> |</li>
+                <li>
+                    <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/register.html" class="li_2">免费注册</a> |
+                </li>
                 <li><a href="javascript:;" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="javascript:;">我的京东</a><span class="glyphicon glyphicon-menu-down">|</span>
                     <ol class="jingdong_ol">

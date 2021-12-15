@@ -92,7 +92,7 @@
           </div>
           <div>
             <ol>
-              <li><input type="checkbox" class="check" th:checked="${item.check}"></li>
+              <li><input type="checkbox" class="itemCheck" th:attr="skuId=${item.skuId}" th:checked="${item.check}"></li>
               <li>
                 <dt><img th:src="${item.image}" alt=""></dt>
                 <dd>
@@ -106,17 +106,16 @@
                 <p class="dj" th:text="'￥' + ${#numbers.formatDecimal(item.price,3,2)}">￥4599.00</p>
               </li>
               <li>
-                <p>
-                  <span>-</span>
-                  <span th:text="${item.count}">5</span>
-                  <span>+</span>
+                <p th:attr="skuId=${item.skuId}">
+                  <span class="countOpsBtn">-</span>
+                  <span class="countOpsNum" th:text="${item.count}">5</span>
+                  <span class="countOpsBtn">+</span>
                 </p>
 
               </li>
               <li style="font-weight:bold"><p class="zj">￥[[${#numbers.formatDecimal(item.totalPrice,3,2)}]]</p></li>
               <li>
-                <p>删除</p>
-
+                <p class="deleteItemBtn" th:attr="skuId=${item.skuId}">删除</p>
               </li>
             </ol>
           </div>
@@ -168,7 +167,7 @@
     </dl>
   </div>
   <div>
-    <button type="button">删除</button>
+    <button type="button" onclick="deleteItem()">删除</button>
 
   </div>
 </div>
@@ -761,6 +760,25 @@
     $(this).children("p").children("img").attr("src", "img/one_mian_gwc2.png")
   }).mouseout(function () {
     $(this).children("p").children("img").attr("src", "img/one_mian_gwc1.png")
+  })
+  $(".itemCheck").click(function () {
+    let skuId = $(this).attr("skuId");
+    let is_checked = $(this).prop("checked");
+    location.href = `http://cart.glumemall.com/checkItem?skuId=${skuId}&check=${is_checked?1:0}`;
+  })
+  $(".countOpsBtn").click(function () {
+    let skuId = $(this).parent().attr("skuId");
+	let num = $(this).parent().find(".countOpsNum").text();
+	location.href = `http://cart.glumemall.com/countItem?skuId=${skuId}&num=${num}`;
+  })
+  
+  let deleteId = 0;
+  function deleteItem() {
+	console.log("删除");
+	location.href = `http://cart.glumemall.com/deleteItem?deleteId=${deleteId}`;
+  }
+  $(".deleteItemBtn").click(function (){
+	deleteId = $(this).attr("skuId");
   })
 </script>
 </html>

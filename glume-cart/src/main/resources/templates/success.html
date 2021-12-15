@@ -25,9 +25,12 @@
     </ul>
 
     <ul class="hd_wrap_right">
-      <li class="forel">
-        <a href="/javascript:;" class="link_login">你好,请登录</a>&nbsp;
-        <a href="/javascript:;" class="link_regist">免费注册</a>
+      <li>
+        <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+        <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/login.html">你好，请登录</a>
+      </li>
+      <li>
+        <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/register.html" class="li_2">免费注册</a> |
       </li>
       <li class="spacer"></li>
 

@@ -44,4 +44,22 @@ public class CartController {
         model.addAttribute("item",item);
         return "success";
     }
+
+    @GetMapping("/checkItem")
+    public String checkItem(@RequestParam("skuId") Long skuId, @RequestParam("check") Integer check) {
+        cartService.checkItem(skuId,check);
+        return "redirect:http://cart.glumemall.com/cart.html";
+    }
+
+    @GetMapping("/countItem")
+    public String countItem(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
+        cartService.countItem(skuId,num);
+        return "redirect:http://cart.glumemall.com/cart.html";
+    }
+
+    @GetMapping("/deleteItem")
+    public String deleteItem(@RequestParam("deleteId") Long deleteId) {
+        cartService.deleteItem(deleteId);
+        return "redirect:http://cart.glumemall.com/cart.html";
+    }
 }

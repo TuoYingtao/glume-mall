@@ -135,6 +135,44 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
+     * 选中购物项
+     * @param skuId
+     * @param check
+     */
+    @Override
+    public void checkItem(Long skuId, Integer check) {
+        CartItem cartItem = getCartItem(skuId);
+        cartItem.setCheck(check == 1 ? true : false);
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        String s = JSON.toJSONString(cartItem);
+        cartOps.put(skuId.toString(),s);
+    }
+
+    /**
+     * 改变商品项的数量
+     * @param skuId
+     * @param num
+     */
+    @Override
+    public void countItem(Long skuId, Integer num) {
+        CartItem cartItem = getCartItem(skuId);
+        cartItem.setCount(num);
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        String s = JSON.toJSONString(cartItem);
+        cartOps.put(skuId.toString(),s);
+    }
+
+    /**
+     * 删除商品项
+     * @param deleteId
+     */
+    @Override
+    public void deleteItem(Long deleteId) {
+        BoundHashOperations<String, Object, Object> cartOps = getCartOps();
+        cartOps.delete(deleteId.toString());
+    }
+
+    /**
      * 获取购物车中的所有购物项
      * @param cartKey
      * @return

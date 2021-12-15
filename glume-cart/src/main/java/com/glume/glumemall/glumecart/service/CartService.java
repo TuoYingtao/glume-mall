@@ -1,5 +1,6 @@
 package com.glume.glumemall.glumecart.service;
 
+import com.glume.glumemall.glumecart.vo.Cart;
 import com.glume.glumemall.glumecart.vo.CartItem;
 
 import java.util.concurrent.ExecutionException;
@@ -13,4 +14,8 @@ public interface CartService {
     CartItem addToCart(Long skuId, Integer num) throws ExecutionException, InterruptedException;
 
     CartItem getCartItem(Long skuId);
+
+    Cart getCart() throws ExecutionException, InterruptedException;
+
+    void clearCart(String cartKey);
 }

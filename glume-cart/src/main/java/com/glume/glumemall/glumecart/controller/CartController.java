@@ -1,8 +1,7 @@
 package com.glume.glumemall.glumecart.controller;
 
-import com.glume.glumemall.glumecart.interceotir.CartInterceptor;
 import com.glume.glumemall.glumecart.service.CartService;
-import com.glume.glumemall.glumecart.to.UserInfoTo;
+import com.glume.glumemall.glumecart.vo.Cart;
 import com.glume.glumemall.glumecart.vo.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,9 +23,9 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/cart.html")
-    public String cartListPage() {
-        UserInfoTo userInfoTo = CartInterceptor.toThreadLocal.get();
-        System.out.println(userInfoTo);
+    public String cartListPage(Model model) throws ExecutionException, InterruptedException {
+        Cart cart = cartService.getCart();
+        model.addAttribute("cart",cart);
         return "cartList";
     }
 

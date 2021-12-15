@@ -112,7 +112,7 @@ public class LoginController {
             MemberRespTo data = login.getData("data", new TypeReference<MemberRespTo>() {
             });
             session.setAttribute(AuthServerConstant.LOGIN_USER,data);
-            return "redirect:http://cart.glumemall.com/cart.html";
+            return "redirect:http://glumemall.com";
         } else {
             Map<String,Object> errors = new HashMap<>();
             errors.put("msg",login.getData("msg",new TypeReference<String>(){}));

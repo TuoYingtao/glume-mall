@@ -63,7 +63,7 @@
   <div class="success-wrap">
     <div class="w" id="result">
       <div class="m succeed-box">
-        <div class="mc success-cont">
+        <div th:if="${item != null}" class="mc success-cont">
           <div class="success-lcol">
             <div class="success-top"><b class="succ-icon"></b>
               <h3 class="ftx-02">商品已成功加入购物车</h3></div>
@@ -90,6 +90,9 @@
               <a class="btn-addtocart" href="http://cart.glumemall.com/cart.html" id="GotoShoppingCart"><b></b>去购物车结算</a>
             </div>
           </div>
+        </div>
+        <div th:if="${item == null}" class="mc success-cont">
+          <h2>购物车中暂无商品</h2><a href="http://glumemall.com">去购物</a>
         </div>
       </div>
     </div>

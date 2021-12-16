@@ -32,11 +32,21 @@ spring:
     database: 0
     host: localhost
     port: 6379
+  #Spring session 配置
   session:
     store-type: redis
     timeout: 30m
+
+# Mybatis-plus 配置
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto #主键自增
+
+# 线程池配置
+glumemall:
+  thread:
+    core-pool-size: 50
+    maximum-pool-size: 200
+    keep-alive-time: 10

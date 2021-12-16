@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -61,5 +62,10 @@ public class CartController {
     public String deleteItem(@RequestParam("deleteId") Long deleteId) {
         cartService.deleteItem(deleteId);
         return "redirect:http://cart.glumemall.com/cart.html";
+    }
+
+    @GetMapping("/currentUserCartItems")
+    public List<CartItem> getCurrentUserCartItems() {
+        return cartService.getUserCartItems();
     }
 }

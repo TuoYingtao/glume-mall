@@ -173,6 +173,26 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
+     * 当前用户选中的购物车项
+     * @return
+     */
+    @Override
+    public List<CartItem> getUserCartItems() {
+        UserInfoTo userInfoTo = CartInterceptor.toThreadLocal.get();
+        if (StringUtils.isNotNull(userInfoTo.getUserId())) {
+            String userKey = CartConstant.CART_PREFIX + userInfoTo.getUserId();
+            List<CartItem> cartItems = getCartItems(userKey);
+            return cartItems.stream().filter(cartItem -> cartItem.getCheck())
+                    .map(cartItem -> {
+                        // 更新最新价格
+                        cartItem.setPrice(productFeignService.getPrice(cartItem.getSkuId()));
+                        return cartItem;
+                    }).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    /**
      * 获取购物车中的所有购物项
      * @param cartKey
      * @return

@@ -3,6 +3,7 @@ package com.glume.glumemall.glumecart.service;
 import com.glume.glumemall.glumecart.vo.Cart;
 import com.glume.glumemall.glumecart.vo.CartItem;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -24,4 +25,6 @@ public interface CartService {
     void countItem(Long skuId, Integer num);
 
     void deleteItem(Long deleteId);
+
+    List<CartItem> getUserCartItems();
 }

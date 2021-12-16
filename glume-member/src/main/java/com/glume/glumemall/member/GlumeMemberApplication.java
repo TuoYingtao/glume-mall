@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 
 
-@EnableFeignClients(basePackages = "com.glume.glumemall.member.feign")
+@EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
 @ComponentScans({

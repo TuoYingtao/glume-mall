@@ -1,5 +1,6 @@
 package com.glume.glumemall.order.vo;
 
+import lombok.Data;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  * @author tuoyingtao
  * @create 2021-12-16 10:40
  */
+@Data
 public class OrderItemVo {
 
     private Long skuId;

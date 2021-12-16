@@ -1,5 +1,6 @@
 package com.glume.glumemall.order.vo;
 
+import com.glume.common.core.utils.StringUtils;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -26,11 +27,35 @@ public class OrderConfirmVo {
      */
     private Integer integration;
     /**
+     * 防重令牌
+     */
+    private String orderToken;
+    /**
      * 订单总额
      */
-    private BigDecimal total;
+    private BigDecimal total = new BigDecimal("0");
     /**
      * 应付价格
      */
-    private BigDecimal payPrice;
+    private BigDecimal payPrice = new BigDecimal("0");
+
+    public BigDecimal getTotal() {
+        if (StringUtils.isNotNull(items)) {
+            for (OrderItemVo item : items) {
+                BigDecimal decimal = item.getPrice().multiply(new BigDecimal(item.getCount().toString()));
+                total = total.add(decimal);
+            }
+        }
+        return total;
+    }
+
+    public BigDecimal getPayPrice() {
+        if (StringUtils.isNotNull(items)) {
+            for (OrderItemVo item : items) {
+                BigDecimal decimal = item.getPrice().multiply(new BigDecimal(item.getCount().toString()));
+                payPrice = payPrice.add(decimal);
+            }
+        }
+        return payPrice;
+    }
 }

@@ -59,7 +59,9 @@ public class Cart {
         // 计算购物项总价
         if (items != null && items.size() > 0) {
             for (CartItem item : items) {
-                amount = amount.add(item.getTotalPrice());
+                if (item.getCheck()) {
+                    amount = amount.add(item.getTotalPrice());
+                }
             }
         }
         BigDecimal subtract = amount.subtract(getReduce());

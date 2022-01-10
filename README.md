@@ -26,3 +26,28 @@ glume-mall是一个B2C模式的电商平台，销售自营商品给客户。采�
 * 安全框架：[SpringSecurity](https://spring.io/projects/spring-security)、JWT 0.9.1
 * 日志：slf4j
 * 其它：[fastjson 1.2.76](https://github.com/alibaba/fastjson/wiki)、lombok 1.18.10、[hutool 5.3.10](https://www.hutool.cn/docs/#/)、validation 2.0.1
+
+**项目结构**
+
+```
+glume-mall
+├── db -- SQL文件
+├── glume-common -- 公共配置、工具模块
+├	├── glume-common-core -- 常用工具封装包
+├	├── glume-common-mybatis -- 持久层相关配置
+├	├── glume-common-swagger -- 在线接口文档相关配置
+├	└──  glume-common-validator -- JSR-303 API参数校验配置
+├── glume-third-party -- OSS、Sms第三方服务
+├── glume-gateway -- Spring Cloud 网关模块
+├── glume-auth-server -- 认证中心模块提供授权服务
+├── glume-admin -- 后台管理模块
+├── glume-cart -- 购物车模块
+├── glume-coupon -- 优惠卷模块
+├── glume-member -- 用户会员模块
+├── glume-order -- 订单模块
+├── glume-product -- 产品模块
+├── glume-ware -- 库存模块
+├── renren-generator -- 代码在线生成工具
+└──  glume-vue -- 后台管理系统
+```
+

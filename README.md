@@ -27,7 +27,7 @@ glume-mall是一个B2C模式的电商平台，销售自营商品给客户。采�
 * 日志：slf4j
 * 其它：[fastjson 1.2.76](https://github.com/alibaba/fastjson/wiki)、lombok 1.18.10、[hutool 5.3.10](https://www.hutool.cn/docs/#/)、validation 2.0.1
 
-**项目结构**
+## 项目结构
 
 ```
 glume-mall

@@ -36,7 +36,7 @@ glume-mall
 ├	├── glume-common-core -- 常用工具封装包
 ├	├── glume-common-mybatis -- 持久层相关配置
 ├	├── glume-common-swagger -- 在线接口文档相关配置
-├	└──  glume-common-validator -- JSR-303 API参数校验配置
+├	└── glume-common-validator -- JSR-303 API参数校验配置
 ├── glume-third-party -- OSS、Sms第三方服务
 ├── glume-gateway -- Spring Cloud 网关模块
 ├── glume-auth-server -- 认证中心模块提供授权服务

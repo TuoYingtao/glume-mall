@@ -20,7 +20,7 @@
             <result property="skuIds" column="sku_ids"/>
         </collection>
     </resultMap>
-    <select id="getSaleAttrsBySpuId" resultType="com.glume.glumemall.product.vo.item.ItemSaleAttrsVo">
+    <select id="getSaleAttrsBySpuId"  resultMap="itemSaleAttrsVo">
         SELECT ssav.`attr_id` attr_id,
                ssav.`attr_name` attr_name,
                ssav.`attr_value`,

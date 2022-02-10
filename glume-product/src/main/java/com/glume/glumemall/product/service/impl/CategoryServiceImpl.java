@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.glume.common.core.constant.CategoryConstant;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
@@ -105,7 +106,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
          * 2.设置过期时间（加随机值）：解决缓存雪崩
          * 3.加锁：解决缓存击穿
          */
-        Object allCatalogTree = SpringUtils.getBean(RedisUtils.class).get("allCatalogTree");
+        Object allCatalogTree = SpringUtils.getBean(RedisUtils.class).get(CategoryConstant.ALL_CATALOG_TREE);
         if (StringUtils.isEmpty((String) allCatalogTree)) {
             System.out.println("缓存不命中！");
             List<CategoryEntity> catalogDB = getCatalogDBRedisLock();
@@ -172,7 +173,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     private List<CategoryEntity> getCategoryDataFromDB() {
         RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
-        Object allCatalogTree = redisUtils.get("allCatalogTree");
+        Object allCatalogTree = redisUtils.get(CategoryConstant.ALL_CATALOG_TREE);
         if (StringUtils.isNotEmpty((String) allCatalogTree)) {
             System.out.println("缓存命中！");
             return JSON.parseObject(allCatalogTree.toString(), new TypeReference<List<CategoryEntity>>() {
@@ -191,7 +192,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Stream<CategoryEntity> sortedMenus = levelMenusMap1.sorted((menu1, menu2) -> (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort()));
         List<CategoryEntity> catalogDB = sortedMenus.collect(Collectors.toList());
         String s = JSON.toJSONString(catalogDB);
-        redisUtils.set("allCatalogTree", s, 60 * 60);
+        redisUtils.set(CategoryConstant.ALL_CATALOG_TREE, s, 60 * 60);
         return catalogDB;
     }
 

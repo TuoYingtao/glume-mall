@@ -10,7 +10,7 @@ import java.util.List;
  * @author tuoyingtao
  * @create 2021-12-16 11:28
  */
-@FeignClient("glume-order")
+@FeignClient("glume-cart")
 public interface CartFeignService {
 
     @GetMapping("/currentUserCartItems")

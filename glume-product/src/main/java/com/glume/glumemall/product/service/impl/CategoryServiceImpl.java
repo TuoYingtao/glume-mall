@@ -109,7 +109,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Object allCatalogTree = SpringUtils.getBean(RedisUtils.class).get(CategoryConstant.ALL_CATALOG_TREE);
         if (StringUtils.isEmpty((String) allCatalogTree)) {
             System.out.println("缓存不命中！");
-            List<CategoryEntity> catalogDB = getCatalogDBRedisLock();
+            List<CategoryEntity> catalogDB = getCatalogDBRedissonLock();
             return catalogDB;
         }
         List<CategoryEntity> entities = JSON.parseObject(allCatalogTree.toString(), new TypeReference<List<CategoryEntity>>() {});

@@ -205,7 +205,7 @@
     <div class="header_banner">
       <div class="header_main_left">
         <ul>
-          <li  th:each="category : ${categories}">
+          <li  th:each="category : ${categorys}">
             <a href="#" class="header_main_left_a"   th:attr="ctg-data = ${category.catId}"><b th:text="${category.name}">家用电器</b></a>
           </li>
         </ul>

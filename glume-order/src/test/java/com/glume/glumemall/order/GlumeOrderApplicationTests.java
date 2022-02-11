@@ -72,6 +72,6 @@ class GlumeOrderApplicationTests {
     @Test
     void delExchange() {
         amqpAdmin.deleteExchange("hello-java-exchange");
-        log.info("Exchange【{}】删除成功","hello-java-binding");
+        log.info("Exchange【{}】删除成功","hello-java-exchange");
     }
 }

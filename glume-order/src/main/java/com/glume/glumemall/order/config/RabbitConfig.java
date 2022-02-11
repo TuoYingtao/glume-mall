@@ -1,5 +1,7 @@
 package com.glume.glumemall.order.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -18,6 +20,7 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 public class RabbitConfig {
+    private final Logger LOGGER = LoggerFactory.getLogger(RabbitConfig.class);
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -34,7 +37,7 @@ public class RabbitConfig {
     /**
      * 定制RabbitTemplate
      */
-    @PostConstruct //RabbitConfig 对象创建完成以后执行这个方法
+    @PostConstruct //@PostConstruct注解：当RabbitConfig 对象创建完成以后执行这个方法
     public void initRabbitTemplate() {
         rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
             /**
@@ -45,7 +48,7 @@ public class RabbitConfig {
              */
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-                System.out.println("confirm...correlationData[" + correlationData + "]==>ack[" + ack + "]==>cause[ " + cause + "]");
+                LOGGER.info("confirm...correlationData[" + correlationData + "]==>ack[" + ack + "]==>cause[ " + cause + "]");
             }
         });
         /**
@@ -62,7 +65,7 @@ public class RabbitConfig {
              */
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-                System.out.println("Fail...Message[" + message + "]==>replyCode[" + replyCode + "]==>replyText[ " + replyText + "]==>exchange[" + exchange + "]==>routingKey[" + routingKey + "]");
+                LOGGER.info("Fail...Message[" + message + "]==>replyCode[" + replyCode + "]==>replyText[ " + replyText + "]==>exchange[" + exchange + "]==>routingKey[" + routingKey + "]");
             }
         });
     }

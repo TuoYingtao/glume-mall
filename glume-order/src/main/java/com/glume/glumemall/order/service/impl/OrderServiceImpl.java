@@ -7,10 +7,15 @@ import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.vo.MemberAddressVo;
 import com.glume.glumemall.order.vo.OrderConfirmVo;
 import com.glume.glumemall.order.vo.OrderItemVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,6 +25,8 @@ import com.glume.common.mybatis.Query;
 import com.glume.glumemall.order.dao.OrderDao;
 import com.glume.glumemall.order.entity.OrderEntity;
 import com.glume.glumemall.order.service.OrderService;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 
@@ -32,6 +39,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Resource
     CartFeignService cartFeignService;
+
+    @Autowired
+    ThreadPoolExecutor executor;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -48,24 +58,34 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      * @return
      */
     @Override
-    public OrderConfirmVo confirmOrder() {
+    public OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException {
+        // TODO 订单确认页需要返回的数据待完成
         OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
         MemberRespTo memberRespTo = LoginUserInterceptor.toThreadLocal.get();
-        // TODO 订单确认页需要返回的数据待完成
+        /** 异步多线程：远程调用解决请求头丢失问题 */
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         // 远程查询会员收货地址
-        List<MemberAddressVo> memberAddressList = memberFeignService.getMemberAddressList(memberRespTo.getId());
-        orderConfirmVo.setAddress(memberAddressList);
+        CompletableFuture<Void> feignMemberAddress = CompletableFuture.runAsync(() -> {
+            RequestContextHolder.setRequestAttributes(requestAttributes);
+            List<MemberAddressVo> memberAddressList = memberFeignService.getMemberAddressList(memberRespTo.getId());
+            orderConfirmVo.setAddress(memberAddressList);
+        }, executor);
 
         // 远程查询购物车选中的购物项
-        List<OrderItemVo> currentUserCartItems = cartFeignService.getCurrentUserCartItems();
-        orderConfirmVo.setItems(currentUserCartItems);
+        CompletableFuture<Void> feignCartItem = CompletableFuture.runAsync(() -> {
+            RequestContextHolder.setRequestAttributes(requestAttributes);
+            List<OrderItemVo> currentUserCartItems = cartFeignService.getCurrentUserCartItems();
+            orderConfirmVo.setItems(currentUserCartItems);
+        }, executor);
 
         // 用户积分
         Integer integration = memberRespTo.getIntegration();
         orderConfirmVo.setIntegration(integration);
 
+        // TODO 防重令牌
 
-        return null;
+        CompletableFuture.allOf(feignMemberAddress,feignCartItem).get();
+        return orderConfirmVo;
     }
 
 }

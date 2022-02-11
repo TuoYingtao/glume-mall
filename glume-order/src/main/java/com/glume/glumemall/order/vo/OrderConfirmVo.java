@@ -42,6 +42,10 @@ public class OrderConfirmVo {
      * 应付价格
      */
     private BigDecimal payPrice = new BigDecimal("0");
+    /**
+     * 商品数量
+     */
+    private Integer count = 0;
 
     public BigDecimal getTotal() {
         if (StringUtils.isNotNull(items)) {
@@ -61,5 +65,14 @@ public class OrderConfirmVo {
             }
         }
         return payPrice;
+    }
+
+    public Integer getCount() {
+        if (StringUtils.isNotNull(items)) {
+            for (OrderItemVo item : items) {
+                count += item.getCount();
+            }
+        }
+        return count;
     }
 }

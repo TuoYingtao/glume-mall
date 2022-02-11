@@ -37,6 +37,11 @@ public class OrderItemVo {
      * 总价格
      */
     private BigDecimal totalPrice;
+    /**
+     * 是否有货
+     */
+    // TODO 查询库存状态
+    private boolean hasStock;
 
     /**
      * 计算购物车总价

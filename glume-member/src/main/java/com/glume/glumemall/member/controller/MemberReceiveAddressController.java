@@ -1,6 +1,7 @@
 package com.glume.glumemall.member.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +50,9 @@ public class MemberReceiveAddressController {
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
 		MemberReceiveAddressEntity memberReceiveAddress = memberReceiveAddressService.getById(id);
-
-        return R.ok().put("memberReceiveAddress", memberReceiveAddress);
+        Map<String, Object> data = new HashMap<>();
+        data.put("memberReceiveAddress", memberReceiveAddress);
+        return R.ok().put("data", data);
     }
 
     /**

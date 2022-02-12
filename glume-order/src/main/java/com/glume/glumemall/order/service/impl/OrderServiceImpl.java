@@ -101,8 +101,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         Integer integration = memberRespTo.getIntegration();
         orderConfirmVo.setIntegration(integration);
 
-        // TODO 防重令牌
-
+        String token = UUID.randomUUID().toString().replace("-", "");
+        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
+        redisUtils.set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberRespTo.getId(),token,60 * 30);
+        orderConfirmVo.setOrderToken(token);
         CompletableFuture.allOf(feignMemberAddress,feignCartItem).get();
         return orderConfirmVo;
     }

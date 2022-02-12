@@ -1,22 +1,26 @@
 package com.glume.glumemall.order.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.glume.common.core.constant.OrderConstant;
 import com.glume.common.core.to.MemberRespTo;
 import com.glume.common.core.utils.R;
+import com.glume.common.core.utils.RedisUtils;
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.order.feign.CartFeignService;
 import com.glume.glumemall.order.feign.MemberFeignService;
 import com.glume.glumemall.order.feign.WareFeignService;
 import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
-import com.glume.glumemall.order.vo.MemberAddressVo;
-import com.glume.glumemall.order.vo.OrderConfirmVo;
-import com.glume.glumemall.order.vo.OrderItemVo;
-import com.glume.glumemall.order.vo.SkuHasStockVo;
+import com.glume.glumemall.order.to.OrderCreateTo;
+import com.glume.glumemall.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -101,12 +105,44 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         Integer integration = memberRespTo.getIntegration();
         orderConfirmVo.setIntegration(integration);
 
+        // 幂等性：防重令牌
         String token = UUID.randomUUID().toString().replace("-", "");
         RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
         redisUtils.set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberRespTo.getId(),token,60 * 30);
         orderConfirmVo.setOrderToken(token);
         CompletableFuture.allOf(feignMemberAddress,feignCartItem).get();
         return orderConfirmVo;
+    }
+
+    @Override
+    public SubmitOrderResponseVo submitOrder(OrderSubmitVo orderSubmitVo) {
+        SubmitOrderResponseVo submitOrderResponseVo = new SubmitOrderResponseVo();
+        MemberRespTo memberRespTo = LoginUserInterceptor.toThreadLocal.get();
+        /** 验证令牌 */
+        String orderToken = orderSubmitVo.getOrderToken();
+        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
+        long result = redisUtils.executeLuaDel(Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberRespTo.getId()), orderToken);
+        if (result == 0) {
+            // 令牌验证不通过
+            submitOrderResponseVo.setCode(1);
+            return submitOrderResponseVo;
+        } else {
+            // 令牌验证通过
+
+        }
+
+        return null;
+    }
+
+    /** 创建订单 */
+    public OrderCreateTo createOrder() {
+        OrderCreateTo orderCreateTo = new OrderCreateTo();
+        // 生成订单号
+        String orderSn = IdWorker.getTimeId();
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderSn(orderSn);
+        // TODO 创建订单待完成 22-2-12
+        return orderCreateTo;
     }
 
 }

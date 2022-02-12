@@ -733,7 +733,13 @@
 				<p class="yfze_a"><span class="z">应付总额：</span><span class="hq"><b id="payPriceEle">￥[[${#numbers.formatDecimal(orderConfirmData.payPrice,1,2)}]]</b></span></p>
 				<p class="yfze_b">寄送至：<span id="recieveAddressEle"></span> 收货人：<span id="recieveEle"></span></p>
 			</div>
-			<button class="tijiao">提交订单</button>
+			<form action="http://order.glumamall.com/submitOrder" method="post">
+				<input type="hidden" id="addrIdInput" name="addrId" th:value="${orderConfirmData.orderToken}">
+				<input type="hidden" id="payTypeInput" name="payType" th:value="${orderConfirmData.orderToken}">
+				<input type="hidden" id="payPriceInput" name="payPrice" th:value="${orderConfirmData.orderToken}">
+				<input type="hidden" name="orderToken" th:value="${orderConfirmData.orderToken}">
+				<button class="tijiao" type="submit">提交订单</button>
+			</form>
 		</div>
 		</div>
 
@@ -984,11 +990,14 @@
 			})
 			
 			function getFare(addrId) {
+				$("#addrIdInput").val(addrId)
 				$.get("http://glumemall.com/api/ware/wareinfo/fare?addrId=" + addrId, function(res) {
 					console.log(res.data.fare)
 					$("#fareEle").text(res.data.fare);
 					var total = [[${orderConfirmData.total}]] / 2;
-					$("#payPriceEle").text(Number(total) + Number(res.data.fare))
+					var payPrice = Number(total) + Number(res.data.fare)
+					$("#payPriceEle").text(payPrice)
+					$("#payPriceInput").val(payPrice)
 					$("#recieveAddressEle").text(res.data.address.province + "" + res.data.address.detailAddress)
 					$("#recieveEle").text(res.data.address.name)
 				})

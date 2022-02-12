@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单确认页需要的实体Vo
@@ -24,6 +25,11 @@ public class OrderConfirmVo {
      */
     @Setter @Getter
     private List<OrderItemVo> items;
+    /**
+     * SKU库存信息
+     */
+    @Setter @Getter
+    private Map<Long,Boolean> stocks;
     /**
      * 优惠卷、积分 ums_member
      */

@@ -1,12 +1,17 @@
 package com.glume.glumemall.order.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.to.MemberRespTo;
+import com.glume.common.core.utils.R;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.order.feign.CartFeignService;
 import com.glume.glumemall.order.feign.MemberFeignService;
+import com.glume.glumemall.order.feign.WareFeignService;
 import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.vo.MemberAddressVo;
 import com.glume.glumemall.order.vo.OrderConfirmVo;
 import com.glume.glumemall.order.vo.OrderItemVo;
+import com.glume.glumemall.order.vo.SkuHasStockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -39,6 +45,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Resource
     CartFeignService cartFeignService;
+
+    @Resource
+    WareFeignService wareFeignService;
 
     @Autowired
     ThreadPoolExecutor executor;
@@ -76,7 +85,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             RequestContextHolder.setRequestAttributes(requestAttributes);
             List<OrderItemVo> currentUserCartItems = cartFeignService.getCurrentUserCartItems();
             orderConfirmVo.setItems(currentUserCartItems);
-        }, executor);
+        }, executor).thenRunAsync(() -> {
+            List<OrderItemVo> items = orderConfirmVo.getItems();
+            List<Long> collect = items.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList());
+            R skusHasStock = wareFeignService.getSkusHasStock(collect);
+            List<SkuHasStockVo> data = skusHasStock.getData(new TypeReference<List<SkuHasStockVo>>() {
+            });
+            if (StringUtils.isNotNull(data)) {
+                Map<Long, Boolean> map = data.stream().collect(Collectors.toMap(SkuHasStockVo::getSkuId, SkuHasStockVo::getHasStock));
+                orderConfirmVo.setStocks(map);
+            }
+        });
 
         // 用户积分
         Integer integration = memberRespTo.getIntegration();

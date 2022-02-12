@@ -2,6 +2,7 @@ package com.glume.common.core.utils;
 
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -574,6 +575,23 @@ public final class RedisUtils {
             return 0;
         }
 
+    }
+
+    /**
+     * 原子删除操作 （Lua 脚本）
+     * @param keys 原键 （Redis 中的键）
+     * @param key 需要删除的键
+     * @return 0-失败
+     */
+    public long executeLuaDel(List<String> keys,Object... key) {
+        try {
+            String scrip = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+            Long result = redisTemplate.execute(new DefaultRedisScript<Long>(scrip, Long.class), keys, key);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

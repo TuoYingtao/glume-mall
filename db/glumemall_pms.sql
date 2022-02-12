@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 20/11/2021 16:53:51
+ Date: 12/02/2022 18:19:57
 */
 
 SET NAMES utf8mb4;
@@ -120,7 +120,7 @@ CREATE TABLE `pms_brand`  (
   `first_letter` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '检索首字母',
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`brand_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_brand
@@ -1595,7 +1595,7 @@ CREATE TABLE `pms_category_brand_relation`  (
   `brand_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `catelog_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '品牌分类关联' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_category_brand_relation
@@ -1627,7 +1627,7 @@ CREATE TABLE `pms_comment_replay`  (
   `comment_id` bigint NULL DEFAULT NULL COMMENT '评论id',
   `reply_id` bigint NULL DEFAULT NULL COMMENT '回复id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价回复关系' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价回复关系' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_comment_replay
@@ -1859,31 +1859,31 @@ CREATE TABLE `pms_sku_sale_attr_value`  (
 -- Records of pms_sku_sale_attr_value
 -- ----------------------------
 INSERT INTO `pms_sku_sale_attr_value` VALUES (1, 1, 9, '颜色', '星河银', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (2, 1, 12, '版本', '8GB+256GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (3, 2, 9, '颜色', '星河银', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (4, 2, 12, '版本', '8GB+128GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (5, 3, 9, '颜色', '亮黑色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (6, 3, 12, '版本', '8GB+256GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (7, 4, 9, '颜色', '亮黑色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (8, 4, 12, '版本', '8GB+128GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (9, 5, 9, '颜色', '翡冷翠', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (10, 5, 12, '版本', '8GB+256GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (11, 6, 9, '颜色', '翡冷翠', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (12, 6, 12, '版本', '8GB+128GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (13, 7, 9, '颜色', '罗兰紫', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (14, 7, 12, '版本', '8GB+256GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (15, 8, 9, '颜色', '罗兰紫', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (16, 8, 12, '版本', '8GB+128GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (17, 9, 9, '颜色', '黑色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (18, 9, 12, '版本', '128GB ', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (19, 10, 9, '颜色', '黑色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (20, 10, 12, '版本', '256GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (21, 11, 9, '颜色', '黑色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (22, 11, 12, '版本', '64GB', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (23, 12, 9, '颜色', '白色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (24, 12, 12, '版本', '128GB ', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (25, 13, 9, '颜色', '白色', NULL);
-INSERT INTO `pms_sku_sale_attr_value` VALUES (26, 13, 12, '版本', '256GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (2, 2, 12, '版本', '8GB+256GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (3, 3, 9, '颜色', '星河银', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (4, 4, 12, '版本', '8GB+128GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (5, 5, 9, '颜色', '亮黑色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (6, 6, 12, '版本', '8GB+256GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (7, 7, 9, '颜色', '亮黑色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (8, 8, 12, '版本', '8GB+128GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (9, 9, 9, '颜色', '翡冷翠', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (10, 10, 12, '版本', '8GB+256GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (11, 11, 9, '颜色', '翡冷翠', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (12, 12, 12, '版本', '8GB+128GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (13, 13, 9, '颜色', '罗兰紫', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (14, 14, 12, '版本', '8GB+256GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (15, 15, 9, '颜色', '罗兰紫', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (16, 16, 12, '版本', '8GB+128GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (17, 17, 9, '颜色', '黑色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (18, 18, 12, '版本', '128GB ', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (19, 19, 9, '颜色', '黑色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (20, 20, 12, '版本', '256GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (21, 21, 9, '颜色', '黑色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (22, 22, 12, '版本', '64GB', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (23, 23, 9, '颜色', '白色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (24, 24, 12, '版本', '128GB ', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (25, 25, 9, '颜色', '白色', NULL);
+INSERT INTO `pms_sku_sale_attr_value` VALUES (26, 26, 12, '版本', '256GB', NULL);
 INSERT INTO `pms_sku_sale_attr_value` VALUES (27, 14, 9, '颜色', '白色', NULL);
 INSERT INTO `pms_sku_sale_attr_value` VALUES (28, 14, 12, '版本', '64GB', NULL);
 INSERT INTO `pms_sku_sale_attr_value` VALUES (29, 15, 9, '颜色', '绿色', NULL);
@@ -1933,7 +1933,7 @@ CREATE TABLE `pms_spu_comment`  (
   `member_icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户头像',
   `comment_type` tinyint NULL DEFAULT NULL COMMENT '评论类型[0 - 对商品的直接评论，1 - 对评论的回复]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品评价' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_spu_comment
@@ -1951,7 +1951,7 @@ CREATE TABLE `pms_spu_images`  (
   `img_sort` int NULL DEFAULT NULL COMMENT '顺序',
   `default_img` tinyint NULL DEFAULT NULL COMMENT '是否默认图',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 95 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu图片' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu图片' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_spu_images
@@ -1989,7 +1989,7 @@ CREATE TABLE `pms_spu_info`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'spu信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pms_spu_info
@@ -2029,7 +2029,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of undo_log

@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80026
+ Source Server Version : 80025
  Source Host           : localhost:3306
  Source Schema         : glumemall_ums
 
  Target Server Type    : MySQL
- Target Server Version : 80026
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 18/11/2021 23:22:50
+ Date: 12/02/2022 18:20:18
 */
 
 SET NAMES utf8mb4;
@@ -77,11 +77,12 @@ CREATE TABLE `ums_member`  (
   `status` tinyint NULL DEFAULT NULL COMMENT '启用状态',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member
 -- ----------------------------
+INSERT INTO `ums_member` VALUES (1, 1, 'tuoyingtao', '$2a$10$1h8FJWoS1H/.kc9Ias0CM.3qO40zN1qVDyFjKO9IwEgE5Hd7qFGb6', NULL, '15207447965', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ums_member_collect_spu
@@ -134,12 +135,12 @@ CREATE TABLE `ums_member_level`  (
   `priviledge_birthday` tinyint NULL DEFAULT NULL COMMENT '是否有生日特权[0->没有；1->有]',
   `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员等级' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员等级' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_level
 -- ----------------------------
-INSERT INTO `ums_member_level` VALUES (1, '普通会员', 10, 0, 299.0000, 20, 0, 0, 0, '普通注册用户会员');
+INSERT INTO `ums_member_level` VALUES (1, '普通会员', 10, 1, 299.0000, 20, 0, 0, 0, '普通注册用户会员');
 
 -- ----------------------------
 -- Table structure for ums_member_login_log
@@ -176,11 +177,13 @@ CREATE TABLE `ums_member_receive_address`  (
   `areacode` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '省市区代码',
   `default_status` tinyint(1) NULL DEFAULT NULL COMMENT '是否默认',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收货地址' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员收货地址' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_member_receive_address
 -- ----------------------------
+INSERT INTO `ums_member_receive_address` VALUES (1, 1, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, 1);
+INSERT INTO `ums_member_receive_address` VALUES (2, 1, 'tuoyingtao', '15207447965', NULL, '北京市', '北京市', '朝阳区', '通天大楼', NULL, 0);
 
 -- ----------------------------
 -- Table structure for ums_member_statistics_info

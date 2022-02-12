@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 15/10/2021 17:49:28
+ Date: 12/02/2022 18:20:29
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `wms_purchase`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '采购信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '采购信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_purchase
@@ -68,11 +68,12 @@ CREATE TABLE `wms_ware_info`  (
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '仓库地址',
   `areacode` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '区域编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '仓库信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '仓库信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_ware_info
 -- ----------------------------
+INSERT INTO `wms_ware_info` VALUES (1, '深圳市', '深圳市华强北', '518033');
 
 -- ----------------------------
 -- Table structure for wms_ware_order_task
@@ -94,7 +95,7 @@ CREATE TABLE `wms_ware_order_task`  (
   `ware_id` bigint NULL DEFAULT NULL COMMENT '仓库id',
   `task_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '工作单备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_ware_order_task
@@ -111,7 +112,7 @@ CREATE TABLE `wms_ware_order_task_detail`  (
   `sku_num` int NULL DEFAULT NULL COMMENT '购买个数',
   `task_id` bigint NULL DEFAULT NULL COMMENT '工作单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_ware_order_task_detail
@@ -129,10 +130,19 @@ CREATE TABLE `wms_ware_sku`  (
   `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'sku_name',
   `stock_locked` int NULL DEFAULT NULL COMMENT '锁定库存',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品库存' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品库存' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_ware_sku
 -- ----------------------------
+INSERT INTO `wms_ware_sku` VALUES (1, 1, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (2, 2, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (3, 3, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (4, 4, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (5, 5, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (6, 6, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (7, 7, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (8, 8, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
+INSERT INTO `wms_ware_sku` VALUES (9, 9, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 10);
 
 SET FOREIGN_KEY_CHECKS = 1;

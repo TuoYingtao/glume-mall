@@ -597,8 +597,8 @@
 			</div>
 
 			<!--地址-->
-			<div class="top-3" th:each="addr : ${orderConfirmData.address}">
-				<p>[[${addr.name}]]</p><span>[[${addr.name}]] [[${addr.province}]] [[${addr.detailAddress}]] [[${addr.phone}]]</span>
+			<div class="top-3 addr-item" th:each="addr : ${orderConfirmData.address}">
+				<p th:attr="def=${addr.defaultStatus},addrId=${addr.id}">[[${addr.name}]]</p><span>[[${addr.name}]] [[${addr.province}]] [[${addr.detailAddress}]] [[${addr.phone}]]</span>
 			</div>
 			<p class="p2">更多地址︾</p>
 			<div class="hh1"/></div>
@@ -667,7 +667,7 @@
 				<div class="yun1"  th:each="item : ${orderConfirmData.items}">
 					<img th:src="${item.image}" class="yun"/>
 					<div class="mi">
-						<p>[[${item.title}]] <span style="color: red;"> ￥[[${#numbers.formatDecimal(item.price,1,2)}]]</span> <span> x[[${item.count}]] </span> <span>[[${item.hasStock ? "有货" : "无货"}]]</span></p>
+						<p>[[${item.title}]] <span style="color: red;"> ￥[[${#numbers.formatDecimal(item.price,1,2)}]]</span> <span> x[[${item.count}]] </span> <span>[[${orderConfirmData.stocks[item.skuId] ? "有货" : "无货"}]]</span></p>
 						<p><span>0.095kg</span></p>
 						<p class="tui-1"><img src="/static/order/confirm/img/i_07.png" />支持7天无理由退货</p>
 					</div>
@@ -716,7 +716,7 @@
 				</p>
 				<p class="qian_y">
 					<span>运费： </span>
-					<span class="rmb"> &nbsp ￥0.00</span>
+					<span class="rmb"> &nbsp ￥<p id="fareEle"></p></span>
 				</p>
 				<p class="qian_y">
 					<span>服务费： </span>
@@ -730,8 +730,8 @@
 			</div>
 
 			<div class="yfze">
-				<p class="yfze_a"><span class="z">应付总额：</span><span class="hq">￥[[${#numbers.formatDecimal(orderConfirmData.payPrice,1,2)}]]</span></p>
-				<p class="yfze_b">寄送至： 收货人：</p>
+				<p class="yfze_a"><span class="z">应付总额：</span><span class="hq"><b id="payPriceEle">￥[[${#numbers.formatDecimal(orderConfirmData.payPrice,1,2)}]]</b></span></p>
+				<p class="yfze_b">寄送至：<span id="recieveAddressEle"></span> 收货人：<span id="recieveEle"></span></p>
 			</div>
 			<button class="tijiao">提交订单</button>
 		</div>
@@ -966,9 +966,33 @@
                 },function(){
                     $('.h-r-1').css('display','none')
                 })
+				highlight()
+				var addrId = $(".addr-item p[def='1']").attr("addrId")
+				getFare(addrId)
             })
 
-
+			function highlight() {
+				$(".addr-item p").css({"border":"2px solid gray"})
+				$(".addr-item p[def='1']").css({"border":"2px solid red"})
+			}
+			$(".addr-item p").click(function() {
+				$(".addr-item p").attr("def","0")
+				$(this).attr("def","1")
+				highlight()
+				var addrId = $(this).attr("addrId")
+				getFare(addrId)
+			})
+			
+			function getFare(addrId) {
+				$.get("http://glumemall.com/api/ware/wareinfo/fare?addrId=" + addrId, function(res) {
+					console.log(res.data.fare)
+					$("#fareEle").text(res.data.fare);
+					var total = [[${orderConfirmData.total}]] / 2;
+					$("#payPriceEle").text(Number(total) + Number(res.data.fare))
+					$("#recieveAddressEle").text(res.data.address.province + "" + res.data.address.detailAddress)
+					$("#recieveEle").text(res.data.address.name)
+				})
+			}
 		</script>
 	</body>
 

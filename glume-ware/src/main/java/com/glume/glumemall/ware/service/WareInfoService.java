@@ -3,6 +3,7 @@ package com.glume.glumemall.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.ware.entity.WareInfoEntity;
+import com.glume.glumemall.ware.vo.FareVo;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -18,6 +19,6 @@ public interface WareInfoService extends IService<WareInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    BigDecimal getFare(Long addrId);
+    FareVo getFare(Long addrId);
 }
 

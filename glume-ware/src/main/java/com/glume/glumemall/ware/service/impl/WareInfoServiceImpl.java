@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.ware.feign.MemberFeignService;
+import com.glume.glumemall.ware.vo.FareVo;
 import com.glume.glumemall.ware.vo.MemberAddressVo;
 import org.springframework.stereotype.Service;
 
@@ -43,15 +44,18 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
     }
 
     @Override
-    public BigDecimal getFare(Long addrId) {
+    public FareVo getFare(Long addrId) {
+        FareVo fareVo = new FareVo();
         R info = memberFeignService.info(addrId);
         Map<String,MemberAddressVo> map = info.getData(new TypeReference<Map<String,MemberAddressVo>>(){});
         MemberAddressVo data = map.get("memberReceiveAddress");
+        fareVo.setAddress(data);
         if (StringUtils.isNotNull(data)) {
             // TODO 使用第三方接口来计算运费 （临时处理：使用手机号最后一位做为运费）
             String phone = data.getPhone();
             String substring = phone.substring(phone.length() - 1, phone.length());
-            return new BigDecimal(substring);
+            fareVo.setFare(new BigDecimal(substring));
+            return fareVo;
         }
         return null;
     }

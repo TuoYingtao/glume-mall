@@ -40,7 +40,6 @@ public class OrderItemVo {
     /**
      * 是否有货
      */
-    // TODO 查询库存状态
     private boolean hasStock;
 
     /**

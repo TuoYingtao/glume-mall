@@ -3,7 +3,9 @@ package com.glume.glumemall.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.ware.entity.WareSkuEntity;
+import com.glume.glumemall.ware.vo.LockStockResult;
 import com.glume.glumemall.ware.vo.SkuHasStockVo;
+import com.glume.glumemall.ware.vo.WareSkuLockVo;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +24,7 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     void addStock(Long skuId, Long wareId, Integer skuNum);
 
     List<SkuHasStockVo> getSkusHasStock(List<Long> skuIds);
+
+    Boolean orderSkuLockStock(WareSkuLockVo wareSkuLockVo);
 }
 

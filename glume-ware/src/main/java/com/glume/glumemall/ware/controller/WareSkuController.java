@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.exception.servlet.NoStockException;
 import com.glume.glumemall.ware.vo.SkuHasStockVo;
+import com.glume.glumemall.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +30,19 @@ import com.glume.common.core.utils.R;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+    /**
+     * 锁定库存
+     */
+    @PostMapping("/lock/order")
+    public R orderLockStock(@RequestBody WareSkuLockVo wareSkuLockVo) {
+        try {
+            Boolean lockStockResults = wareSkuService.orderSkuLockStock(wareSkuLockVo);
+            return R.ok();
+        } catch (NoStockException e) {
+            return R.error(HttpStatus.BizCodeEnum.NO_STOCK_EXCEPTION.getCode(), HttpStatus.BizCodeEnum.NO_STOCK_EXCEPTION.getMsg());
+        }
+    }
 
     /**
      *  获取SKU库存

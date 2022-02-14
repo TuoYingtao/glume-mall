@@ -24,5 +24,7 @@ public interface SpuInfoService extends IService<SpuInfoEntity> {
     void saveSpuInfo(SpuSaveVo spuSaveVo);
 
     void saveBaseSpuInfo(SpuInfoEntity spuInfoEntity);
+
+    SpuInfoEntity getSpuInfoBySkuId(Long skuId);
 }
 

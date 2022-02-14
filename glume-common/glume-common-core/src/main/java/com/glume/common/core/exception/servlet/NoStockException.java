@@ -1,4 +1,4 @@
-package com.glume.glumemall.ware.exception;
+package com.glume.common.core.exception.servlet;
 
 /**
  * 没有库存异常
@@ -8,8 +8,12 @@ package com.glume.glumemall.ware.exception;
 public class NoStockException extends RuntimeException {
     private Long skuId;
 
+    public NoStockException() {
+        super("没有足够的库存了!");
+    }
+
     public NoStockException(Long skuId) {
-        super("商品ID:" + skuId + "；没有足够的库存了");
+        super("商品ID:" + skuId + "；没有足够的库存了!");
     }
 
     public Long getSkuId() {

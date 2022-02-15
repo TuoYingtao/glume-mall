@@ -32,7 +32,7 @@ public class OrderItemVo {
     /**
      * 数量
      */
-    private Integer count;
+    private Integer count = 0;
     /**
      * 总价格
      */

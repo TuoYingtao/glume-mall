@@ -72,7 +72,7 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 后台调整订单使用的折扣金额
 	 */
-	private BigDecimal discountAmount;
+	private BigDecimal discountAmount = new BigDecimal("0");
 	/**
 	 * 支付方式【1->支付宝；2->微信；3->银联； 4->货到付款；】
 	 */

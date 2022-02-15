@@ -1,5 +1,6 @@
 package com.glume.glumemall.order.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -10,7 +11,6 @@ import lombok.Data;
 
 /**
  * 订单
- * 
  * @author tuoyingtao
  * @email tuoyingtao@163.com
  * @date 2021-10-13 15:34:34
@@ -23,7 +23,7 @@ public class OrderEntity implements Serializable {
 	/**
 	 * id
 	 */
-	@TableId
+	@TableId(type = IdType.AUTO)
 	private Long id;
 	/**
 	 * member_id

@@ -52,6 +52,6 @@ public class OrderWebController {
                 break;
         }
         redirectAttributes.addFlashAttribute("msg",msg);
-        return "redirect:http://order.glumall.com/toTrade";
+        return "redirect:http://order.glumemall.com/toTrade";
     }
 }

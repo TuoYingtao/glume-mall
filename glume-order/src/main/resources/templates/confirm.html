@@ -733,10 +733,10 @@
 				<p class="yfze_a"><span class="z">应付总额：</span><span class="hq"><b id="payPriceEle">￥[[${#numbers.formatDecimal(orderConfirmData.payPrice,1,2)}]]</b></span></p>
 				<p class="yfze_b">寄送至：<span id="recieveAddressEle"></span> 收货人：<span id="recieveEle"></span></p>
 			</div>
-			<form action="http://order.glumamall.com/submitOrder" method="post">
-				<input type="hidden" id="addrIdInput" name="addrId" th:value="${orderConfirmData.orderToken}">
-				<input type="hidden" id="payTypeInput" name="payType" th:value="${orderConfirmData.orderToken}">
-				<input type="hidden" id="payPriceInput" name="payPrice" th:value="${orderConfirmData.orderToken}">
+			<form action="http://order.glumemall.com/submitOrder" method="post">
+				<input type="hidden" id="addrIdInput" name="addrId">
+				<input type="hidden" id="payTypeInput" name="payType" th:value="0">
+				<input type="hidden" id="payPriceInput" name="payPrice">
 				<input type="hidden" name="orderToken" th:value="${orderConfirmData.orderToken}">
 				<button class="tijiao" type="submit">提交订单</button>
 			</form>

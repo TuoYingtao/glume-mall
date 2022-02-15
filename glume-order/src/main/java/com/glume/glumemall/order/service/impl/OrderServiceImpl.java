@@ -156,8 +156,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 List<OrderItemVo> lockItems = order.getOrderItems().stream().map(orderItemEntity -> {
                     OrderItemVo orderItemVo = new OrderItemVo();
                     orderItemVo.setSkuId(orderItemEntity.getSkuId());
-                    orderItemVo.setCount(orderItemEntity.getSkuQuantity());
                     orderItemVo.setTitle(orderItemEntity.getSkuName());
+                    orderItemVo.setCount(orderItemEntity.getSkuQuantity());
+                    orderItemVo.setPrice(orderItemEntity.getSkuPrice());
                     return orderItemVo;
                 }).collect(Collectors.toList());
                 wareSkuLockVo.setLocks(lockItems);

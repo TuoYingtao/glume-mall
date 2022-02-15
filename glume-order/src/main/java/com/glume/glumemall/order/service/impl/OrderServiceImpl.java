@@ -182,7 +182,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         OrderEntity orderEntity = orderCreateTo.getOrder();
         orderEntity.setModifyTime(new Date());
         this.save(orderEntity);
-        List<OrderItemEntity> orderItemEntities = orderCreateTo.getOrderItems();
+        List<OrderItemEntity> orderItemEntities = orderCreateTo.getOrderItems()
+                .stream().map(orderItemEntity -> {
+                    orderItemEntity.setOrderId(orderEntity.getId());
+                    return orderItemEntity;
+        }).collect(Collectors.toList());
         orderItemService.saveBatch(orderItemEntities);
     }
 
@@ -281,7 +285,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         if (StringUtils.isNotNull(currentUserCartItems) && currentUserCartItems.size() > 0) {
             List<OrderItemEntity> orderItemEntityList = currentUserCartItems.stream().map(orderItemVo -> {
                 OrderItemEntity orderItemEntity = buildOrderItem(orderItemVo);
-
                 orderItemEntity.setOrderSn(orderSn);
                 return orderItemEntity;
             }).collect(Collectors.toList());

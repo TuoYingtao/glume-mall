@@ -18,7 +18,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         @ComponentScan("com.glume.common.core"),
         @ComponentScan("com.glume.common.mybatis.config"),
         @ComponentScan("com.glume.common.swagger.config"),
-        @ComponentScan("com.glume.common.validator.config")
+        @ComponentScan("com.glume.common.validator.config"),
+        @ComponentScan({"com.glume.common.seata"})
 })
 public class GlumeWareApplication {
 

@@ -27,6 +27,22 @@
             <artifactId>glume-common-swagger</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.glume.common.seata</groupId>
+            <artifactId>glume-common-seata</artifactId>
+            <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.seata</groupId>
+                    <artifactId>seata-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-all</artifactId>
+            <version>0.9.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

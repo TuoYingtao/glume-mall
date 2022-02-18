@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScans;
 @EnableRabbit
 @MapperScan("com.glume.glumemall.order.dao")
 @ComponentScans({
-        @ComponentScan({"com.glume.common.core"})
+        @ComponentScan({"com.glume.common.core"}),
+        @ComponentScan({"com.glume.common.seata"})
 })
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.glume.glumemall.order.feign")

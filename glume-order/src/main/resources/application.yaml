@@ -12,6 +12,9 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+    alibaba:
+      seata:
+        tx-service-group: glume-order-fescar-service-group
   rabbitmq:
     host: localhost
     port: 5672

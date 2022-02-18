@@ -19,6 +19,7 @@ import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.service.OrderItemService;
 import com.glume.glumemall.order.to.OrderCreateTo;
 import com.glume.glumemall.order.vo.*;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,6 +129,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     @Transactional
+    @GlobalTransactional
     public SubmitOrderResponseVo submitOrder(OrderSubmitVo orderSubmitVo) {
         confirmVoThreadLocal.set(orderSubmitVo);
         SubmitOrderResponseVo submitOrderResponseVo = new SubmitOrderResponseVo();
@@ -165,6 +167,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 R orderLockStockResult = wareFeignService.orderLockStock(wareSkuLockVo);
                 if (orderLockStockResult.getCode() == 200) {
                     submitOrderResponseVo.setOrder(order.getOrder());
+                    // 模拟异常，订单回滚
+                    int i = 10/0;
                 } else {
                     // 库存锁定失败
                     submitOrderResponseVo.setCode(3);

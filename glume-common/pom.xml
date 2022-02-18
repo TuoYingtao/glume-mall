@@ -20,5 +20,6 @@
         <module>glume-common-mybatis</module>
         <module>glume-common-swagger</module>
         <module>glume-common-validator</module>
+        <module>glume-common-seata</module>
     </modules>
 </project>

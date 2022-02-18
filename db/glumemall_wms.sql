@@ -11,11 +11,33 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 15/02/2022 17:04:30
+ Date: 18/02/2022 18:08:06
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for undo_log
+-- ----------------------------
+DROP TABLE IF EXISTS `undo_log`;
+CREATE TABLE `undo_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` bigint NOT NULL,
+  `xid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `context` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `rollback_info` longblob NOT NULL,
+  `log_status` int NOT NULL,
+  `log_created` datetime(0) NOT NULL,
+  `log_modified` datetime(0) NOT NULL,
+  `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of undo_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wms_purchase
@@ -33,7 +55,7 @@ CREATE TABLE `wms_purchase`  (
   `create_time` datetime(0) NULL DEFAULT NULL,
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '采购信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '采购信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_purchase
@@ -52,7 +74,7 @@ CREATE TABLE `wms_purchase_detail`  (
   `ware_id` bigint NULL DEFAULT NULL COMMENT '仓库id',
   `status` int NULL DEFAULT NULL COMMENT '状态[0新建，1已分配，2正在采购，3已完成，4采购失败]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_purchase_detail
@@ -97,7 +119,7 @@ CREATE TABLE `wms_ware_order_task`  (
   `ware_id` bigint NULL DEFAULT NULL COMMENT '仓库id',
   `task_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '工作单备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_ware_order_task
@@ -114,7 +136,7 @@ CREATE TABLE `wms_ware_order_task_detail`  (
   `sku_num` int NULL DEFAULT NULL COMMENT '购买个数',
   `task_id` bigint NULL DEFAULT NULL COMMENT '工作单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '库存工作单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wms_ware_order_task_detail
@@ -137,11 +159,11 @@ CREATE TABLE `wms_ware_sku`  (
 -- ----------------------------
 -- Records of wms_ware_sku
 -- ----------------------------
-INSERT INTO `wms_ware_sku` VALUES (1, 1, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 6);
-INSERT INTO `wms_ware_sku` VALUES (2, 2, 2, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 6);
-INSERT INTO `wms_ware_sku` VALUES (3, 3, 2, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 3);
-INSERT INTO `wms_ware_sku` VALUES (4, 4, 2, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 3);
-INSERT INTO `wms_ware_sku` VALUES (5, 5, 3, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 3);
+INSERT INTO `wms_ware_sku` VALUES (1, 1, 1, 110, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
+INSERT INTO `wms_ware_sku` VALUES (2, 2, 2, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
+INSERT INTO `wms_ware_sku` VALUES (3, 3, 2, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
+INSERT INTO `wms_ware_sku` VALUES (4, 4, 2, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
+INSERT INTO `wms_ware_sku` VALUES (5, 5, 3, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
 INSERT INTO `wms_ware_sku` VALUES (6, 6, 3, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
 INSERT INTO `wms_ware_sku` VALUES (7, 7, 3, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);
 INSERT INTO `wms_ware_sku` VALUES (8, 8, 3, 50, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB', 0);

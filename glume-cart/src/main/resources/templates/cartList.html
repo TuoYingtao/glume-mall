@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>购物车</title>
-  <link rel="icon" href="/static/cart/img/心04.png" type="/image/x-icon"/>
-  <link rel="stylesheet" href="/static/cart/css/One_bdyStyle.css">
-  <link rel="stylesheet" href="/static/cart/css/index.css">
-  <script src="/static/cart/js/jquery-3.1.1.min.js" charset="utf-8"></script>
-  <link rel="stylesheet" href="/static/cart/css/One_mainFoot.css">
-  <link rel="stylesheet" href="/static/cart/css/font-awesome-4.7.0/css/font-awesome.css"/>
+  <link rel="icon" href="/static/glumemall/cart/img/心04.png" type="/image/x-icon"/>
+  <link rel="stylesheet" href="/static/glumemall/cart/css/One_bdyStyle.css">
+  <link rel="stylesheet" href="/static/glumemall/cart/css/index.css">
+  <script src="/static/glumemall/cart/js/jquery-3.1.1.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="/static/glumemall/cart/css/One_mainFoot.css">
+  <link rel="stylesheet" href="/static/glumemall/cart/css/font-awesome-4.7.0/css/font-awesome.css"/>
 </head>
 <body>
 <header>
@@ -47,7 +47,7 @@
   <div class="one_sousuo">
     <div class="one_search_top">
       <div class="one_top_left">
-        <a href="http://glumemall.com/index.html" class="one_left_logo"><img src="/static/cart/img/logo1.jpg"></a>
+        <a href="http://glumemall.com/index.html" class="one_left_logo"><img src="/static/glumemall/cart/img/logo1.jpg"></a>
         <a href="http://cart.glumemall.com/cart.html" class="one_left_link">购物车</a>
       </div>
       <div class="one_top_right">
@@ -57,7 +57,7 @@
       </div>
     </div>
     <div class="one_search_load" if="${userId}==null">
-      <img src="/static/cart/img/shop_07.jpg" class="one_load_wraing">
+      <img src="/static/glumemall/cart/img/shop_07.jpg" class="one_load_wraing">
       <span>您还没有登录！登录后购物车的商品将保存到您账号中</span>
       <a href="http://auth.glumemall.com/login.html"><input type="button" onclick="login()" value="立即登录"
                                                             class="one_load_btn"></a>
@@ -136,8 +136,8 @@
         <font style="color:#e64346;font-weight:bold;" class="sumNum"> </font>&nbsp;
 
         <ul>
-          <li><img src="/static/cart/img/buyNumleft.png" alt=""></li>
-          <li><img src="/static/cart/img/buyNumright.png" alt=""></li>
+          <li><img src="/static/glumemall/cart/img/buyNumleft.png" alt=""></li>
+          <li><img src="/static/glumemall/cart/img/buyNumright.png" alt=""></li>
         </ul>
       </div>
       <div>
@@ -155,11 +155,11 @@
 
 <div class="One_isDel">
   <p>
-    <span>删除</span><span><img src="/static/cart/img/错误.png" alt=""></span>
+    <span>删除</span><span><img src="/static/glumemall/cart/img/错误.png" alt=""></span>
   </p>
   <div>
     <dl>
-      <dt><img src="/static/cart/img/感叹三角形 (2).png" alt=""></dt>
+      <dt><img src="/static/glumemall/cart/img/感叹三角形 (2).png" alt=""></dt>
       <dd>
         <li>删除商品？</li>
         <li>您可以选择移到关注，或删除商品。</li>
@@ -173,20 +173,20 @@
 </div>
 <div class="One_moveGzIfNull">
   <p>
-    <span>删除</span><span><img src="/static/cart/img/错误.png" alt=""></span>
+    <span>删除</span><span><img src="/static/glumemall/cart/img/错误.png" alt=""></span>
   </p>
   <dl>
-    <dt><img src="/static/cart/img/感叹三角形 (2).png" alt=""></dt>
+    <dt><img src="/static/glumemall/cart/img/感叹三角形 (2).png" alt=""></dt>
     <dd>请至少选中一件商品！</dd>
   </dl>
 </div>
 <div class="One_moveMyGz">
   <p>
-    <span>删除</span><span><img src="/static/cart/img/错误.png" alt=""></span>
+    <span>删除</span><span><img src="/static/glumemall/cart/img/错误.png" alt=""></span>
   </p>
   <div>
     <dl>
-      <dt><img src="/static/cart/img/感叹三角形 (2).png" alt=""></dt>
+      <dt><img src="/static/glumemall/cart/img/感叹三角形 (2).png" alt=""></dt>
       <dd>
         <li>移到关注</li>
         <li>移动后选中商品将不再购物车中显示</li>
@@ -200,10 +200,10 @@
 </div>
 <div class="One_clearShop">
   <p>
-    <span>提示</span><span><img src="/static/cart/img/错误.png" alt=""></span>
+    <span>提示</span><span><img src="/static/glumemall/cart/img/错误.png" alt=""></span>
   </p>
   <dl>
-    <dt><img src="/static/cart/img/感叹三角形 (2).png" alt=""></dt>
+    <dt><img src="/static/glumemall/cart/img/感叹三角形 (2).png" alt=""></dt>
     <dd>没有下柜商品!</dd>
   </dl>
 </div>
@@ -213,7 +213,7 @@
 
 </div>
 </body>
-<script src="/static/cart/js/index.js" charset="utf-8"></script>
+<script src="/static/glumemall/cart/js/index.js" charset="utf-8"></script>
 <script type="text/javascript">
   function toTrade() {
     window.location.href = "http://order.glumemall.com/toTrade";
@@ -771,7 +771,7 @@
 	let num = $(this).parent().find(".countOpsNum").text();
 	location.href = `http://cart.glumemall.com/countItem?skuId=${skuId}&num=${num}`;
   })
-  
+
   let deleteId = 0;
   function deleteItem() {
 	console.log("删除");

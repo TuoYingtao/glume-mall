@@ -4,11 +4,11 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>gulimall注册页面</title>
-		<script src="/static/register/libs/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/register/js/jQuery/jquery-3.1.1.js"></script>
-		<link rel="stylesheet" type="text/css" href="/static/register/bootStrap/bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="/static/register/sass/index.css" />
-		<link rel="stylesheet" type="text/css" href="/static/register/css/index.css">
+		<script src="/static/glumemall/register/libs/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/glumemall/register/js/jQuery/jquery-3.1.1.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/glumemall/register/bootStrap/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="/static/glumemall/register/sass/index.css" />
+		<link rel="stylesheet" type="text/css" href="/static/glumemall/register/css/index.css">
 
 
 	</head>
@@ -41,7 +41,7 @@
 				<div class="tips" th:text="${errors!=null?(#maps.containsKey(errors,'msg'))?errors.msg:'':''}">
 
 				</div>
-				
+
 				<div class="register-box">
 					<label class="username_label">用 户 名
 						<input name="userName" maxlength="20" type="text" placeholder="您的用户名和登录名">

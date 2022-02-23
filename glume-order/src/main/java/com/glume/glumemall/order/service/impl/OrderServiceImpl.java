@@ -127,9 +127,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return orderConfirmVo;
     }
 
+    /**
+     * 消息延时队列 + 最终一致性 解决分布式并发级别的事务问题
+     */
     @Override
     @Transactional
-    @GlobalTransactional
+//    @GlobalTransactional // seata 分布式事务不适用并发级别
     public SubmitOrderResponseVo submitOrder(OrderSubmitVo orderSubmitVo) {
         confirmVoThreadLocal.set(orderSubmitVo);
         SubmitOrderResponseVo submitOrderResponseVo = new SubmitOrderResponseVo();

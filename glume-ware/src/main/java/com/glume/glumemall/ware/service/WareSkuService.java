@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.core.to.mq.StockLockedTo;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.ware.entity.WareSkuEntity;
+import com.glume.common.core.to.mq.OrderTo;
 import com.glume.glumemall.ware.vo.SkuHasStockVo;
 import com.glume.glumemall.ware.vo.WareSkuLockVo;
 
@@ -28,5 +29,7 @@ public interface WareSkuService extends IService<WareSkuEntity> {
     Boolean orderSkuLockStock(WareSkuLockVo wareSkuLockVo);
 
     void handlerStockLockRelease(StockLockedTo stockLockedTo);
+
+    void unlockStockOrder(OrderTo order);
 }
 

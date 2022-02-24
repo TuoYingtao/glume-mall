@@ -26,4 +26,7 @@ public class WareOrderTaskServiceImpl extends ServiceImpl<WareOrderTaskDao, Ware
         return new PageUtils(page);
     }
 
+    public WareOrderTaskEntity getOrderTaskByOrderSn(String orderSn) {
+        return baseMapper.selectOne(new QueryWrapper<WareOrderTaskEntity>().eq("order_sn",orderSn));
+    }
 }

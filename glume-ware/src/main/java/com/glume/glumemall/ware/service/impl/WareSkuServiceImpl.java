@@ -12,7 +12,7 @@ import com.glume.glumemall.ware.entity.WareOrderTaskEntity;
 import com.glume.glumemall.ware.feign.OrderFeignService;
 import com.glume.glumemall.ware.feign.ProductFeignService;
 import com.glume.glumemall.ware.service.WareOrderTaskDetailService;
-import com.glume.glumemall.ware.to.OrderTo;
+import com.glume.common.core.to.mq.OrderTo;
 import com.glume.glumemall.ware.vo.OrderItemVo;
 import com.glume.glumemall.ware.vo.SkuHasStockVo;
 import com.glume.glumemall.ware.vo.WareSkuLockVo;
@@ -205,6 +205,24 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                 throw new RuntimeException("远程服务调用失败...");
             }
         } else { /* 无需解锁 */ }
+    }
+
+    /**
+     * 订单关闭主动解锁库存，
+     * 防止订单服务卡顿导致订单状态消息一直改不了，而库存消息优先到期。此时查看订单状态为新建，然后什么都不做就走了，
+     * 最终导致卡顿的订单，永远不能解锁
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void unlockStockOrder(OrderTo order) {
+        WareOrderTaskEntity wareOrderTaskEntity = wareOrderTaskService.getOrderTaskByOrderSn(order.getOrderSn());
+        List<WareOrderTaskDetailEntity> wareOrderTaskDetailEntities = wareOrderTaskDetailService.list(
+                new QueryWrapper<WareOrderTaskDetailEntity>()
+                        .eq("task_id", wareOrderTaskEntity.getId())
+                        .eq("lock_status", 1));
+        for (WareOrderTaskDetailEntity item : wareOrderTaskDetailEntities) {
+            unLockStock(wareOrderTaskEntity.getId(), item.getSkuId(), item.getWareId(), item.getSkuNum());
+        }
     }
 
     /**

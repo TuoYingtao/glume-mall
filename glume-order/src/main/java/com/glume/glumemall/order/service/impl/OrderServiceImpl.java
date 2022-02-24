@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.glume.common.core.constant.OrderConstant;
 import com.glume.common.core.exception.servlet.NoStockException;
 import com.glume.common.core.to.MemberRespTo;
+import com.glume.common.core.to.mq.OrderTo;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
@@ -19,6 +20,8 @@ import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.service.OrderItemService;
 import com.glume.glumemall.order.to.OrderCreateTo;
 import com.glume.glumemall.order.vo.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +71,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Autowired
     OrderItemService orderItemService;
 
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<OrderEntity> page = this.page(
@@ -82,6 +88,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     public OrderEntity getOrderByOrderSn(String orderSn) {
         OrderEntity orderEntity = baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn",orderSn));
         return orderEntity;
+    }
+
+    @Override
+    public void closeOrder(OrderEntity orderEntity) {
+        OrderEntity entity = baseMapper.selectById(orderEntity.getOrderSn());
+        // 当订单状态为待付款时，才能进行关闭订单
+        if (entity.getStatus() == OrderStatusEnum.CREATE_NEW.getCode()) {
+            OrderEntity newOrderData = new OrderEntity();
+            newOrderData.setId(entity.getId());
+            newOrderData.setStatus(OrderStatusEnum.CANCLED.getCode());
+            baseMapper.updateById(newOrderData);
+            OrderTo orderTo = new OrderTo();
+            BeanUtils.copyProperties(entity,orderTo);
+            rabbitTemplate.convertAndSend("order-event-exchange","order.release.other.#",orderTo);
+        }
     }
 
     /**
@@ -175,8 +196,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 R orderLockStockResult = wareFeignService.orderLockStock(wareSkuLockVo);
                 if (orderLockStockResult.getCode() == 200) {
                     submitOrderResponseVo.setOrder(order.getOrder());
-                    // 模拟异常，订单回滚
-                    int i = 10/0;
+                    // 积分扣减：模拟异常，订单回滚
+//                    int i = 10/0;
+                    // TODO 订单创建成功
+                    rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",order.getOrder());
                 } else {
                     // 库存锁定失败
                     submitOrderResponseVo.setCode(3);

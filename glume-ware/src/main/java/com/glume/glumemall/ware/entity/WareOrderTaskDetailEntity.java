@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -47,6 +46,6 @@ public class WareOrderTaskDetailEntity implements Serializable {
 	/**
 	 * 1-锁定  2-解锁  3-扣减
 	 */
-	private Long lockStatus;
+	private Integer lockStatus;
 
 }

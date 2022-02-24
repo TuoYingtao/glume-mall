@@ -3,19 +3,39 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80025
+ Source Server Version : 80026
  Source Host           : localhost:3306
  Source Schema         : glumemall_oms
 
  Target Server Type    : MySQL
- Target Server Version : 80025
+ Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 18/02/2022 18:07:27
+ Date: 24/02/2022 22:58:45
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for mq_message
+-- ----------------------------
+DROP TABLE IF EXISTS `mq_message`;
+CREATE TABLE `mq_message`  (
+  `message_id` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '消息内容 JSON格式',
+  `to_exchane` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '交换机',
+  `routing_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '路由键',
+  `class_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '类型',
+  `message_status` int NULL DEFAULT 0 COMMENT '0-新建 1-已发送 2-错误抵达 3-已抵达',
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`message_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of mq_message
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for oms_order
@@ -66,13 +86,17 @@ CREATE TABLE `oms_order`  (
   `modify_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `order_sn`(`order_sn`) USING BTREE COMMENT '订单号唯一索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_order
 -- ----------------------------
 INSERT INTO `oms_order` VALUES (18, 1, '202202151615026051493499077505671170', NULL, NULL, NULL, 42593.0000, 42598.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, NULL, NULL, 0, NULL, NULL, 7, 42593, 42593, NULL, NULL, NULL, NULL, NULL, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2022-02-15 16:15:03');
 INSERT INTO `oms_order` VALUES (19, 1, '202202151624304251493501459119505409', NULL, NULL, NULL, 42593.0000, 42598.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, NULL, NULL, 0, NULL, NULL, 7, 42593, 42593, NULL, NULL, NULL, NULL, NULL, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2022-02-15 16:24:31');
+INSERT INTO `oms_order` VALUES (37, 1, '202202242138288231496841963905765378', NULL, NULL, NULL, 30495.0000, 30500.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, NULL, NULL, 4, NULL, NULL, 7, 30495, 30495, NULL, NULL, NULL, NULL, NULL, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2022-02-24 21:38:29');
+INSERT INTO `oms_order` VALUES (38, 1, '202202242149170071496844682561421313', NULL, NULL, NULL, 30495.0000, 30500.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, NULL, NULL, 4, NULL, NULL, 7, 30495, 30495, NULL, NULL, NULL, NULL, NULL, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2022-02-24 21:49:17');
+INSERT INTO `oms_order` VALUES (39, 1, '202202242151130461496845169213931521', NULL, NULL, NULL, 30495.0000, 30500.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, NULL, NULL, 4, NULL, NULL, 7, 30495, 30495, NULL, NULL, NULL, NULL, NULL, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2022-02-24 21:51:13');
+INSERT INTO `oms_order` VALUES (40, 1, '202202242156040021496846389605400578', NULL, NULL, NULL, 30495.0000, 30500.0000, 5.0000, 0.0000, 0.0000, 0.0000, 0.0000, NULL, NULL, 4, NULL, NULL, 7, 30495, 30495, NULL, NULL, NULL, NULL, NULL, 'tuoyingtao', '15207447965', NULL, '广东省', '深圳市', '福田区', '上步大厦', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2022-02-24 21:56:04');
 
 -- ----------------------------
 -- Table structure for oms_order_item
@@ -100,7 +124,7 @@ CREATE TABLE `oms_order_item`  (
   `gift_integration` int NULL DEFAULT NULL COMMENT '赠送积分',
   `gift_growth` int NULL DEFAULT NULL COMMENT '赠送成长值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单项信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 165 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单项信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_order_item
@@ -115,6 +139,18 @@ INSERT INTO `oms_order_item` VALUES (92, 19, '2022021516243042514935014591195054
 INSERT INTO `oms_order_item` VALUES (93, 19, '202202151624304251493501459119505409', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 1, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/60e65a44-f943-4ed5-87c8-8cf90f403018_d511faab82abb34b.jpg', 6299.0000, 2, '颜色：星河银', 0.0000, 0.0000, 0.0000, 12598.0000, 12598, 12598);
 INSERT INTO `oms_order_item` VALUES (94, 19, '202202151624304251493501459119505409', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 2, '华为 HUAWEI Mate 30 Pro 星河银 8GB+128GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 5799.0000, 2, '版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 11598.0000, 11598, 11598);
 INSERT INTO `oms_order_item` VALUES (95, 19, '202202151624304251493501459119505409', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 5, '华为 HUAWEI Mate 30 Pro 翡冷翠 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 6299.0000, 1, '颜色：亮黑色', 0.0000, 0.0000, 0.0000, 6299.0000, 6299, 6299);
+INSERT INTO `oms_order_item` VALUES (153, 37, '202202242138288231496841963905765378', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 2, '华为 HUAWEI Mate 30 Pro 星河银 8GB+128GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 5799.0000, 2, '颜色：星河银;版本：8GB+128GB', 0.0000, 0.0000, 0.0000, 11598.0000, 11598, 11598);
+INSERT INTO `oms_order_item` VALUES (154, 37, '202202242138288231496841963905765378', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 3, '华为 HUAWEI Mate 30 Pro 亮黑色 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 6299.0000, 1, '颜色：亮黑色;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 6299.0000, 6299, 6299);
+INSERT INTO `oms_order_item` VALUES (155, 37, '202202242138288231496841963905765378', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 1, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/60e65a44-f943-4ed5-87c8-8cf90f403018_d511faab82abb34b.jpg', 6299.0000, 2, '颜色：星河银;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 12598.0000, 12598, 12598);
+INSERT INTO `oms_order_item` VALUES (156, 38, '202202242149170071496844682561421313', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 2, '华为 HUAWEI Mate 30 Pro 星河银 8GB+128GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 5799.0000, 2, '颜色：星河银;版本：8GB+128GB', 0.0000, 0.0000, 0.0000, 11598.0000, 11598, 11598);
+INSERT INTO `oms_order_item` VALUES (157, 38, '202202242149170071496844682561421313', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 3, '华为 HUAWEI Mate 30 Pro 亮黑色 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 6299.0000, 1, '颜色：亮黑色;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 6299.0000, 6299, 6299);
+INSERT INTO `oms_order_item` VALUES (158, 38, '202202242149170071496844682561421313', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 1, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/60e65a44-f943-4ed5-87c8-8cf90f403018_d511faab82abb34b.jpg', 6299.0000, 2, '颜色：星河银;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 12598.0000, 12598, 12598);
+INSERT INTO `oms_order_item` VALUES (159, 39, '202202242151130461496845169213931521', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 2, '华为 HUAWEI Mate 30 Pro 星河银 8GB+128GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 5799.0000, 2, '颜色：星河银;版本：8GB+128GB', 0.0000, 0.0000, 0.0000, 11598.0000, 11598, 11598);
+INSERT INTO `oms_order_item` VALUES (160, 39, '202202242151130461496845169213931521', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 3, '华为 HUAWEI Mate 30 Pro 亮黑色 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 6299.0000, 1, '颜色：亮黑色;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 6299.0000, 6299, 6299);
+INSERT INTO `oms_order_item` VALUES (161, 39, '202202242151130461496845169213931521', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 1, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/60e65a44-f943-4ed5-87c8-8cf90f403018_d511faab82abb34b.jpg', 6299.0000, 2, '颜色：星河银;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 12598.0000, 12598, 12598);
+INSERT INTO `oms_order_item` VALUES (162, 40, '202202242156040021496846389605400578', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 2, '华为 HUAWEI Mate 30 Pro 星河银 8GB+128GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 5799.0000, 2, '颜色：星河银;版本：8GB+128GB', 0.0000, 0.0000, 0.0000, 11598.0000, 11598, 11598);
+INSERT INTO `oms_order_item` VALUES (163, 40, '202202242156040021496846389605400578', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 3, '华为 HUAWEI Mate 30 Pro 亮黑色 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/ef2691e5-de1a-4ca3-827d-a60f39fbda93_0d40c24b264aa511.jpg', 6299.0000, 1, '颜色：亮黑色;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 6299.0000, 6299, 6299);
+INSERT INTO `oms_order_item` VALUES (164, 40, '202202242156040021496846389605400578', 11, '华为 HUAWEI Mate 30 Pro', NULL, '9', 225, 1, '华为 HUAWEI Mate 30 Pro 星河银 8GB+256GB麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄4G全网通手机', 'https://gulimall-hello.oss-cn-beijing.aliyuncs.com/2019-11-26/60e65a44-f943-4ed5-87c8-8cf90f403018_d511faab82abb34b.jpg', 6299.0000, 2, '颜色：星河银;版本：8GB+256GB', 0.0000, 0.0000, 0.0000, 12598.0000, 12598, 12598);
 
 -- ----------------------------
 -- Table structure for oms_order_operate_history
@@ -128,7 +164,7 @@ CREATE TABLE `oms_order_operate_history`  (
   `order_status` tinyint NULL DEFAULT NULL COMMENT '订单状态【0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单】',
   `note` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单操作历史记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单操作历史记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_order_operate_history
@@ -168,7 +204,7 @@ CREATE TABLE `oms_order_return_apply`  (
   `receive_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '收货电话',
   `company_address` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '公司收货地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单退货申请' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单退货申请' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_order_return_apply
@@ -185,7 +221,7 @@ CREATE TABLE `oms_order_return_reason`  (
   `status` tinyint(1) NULL DEFAULT NULL COMMENT '启用状态',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT 'create_time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '退货原因' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '退货原因' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_order_return_reason
@@ -204,7 +240,7 @@ CREATE TABLE `oms_order_setting`  (
   `comment_overtime` int NULL DEFAULT NULL COMMENT '订单完成后自动好评时间（天）',
   `member_level` tinyint NULL DEFAULT NULL COMMENT '会员等级【0-不限会员等级，全部通用；其他-对应的其他会员等级】',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单配置信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单配置信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_order_setting
@@ -227,7 +263,7 @@ CREATE TABLE `oms_payment_info`  (
   `callback_content` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '回调内容',
   `callback_time` datetime(0) NULL DEFAULT NULL COMMENT '回调时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '支付信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '支付信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_payment_info
@@ -246,7 +282,7 @@ CREATE TABLE `oms_refund_info`  (
   `refund_channel` tinyint NULL DEFAULT NULL COMMENT '退款渠道[1-支付宝，2-微信，3-银联，4-汇款]',
   `refund_content` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '退款信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '退款信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_refund_info
@@ -268,7 +304,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of undo_log

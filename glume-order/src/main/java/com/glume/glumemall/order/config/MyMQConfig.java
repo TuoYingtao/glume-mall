@@ -58,4 +58,16 @@ public class MyMQConfig {
                 "order.release.order",null);
         return binding;
     }
+
+    /**
+     * 绑定订单释放直接通知库存进行释放
+     */
+    @Bean
+    public Binding orderReleaseOtherBinding() {
+        Binding binding = new Binding("stock.release.stock.queue",
+                Binding.DestinationType.QUEUE,
+                "order-event-exchange",
+                "order.release.other.#",null);
+        return binding;
+    }
 }

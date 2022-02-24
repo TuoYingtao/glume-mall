@@ -2,7 +2,7 @@ package com.glume.glumemall.ware.listener;
 
 import com.glume.common.core.to.mq.StockLockedTo;
 import com.glume.glumemall.ware.service.WareSkuService;
-import com.glume.glumemall.ware.service.impl.WareSkuServiceImpl;
+import com.glume.common.core.to.mq.OrderTo;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import java.io.IOException;
 @Service
 @RabbitListener(queues = "stock.release.stock.queue")
 public class StockReleaseListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WareSkuServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StockReleaseListener.class);
 
     @Autowired
     WareSkuService wareSkuService;
@@ -40,6 +40,20 @@ public class StockReleaseListener {
             // 消息拒绝以后重新放入队列。
             channel.basicReject(message.getMessageProperties().getDeliveryTag(),true);
         }
+    }
 
+    /**
+     * 订单关闭主动解锁库存
+     */
+    @RabbitHandler
+    public void handlerOrderLockRelease(Channel channel, Message message, OrderTo order) throws IOException {
+        LOGGER.debug("订单关闭准备解锁库存...");
+        try {
+            wareSkuService.unlockStockOrder(order);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            // 消息拒绝以后重新放入队列。
+            channel.basicReject(message.getMessageProperties().getDeliveryTag(),true);
+        }
     }
 }

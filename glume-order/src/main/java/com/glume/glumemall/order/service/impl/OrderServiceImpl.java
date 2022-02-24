@@ -92,7 +92,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public void closeOrder(OrderEntity orderEntity) {
-        OrderEntity entity = baseMapper.selectById(orderEntity.getOrderSn());
+        OrderEntity entity = baseMapper.selectById(orderEntity.getId());
         // 当订单状态为待付款时，才能进行关闭订单
         if (entity.getStatus() == OrderStatusEnum.CREATE_NEW.getCode()) {
             OrderEntity newOrderData = new OrderEntity();

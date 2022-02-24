@@ -1,4 +1,4 @@
-package com.glume.glumemall.ware.to;
+package com.glume.common.core.to.mq;
 
 import lombok.Data;
 

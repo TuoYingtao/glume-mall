@@ -20,6 +20,7 @@ import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.service.OrderItemService;
 import com.glume.glumemall.order.to.OrderCreateTo;
 import com.glume.glumemall.order.vo.*;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             baseMapper.updateById(newOrderData);
             OrderTo orderTo = new OrderTo();
             BeanUtils.copyProperties(entity,orderTo);
-            rabbitTemplate.convertAndSend("order-event-exchange","order.release.other.#",orderTo);
+            try {
+                // TODO 保证消息一定能发送出去，每一个消息都可以做好日志记录（给数据库保存每一条记录）
+                rabbitTemplate.convertAndSend("order-event-exchange","order.release.other.#",orderTo);
+            } catch (AmqpException e) {
+                // TODO 将没发送成功的消息进行重试发送
+                e.printStackTrace();
+            }
         }
     }
 

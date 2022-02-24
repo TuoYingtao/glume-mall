@@ -44,7 +44,7 @@ public class RabbitConfig {
         // 设置死信路由
         arguments.put("x-dead-letter-exchange","stock-event-exchange");
         // 设置路由键
-        arguments.put("x-dead-letter-routing-key","stock.locked");
+        arguments.put("x-dead-letter-routing-key","stock.release.#");
         // 过期时间
         arguments.put("x-message-ttl",120000);
         return new Queue("stock.delay.queue",true,false,false, arguments);

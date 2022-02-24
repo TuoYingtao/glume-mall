@@ -19,6 +19,9 @@ spring:
     host: localhost
     port: 5672
     virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual # ACK 机制
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

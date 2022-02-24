@@ -10,7 +10,7 @@ import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.order.entity.OrderItemEntity;
-import com.glume.glumemall.order.enume.OrderStatusEnum;
+import com.glume.common.core.enums.OrderStatusEnum;
 import com.glume.glumemall.order.feign.CartFeignService;
 import com.glume.glumemall.order.feign.MemberFeignService;
 import com.glume.glumemall.order.feign.ProductFeignService;
@@ -19,7 +19,6 @@ import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.service.OrderItemService;
 import com.glume.glumemall.order.to.OrderCreateTo;
 import com.glume.glumemall.order.vo.*;
-import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +76,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public OrderEntity getOrderByOrderSn(String orderSn) {
+        OrderEntity orderEntity = baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn",orderSn));
+        return orderEntity;
     }
 
     /**

@@ -2,8 +2,6 @@ package com.glume.common.core.to.mq;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * 库存工作单To
  * @author tuoyingtao
@@ -17,7 +15,7 @@ public class StockLockedTo {
      */
     private Long id;
     /**
-     * 库存工作单详情ID
+     * 库存工作单详情
      */
-    private Long detailId;
+    private StockDetailTo stockDetailTo;
 }

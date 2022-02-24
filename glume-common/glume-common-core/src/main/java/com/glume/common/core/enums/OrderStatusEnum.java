@@ -1,4 +1,4 @@
-package com.glume.glumemall.order.enume;
+package com.glume.common.core.enums;
 
 /**
  * 订单状态枚举

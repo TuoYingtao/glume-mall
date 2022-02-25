@@ -100,7 +100,8 @@
             <img src="/static/glumemall/order/pay/img/weixin.png" alt="">微信支付
           </li>
 		  <li>
-            <img src="/static/glumemall/order/pay/img/zhifubao.png" style="weight:auto;height:30px;" alt="">支付宝
+            <img src="/static/glumemall/order/pay/img/zhifubao.png" style="weight:auto;height:30px;" alt="">
+        <a th:href="'http://order.glumemall.com/payOrder?orderSn=' + ${submitOrderResponseVo.order.orderSn}">支付宝</a>
           </li>
         </ul>
       </div>

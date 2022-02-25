@@ -5,6 +5,7 @@ import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.order.entity.OrderEntity;
 import com.glume.glumemall.order.vo.OrderConfirmVo;
 import com.glume.glumemall.order.vo.OrderSubmitVo;
+import com.glume.glumemall.order.vo.PayVo;
 import com.glume.glumemall.order.vo.SubmitOrderResponseVo;
 
 import java.util.Map;
@@ -28,5 +29,7 @@ public interface OrderService extends IService<OrderEntity> {
     OrderEntity getOrderByOrderSn(String orderSn);
 
     void closeOrder(OrderEntity orderEntity);
+
+    PayVo getOrderPay(String orderSn);
 }
 

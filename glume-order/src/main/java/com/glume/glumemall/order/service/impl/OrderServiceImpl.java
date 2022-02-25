@@ -112,6 +112,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
     }
 
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        PayVo payVo = new PayVo();
+        OrderEntity orderByOrderSn = this.getOrderByOrderSn(orderSn);
+        payVo.setOut_trade_no(orderByOrderSn.getOrderSn());
+        // 保留小数点两位，并且向上取值
+        BigDecimal money = orderByOrderSn.getPayAmount().setScale(2, BigDecimal.ROUND_UP);
+        payVo.setTotal_amount(money.toString());
+        List<OrderItemEntity> orderItemEntities = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq("order_sn", orderSn));
+        payVo.setSubject(orderItemEntities.get(0).getSkuName());
+        payVo.setBody(orderItemEntities.get(0).getSkuAttrsVals());
+        return payVo;
+    }
+
     /**
      * 订单确认页需要返回的数据
      * @return

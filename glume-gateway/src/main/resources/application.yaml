@@ -65,6 +65,12 @@ spring:
           predicates:
             - Host=order.glumemall.com
 
+        # 会员路由
+        - id: glume_member_route
+          uri: lb://glume-member
+          predicates:
+            - Host=member.glumemall.com
+
         # 产品路由
         - id: glume_host_route
           uri: lb://glume-product

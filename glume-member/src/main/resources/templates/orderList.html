@@ -200,35 +200,41 @@
             <div style="clear:both;"></div>
           </ul>
         </div>
-        <table class="table">
+        <table class="table" th:each="order:${order.page.list}">
           <tr>
             <td colspan="7" style="background:#F7F7F7" >
               <span style="color:#AAAAAA">2017-12-09 20:50:10</span>
-              <span><ruby style="color:#AAAAAA">订单号:</ruby> 70207298274</span>
+              <span><ruby style="color:#AAAAAA">订单号:</ruby> [[${order.orderSn}]]</span>
               <span>慕熙威尔官方旗舰店<i class="table_i"></i></span>
               <i class="table_i5 isShow"></i>
             </td>
           </tr>
-          <tr class="tr">
+          <tr class="tr" th:each="item:${order.orderItemEntities}">
             <td colspan="3">
-              <img src="/static/glumemall/member/img/ding.jpg" alt="" class="img">
+              <img style="width: 60px;height: 60px;" th:src="${item.skuPic}" alt="" class="img">
               <div>
-                <p>MUXIWEIERPU皮手套男冬季加绒保暖户外骑<br />
+                <p style="width: 242px;height: auto;overflow: auto" th:text="${item.skuName}">MUXIWEIERPU皮手套男冬季加绒保暖户外骑<br />
                 车开车触摸屏全指防寒全指手套 黑色 均码</p>
                 <div><i class="table_i4"></i>找搭配</div>
               </div>
-              <div style="margin-left:15px;">x1</div>
+              <div style="margin-left:15px;">x[[${item.skuQuantity}]]</div>
               <div style="clear:both"></div>
             </td>
-            <td>张三<i><i class="table_i1"></i></i></td>
+            <td>[[${order.receiverName}]]<i><i class="table_i1"></i></i></td>
             <td style="padding-left:10px;color:#AAAAB1;">
-              <p style="margin-bottom:5px;">总额 ￥26.00</p>
+              <p style="margin-bottom:5px;">总额 ￥[[${item.payAmount}]]</p>
               <hr style="width:90%;">
               <p>在线支付</p>
             </td>
             <td>
               <ul>
-                <li style="color:#71B247;">等待收货</li>
+                <li style="color:#71B247;" th:if="${order.status==0}">待付款</li>
+                <li style="color:#71B247;" th:if="${order.status==1}">已付款</li>
+                <li style="color:#71B247;" th:if="${order.status==2}">已发货</li>
+                <li style="color:#71B247;" th:if="${order.status==3}">已完成</li>
+                <li style="color:#71B247;" th:if="${order.status==4}">已取消</li>
+                <li style="color:#71B247;" th:if="${order.status==5}">售后中</li>
+                <li style="color:#71B247;" th:if="${order.status==6}">售后完成</li>
                 <li style="margin:4px 0;" class="hide"><i class="table_i2"></i>跟踪<i class="table_i3"></i>
                     <div class="hi">
                       <div class="p-tit">

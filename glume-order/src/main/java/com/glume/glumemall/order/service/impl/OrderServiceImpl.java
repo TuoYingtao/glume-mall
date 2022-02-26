@@ -91,6 +91,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return orderEntity;
     }
 
+    /**
+     * 当前用户所有订单信息
+     */
+    @Override
+    public PageUtils queryPageWithItem(Map<String, Object> params) {
+        MemberRespTo memberRespTo = LoginUserInterceptor.toThreadLocal.get();
+        IPage<OrderEntity> orderEntityIPage = baseMapper.selectPage(
+                new Query<OrderEntity>().getPage(params),
+                new QueryWrapper<OrderEntity>()
+                        .eq("member_id", memberRespTo.getId()).orderByDesc("id"));
+        List<OrderEntity> entityList = orderEntityIPage.getRecords().stream().map(orderEntity -> {
+            List<OrderItemEntity> orderItemEntityList = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq("order_sn", orderEntity.getOrderSn()));
+            orderEntity.setOrderItemEntities(orderItemEntityList);
+            return orderEntity;
+        }).collect(Collectors.toList());
+        orderEntityIPage.setRecords(entityList);
+        return new PageUtils(orderEntityIPage);
+    }
+
     @Override
     public void closeOrder(OrderEntity orderEntity) {
         OrderEntity entity = baseMapper.selectById(orderEntity.getId());

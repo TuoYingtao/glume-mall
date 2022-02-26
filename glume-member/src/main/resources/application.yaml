@@ -12,6 +12,14 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  #Spring session 配置
+  session:
+    store-type: redis
+    timeout: 30m
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

@@ -4,6 +4,7 @@ import com.glume.common.core.constant.AuthServerConstant;
 import com.glume.common.core.to.MemberRespTo;
 import com.glume.common.core.utils.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,11 @@ public class LoginUserInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String uri = request.getRequestURI();
+        if (new AntPathMatcher().match("/member/**", uri)) {
+            return true;
+        }
+
         // 请求拦截
         MemberRespTo attribute = (MemberRespTo) request.getSession().getAttribute(AuthServerConstant.LOGIN_USER);
         if (StringUtils.isNotNull(attribute)) {

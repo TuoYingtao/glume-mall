@@ -12,12 +12,14 @@ import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.order.entity.OrderItemEntity;
 import com.glume.common.core.enums.OrderStatusEnum;
+import com.glume.glumemall.order.entity.PaymentInfoEntity;
 import com.glume.glumemall.order.feign.CartFeignService;
 import com.glume.glumemall.order.feign.MemberFeignService;
 import com.glume.glumemall.order.feign.ProductFeignService;
 import com.glume.glumemall.order.feign.WareFeignService;
 import com.glume.glumemall.order.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.order.service.OrderItemService;
+import com.glume.glumemall.order.service.PaymentInfoService;
 import com.glume.glumemall.order.to.OrderCreateTo;
 import com.glume.glumemall.order.vo.*;
 import org.springframework.amqp.AmqpException;
@@ -67,6 +69,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     ProductFeignService productFeignService;
 
     @Autowired
+    PaymentInfoService paymentInfoService;
+
+    @Autowired
     ThreadPoolExecutor executor;
 
     @Autowired
@@ -108,6 +113,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }).collect(Collectors.toList());
         orderEntityIPage.setRecords(entityList);
         return new PageUtils(orderEntityIPage);
+    }
+
+    /**
+     * 处理支付宝的支付结果
+     */
+    @Override
+    public String handlerPayResult(PayAsyncVo payAsyncVo) {
+        PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
+        paymentInfoEntity.setAlipayTradeNo(payAsyncVo.getTrade_no());
+        paymentInfoEntity.setOrderSn(payAsyncVo.getOut_trade_no());
+        paymentInfoEntity.setPaymentStatus(payAsyncVo.getTrade_status());
+        paymentInfoEntity.setCallbackTime(payAsyncVo.getNotify_time());
+        // 保存交易流水
+        paymentInfoService.save(paymentInfoEntity);
+        // 修改订单状态
+        if (payAsyncVo.getTrade_status().equals("TRADE_SUCCESS") ||
+                payAsyncVo.getTrade_status().equals("TRADE_FINISHED")) {
+            String orderSn = payAsyncVo.getOut_trade_no();
+            baseMapper.updateOrderStatus(orderSn,OrderStatusEnum.PAYED.getCode());
+        }
+        return "success";
     }
 
     @Override

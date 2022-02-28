@@ -3,10 +3,7 @@ package com.glume.glumemall.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.order.entity.OrderEntity;
-import com.glume.glumemall.order.vo.OrderConfirmVo;
-import com.glume.glumemall.order.vo.OrderSubmitVo;
-import com.glume.glumemall.order.vo.PayVo;
-import com.glume.glumemall.order.vo.SubmitOrderResponseVo;
+import com.glume.glumemall.order.vo.*;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -33,5 +30,7 @@ public interface OrderService extends IService<OrderEntity> {
     PayVo getOrderPay(String orderSn);
 
     PageUtils queryPageWithItem(Map<String, Object> params);
+
+    String handlerPayResult(PayAsyncVo payAsyncVo);
 }
 

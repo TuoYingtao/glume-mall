@@ -30,7 +30,7 @@ public class AlipayTemplate {
 
     // 服务器[异步通知]页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     // 支付宝会悄悄的给我们发送一个请求，告诉我们支付成功的信息
-    private String notify_url;
+    private String notify_url = "http://2956no5633.wicp.vip/payed/notify";
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     //同步通知，支付成功，一般跳转到成功页
@@ -41,6 +41,9 @@ public class AlipayTemplate {
 
     // 字符编码格式
     private String charset = "utf-8";
+
+    // 过期时间
+    private String timeout = "30m";
 
     // 支付宝网关； https://openapi.alipaydev.com/gateway.do
     private String gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
@@ -71,6 +74,7 @@ public class AlipayTemplate {
                 + "\"total_amount\":\""+ total_amount +"\","
                 + "\"subject\":\""+ subject +"\","
                 + "\"body\":\""+ body +"\","
+                + "\"timeout_express\":\""+ timeout +"\","
                 + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
 
         String result = alipayClient.pageExecute(alipayRequest).getBody();

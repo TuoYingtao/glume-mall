@@ -39,6 +39,9 @@ spring:
   session:
     store-type: redis
     timeout: 30m
+  # 日期格式
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 # Mybatis-plus 配置
 mybatis-plus:

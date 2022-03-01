@@ -27,6 +27,7 @@ public class HelloSchedule {
     private final Logger LOGGER = LoggerFactory.getLogger(HelloSchedule.class);
 
     /**
+     * cron = " 秒 分 时 日 月 周 "
      * 定时任务不应该阻塞。  默认阻塞
      *  1） 让业务运行以异步编排的方式，解决阻塞。
      *  2） 支持定时任务线程池，解决阻塞。(spring.task.scheduling.pool.size=5)

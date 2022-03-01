@@ -1,0 +1,13 @@
+server:
+  port: 25000
+spring:
+  application:
+    name: glume-seckill
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  redis:
+    host: localhost
+    port: 6379
+    database: 0

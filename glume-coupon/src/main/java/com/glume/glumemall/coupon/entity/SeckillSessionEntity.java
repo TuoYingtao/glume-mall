@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -57,4 +58,9 @@ public class SeckillSessionEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Date[] dateTime;
+	/**
+	 * 所有优惠秒杀商品
+	 */
+	@TableField(exist = false)
+	private List<SeckillSkuRelationEntity> relationSkus;
 }

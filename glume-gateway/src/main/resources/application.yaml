@@ -14,8 +14,16 @@ spring:
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
 
+        # 优惠服务路由
+        - id: coupon_route
+          uri: lb://glume-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
         # 库存服务路由
-        - id: glume-ware
+        - id: ware_route
           uri: lb://glume-ware
           predicates:
             - Path=/api/ware/**

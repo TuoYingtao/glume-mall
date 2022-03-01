@@ -1,6 +1,7 @@
 package com.glume.glumemall.coupon.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ import com.glume.common.core.utils.R;
 public class SeckillSessionController {
     @Autowired
     private SeckillSessionService seckillSessionService;
+
+    @GetMapping("/lates3DaySession")
+    public R getLates3DaySession() {
+        List<SeckillSessionEntity> list = seckillSessionService.getLates3DaySession();
+        return R.ok().put("data",list);
+    }
 
     /**
      * 列表

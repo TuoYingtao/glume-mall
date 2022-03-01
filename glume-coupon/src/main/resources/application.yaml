@@ -17,6 +17,8 @@ spring:
     alibaba:
       seata:
         tx-service-group: glume-coupon-fescar-service-group
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

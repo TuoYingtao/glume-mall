@@ -73,7 +73,7 @@ public class SeckillServiceImpl implements SeckillService {
             Boolean hasKey = redisTemplate.hasKey(key);
             if (!hasKey) {
                 List<String> value = sessionsWithSkusVo.getRelationSkus()
-                        .stream().map(item -> item.getId() + "_" + item.getSkuId()).collect(Collectors.toList());
+                        .stream().map(item -> item.getPromotionSessionId() + "_" + item.getSkuId()).collect(Collectors.toList());
                 redisTemplate.opsForList().leftPushAll(key,value);
             }
         });
@@ -88,7 +88,7 @@ public class SeckillServiceImpl implements SeckillService {
                 // 使用活动场次ID + 活动商品ID 作为键，避免多个活动同样的商品不进行缓存问题
                 String key = seckillSkuRelationWithVo.getPromotionSessionId() + "_" + seckillSkuRelationWithVo.getSkuId();
                 // 幂等性：当缓存中没有当前数据时，才进行保存数据。
-                if (!redisTemplate.hasKey(key)) {
+                if (!hashOps.hasKey(key)) {
                     SeckillSkuRedisTo seckillSkuRedisTo = new SeckillSkuRedisTo();
                     // Sku的基本数据
                     R skuInfo = productFeignService.getSkuInfo(seckillSkuRelationWithVo.getSkuId());

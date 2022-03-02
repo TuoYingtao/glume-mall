@@ -69,9 +69,13 @@ public class SeckillServiceImpl implements SeckillService {
             long startTime = sessionsWithSkusVo.getStartTime().getTime();
             long endTime = sessionsWithSkusVo.getEndTime().getTime();
             String key = SESSION_CACHE_PREFIX + startTime + "_" + endTime;
-            List<String> value = sessionsWithSkusVo.getRelationSkus()
-                    .stream().map(item -> item.getSkuId().toString()).collect(Collectors.toList());
-            redisTemplate.opsForList().leftPushAll(key,value);
+            // 幂等性：当缓存中没有当前数据时，才进行保存数据。
+            Boolean hasKey = redisTemplate.hasKey(key);
+            if (!hasKey) {
+                List<String> value = sessionsWithSkusVo.getRelationSkus()
+                        .stream().map(item -> item.getId() + "_" + item.getSkuId()).collect(Collectors.toList());
+                redisTemplate.opsForList().leftPushAll(key,value);
+            }
         });
     }
 
@@ -81,28 +85,34 @@ public class SeckillServiceImpl implements SeckillService {
             // 准备 Hash 操作
             BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
             sessionsWithSkusVo.getRelationSkus().forEach(seckillSkuRelationWithVo -> {
-                SeckillSkuRedisTo seckillSkuRedisTo = new SeckillSkuRedisTo();
-                // Sku的基本数据
-                R skuInfo = productFeignService.getSkuInfo(seckillSkuRelationWithVo.getSkuId());
-                if (skuInfo.getCode() == HttpStatus.SUCCESS) {
-                    SkuInfoVo data = skuInfo.getData(new TypeReference<SkuInfoVo>() {
-                    });
-                    seckillSkuRedisTo.setSkuInfoVo(data);
+                // 使用活动场次ID + 活动商品ID 作为键，避免多个活动同样的商品不进行缓存问题
+                String key = seckillSkuRelationWithVo.getPromotionSessionId() + "_" + seckillSkuRelationWithVo.getSkuId();
+                // 幂等性：当缓存中没有当前数据时，才进行保存数据。
+                if (!redisTemplate.hasKey(key)) {
+                    SeckillSkuRedisTo seckillSkuRedisTo = new SeckillSkuRedisTo();
+                    // Sku的基本数据
+                    R skuInfo = productFeignService.getSkuInfo(seckillSkuRelationWithVo.getSkuId());
+                    if (skuInfo.getCode() == HttpStatus.SUCCESS) {
+                        SkuInfoVo data = skuInfo.getData(new TypeReference<SkuInfoVo>() {
+                        });
+                        seckillSkuRedisTo.setSkuInfoVo(data);
+                    }
+                    // sku的秒杀信息
+                    BeanUtils.copyProperties(seckillSkuRelationWithVo,seckillSkuRedisTo);
+                    // 设置当前商品的秒杀时间信息
+                    seckillSkuRedisTo.setStarTime(sessionsWithSkusVo.getStartTime().getTime());
+                    seckillSkuRedisTo.setEndTime(sessionsWithSkusVo.getEndTime().getTime());
+                    // 商品随机码
+                    String code = UUID.randomUUID().toString().replace("-", "");
+                    seckillSkuRedisTo.setRandomCode(code);
+                    // 将活动商品信息以JSON格式缓存到Redis中
+                    String jsonString = JSON.toJSONString(seckillSkuRedisTo);
+                    hashOps.put(key,jsonString);
+
+                    // 分布式信号量 使用商品可以秒杀的数量作为信号量
+                    RSemaphore semaphore = redissonClient.getSemaphore(SKU_STOCK_SEMAPHORE + code);
+                    semaphore.trySetPermits(seckillSkuRelationWithVo.getSeckillCount().intValue());
                 }
-                // sku的秒杀信息
-                BeanUtils.copyProperties(seckillSkuRelationWithVo,seckillSkuRedisTo);
-                // 设置当前商品的秒杀时间信息
-                seckillSkuRedisTo.setStarTime(sessionsWithSkusVo.getStartTime().getTime());
-                seckillSkuRedisTo.setEndTime(sessionsWithSkusVo.getEndTime().getTime());
-                // 商品随机码
-                String code = UUID.randomUUID().toString().replace("-", "");
-                seckillSkuRedisTo.setRandomCode(code);
-                // 分布式信号量 使用商品可以秒杀的数量作为信号量
-                RSemaphore semaphore = redissonClient.getSemaphore(SKU_STOCK_SEMAPHORE + code);
-                semaphore.trySetPermits(seckillSkuRelationWithVo.getSeckillCount().intValue());
-                // 将活动商品信息以JSON格式缓存到Redis中
-                String jsonString = JSON.toJSONString(seckillSkuRedisTo);
-                hashOps.put(seckillSkuRelationWithVo.getSkuId().toString(),jsonString);
             });
         });
     }

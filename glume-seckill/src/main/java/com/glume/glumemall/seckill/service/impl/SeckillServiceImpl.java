@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.constant.HttpStatus;
 import com.glume.common.core.utils.R;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.seckill.feign.CouponFeignService;
 import com.glume.glumemall.seckill.feign.ProductFeignService;
 import com.glume.glumemall.seckill.service.SeckillService;
@@ -18,8 +19,7 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -61,6 +61,34 @@ public class SeckillServiceImpl implements SeckillService {
             // 缓存活动关联的商品信息
             cacheSessionSkuRelationInfo(data);
         }
+    }
+
+    /** 返回当前时间可以参与的秒杀商品 */
+    @Override
+    public List<SeckillSkuRedisTo> getCurrentSeckillSkus() {
+        // 确定当前时间属于哪个秒杀场次
+        long time = new Date().getTime();
+        Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
+        for (String key : keys) {
+            String replace = key.replace(SESSION_CACHE_PREFIX, "");
+            String[] s = replace.split("_");
+            long startTime = Long.parseLong(s[0]);
+            long endTime = Long.parseLong(s[1]);
+            if (time >= startTime && time <= endTime) {
+                List<String> range = redisTemplate.opsForList().range(key, -100, 100);
+                BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKU_STOCK_SEMAPHORE);
+                List<String> list = hashOps.multiGet(range);
+                if (StringUtils.isNotNull(list)) {
+                    List<SeckillSkuRedisTo> collect = list.stream().map(item -> {
+                        SeckillSkuRedisTo skuRedisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
+                        return skuRedisTo;
+                    }).collect(Collectors.toList());
+                    return collect;
+                }
+                break;
+            }
+        }
+        return null;
     }
 
     /** 缓存活动信息 */

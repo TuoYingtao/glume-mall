@@ -10,6 +10,8 @@ import com.glume.glumemall.seckill.service.SeckillService;
 import com.glume.glumemall.seckill.to.SeckillSkuRedisTo;
 import com.glume.glumemall.seckill.vo.SeckillSessionsWithSkusVo;
 import com.glume.glumemall.seckill.vo.SkuInfoVo;
+import org.redisson.api.RSemaphore;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
@@ -37,9 +39,14 @@ public class SeckillServiceImpl implements SeckillService {
     @Autowired
     StringRedisTemplate redisTemplate;
 
+    @Autowired
+    RedissonClient redissonClient;
+
     private final String SESSION_CACHE_PREFIX = "seckill:sessions:";
 
     private final String SKUKILL_CACHE_PREFIX = "seckill:skus:";
+
+    private final String SKU_STOCK_SEMAPHORE = "seckill:stock:";
 
     @Override
     public void uploadSeckillSkuLatest3Day() {
@@ -88,9 +95,14 @@ public class SeckillServiceImpl implements SeckillService {
                 seckillSkuRedisTo.setStarTime(sessionsWithSkusVo.getStartTime().getTime());
                 seckillSkuRedisTo.setEndTime(sessionsWithSkusVo.getEndTime().getTime());
                 // 商品随机码
-                seckillSkuRedisTo.setRandomCode(UUID.randomUUID().toString().replace("-",""));
-                String jsonString = JSON.toJSONString(seckillSkuRelationWithVo);
-                hashOps.put(seckillSkuRelationWithVo.getId(),jsonString);
+                String code = UUID.randomUUID().toString().replace("-", "");
+                seckillSkuRedisTo.setRandomCode(code);
+                // 分布式信号量 使用商品可以秒杀的数量作为信号量
+                RSemaphore semaphore = redissonClient.getSemaphore(SKU_STOCK_SEMAPHORE + code);
+                semaphore.trySetPermits(seckillSkuRelationWithVo.getSeckillCount().intValue());
+                // 将活动商品信息以JSON格式缓存到Redis中
+                String jsonString = JSON.toJSONString(seckillSkuRedisTo);
+                hashOps.put(seckillSkuRelationWithVo.getSkuId().toString(),jsonString);
             });
         });
     }

@@ -1,5 +1,7 @@
 package com.glume.glumemall.seckill.vo;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,6 +9,7 @@ import java.math.BigDecimal;
  * @author TuoYingtao
  * @create 2022-03-01 22:48
  */
+@Data
 public class SkuInfoVo {
 
     /**

@@ -5,9 +5,11 @@ import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.constant.HttpStatus;
 import com.glume.common.core.utils.R;
 import com.glume.glumemall.seckill.feign.CouponFeignService;
+import com.glume.glumemall.seckill.feign.ProductFeignService;
 import com.glume.glumemall.seckill.service.SeckillService;
 import com.glume.glumemall.seckill.to.SeckillSkuRedisTo;
 import com.glume.glumemall.seckill.vo.SeckillSessionsWithSkusVo;
+import com.glume.glumemall.seckill.vo.SkuInfoVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
@@ -15,6 +17,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +30,9 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Autowired
     CouponFeignService couponFeignService;
+
+    @Autowired
+    ProductFeignService productFeignService;
 
     @Autowired
     StringRedisTemplate redisTemplate;
@@ -70,9 +76,19 @@ public class SeckillServiceImpl implements SeckillService {
             sessionsWithSkusVo.getRelationSkus().forEach(seckillSkuRelationWithVo -> {
                 SeckillSkuRedisTo seckillSkuRedisTo = new SeckillSkuRedisTo();
                 // Sku的基本数据
-                // TODO Sku的基本数据
+                R skuInfo = productFeignService.getSkuInfo(seckillSkuRelationWithVo.getSkuId());
+                if (skuInfo.getCode() == HttpStatus.SUCCESS) {
+                    SkuInfoVo data = skuInfo.getData(new TypeReference<SkuInfoVo>() {
+                    });
+                    seckillSkuRedisTo.setSkuInfoVo(data);
+                }
                 // sku的秒杀信息
                 BeanUtils.copyProperties(seckillSkuRelationWithVo,seckillSkuRedisTo);
+                // 设置当前商品的秒杀时间信息
+                seckillSkuRedisTo.setStarTime(sessionsWithSkusVo.getStartTime().getTime());
+                seckillSkuRedisTo.setEndTime(sessionsWithSkusVo.getEndTime().getTime());
+                // 商品随机码
+                seckillSkuRedisTo.setRandomCode(UUID.randomUUID().toString().replace("-",""));
                 String jsonString = JSON.toJSONString(seckillSkuRelationWithVo);
                 hashOps.put(seckillSkuRelationWithVo.getId(),jsonString);
             });

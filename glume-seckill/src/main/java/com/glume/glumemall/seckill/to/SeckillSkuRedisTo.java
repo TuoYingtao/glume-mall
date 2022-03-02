@@ -1,6 +1,7 @@
 package com.glume.glumemall.seckill.to;
 
 import com.glume.glumemall.seckill.vo.SkuInfoVo;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  * @author TuoYingtao
  * @create 2022-03-01 22:45
  */
+@Data
 public class SeckillSkuRedisTo {
 
     /**
@@ -39,8 +41,22 @@ public class SeckillSkuRedisTo {
      * 排序
      */
     private Integer seckillSort;
-
-    // 商品的详细信息
+    /**
+     * 商品的详细信息
+     */
     private SkuInfoVo skuInfoVo;
+    /**
+     * 商品秒杀的开始时间
+     */
+    private Long starTime;
+    /**
+     * 商品秒杀的结束时间
+     */
+    private Long endTime;
+    /**
+     * 秒杀随机码
+     * 只有开启秒杀活动时，才会暴露随机码，（规避恶意请求）
+     */
+    private String randomCode;
 
 }

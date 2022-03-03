@@ -57,6 +57,11 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Queue orderSeckillQueue() {
+        return new Queue("order.seckill.order.queue",true,false,false);
+    }
+
+    @Bean
     public Binding orderCreateOrderBinding() {
         Binding binding = new Binding("order.delay.queue",
                 Binding.DestinationType.QUEUE,
@@ -82,6 +87,14 @@ public class RabbitConfig {
                 "order-event-exchange",
                 "order.release.other.#",null);
         return binding;
+    }
+
+    @Bean
+    public Binding orderSeckillOrderBinding() {
+        return new Binding("order.seckill.order.queue",
+                Binding.DestinationType.QUEUE,
+                "order-event-exchange",
+                "order.seckill.order",null);
     }
 
     /** 定制RabbitTemplate */

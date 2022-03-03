@@ -635,7 +635,12 @@
 
                         </div>
                     </div>
-                    <div class="box-btns-two">
+                    <div class="box-btns-two" th:if="${#dates.createNow().getTime() >= item.seckillInfoVo.starTime && #dates.createNow().getTime() <= item.seckillInfoVo.endTime }">
+                        <a href="#" id="seckillCartA" th:attr="skuId=${item.info.skuId},sessionId=${item.seckillInfoVo.promotionSessionId},code=${item.seckillInfoVo.randomCode}">
+                            立即抢购
+                        </a>
+                    </div>
+                    <div class="box-btns-two" th:if="${#dates.createNow().getTime() < item.seckillInfoVo.starTime || #dates.createNow().getTime() > item.seckillInfoVo.endTime }">
                         <a href="#" id="addToCartA" th:attr="skuId=${item.info.skuId}">
                             加入购物车
                         </a>
@@ -1305,5 +1310,18 @@
         location.href = `http://cart.glumemall.com/addToCart?skuId=${skuId}&num=${num}`
         return false;
     });
+
+    $("#seckillCartA").click(function () {
+        var isLogin = [[${session.loginUser != null}]];
+        if (isLogin) {
+            var killId = $(this).attr("sessionId") + "_" + $(this).attr("skuId");
+            var key = $(this).attr("code");
+            var num = $("#input_num").val();
+            location.href = "http://seckill.glumemall.com/kill?killId="+ killId +"&key="+ key +"&num=" + num;
+        } else {
+            alert("秒杀请登录")
+        }
+        return false;
+    })
 </script>
 </html>

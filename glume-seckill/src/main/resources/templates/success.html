@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <title></title>
+  <script type="text/javascript" src="http://cart.glumemall.com/static/glumemall/cart/js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="http://cart.glumemall.com/static/glumemall/cart/bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="http://cart.glumemall.com/static/glumemall/cart/js/swiper.min.js"></script>
+  <script src="http://cart.glumemall.com/static/glumemall/cart/js/swiper.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://cart.glumemall.com/static/glumemall/cart/css/swiper.min.css"/>
+  <link rel="stylesheet" type="text/css" href="http://cart.glumemall.com/static/glumemall/cart/bootstrap/css/bootstrap.css"/>
+  <link rel="stylesheet" type="text/css" href="http://cart.glumemall.com/static/glumemall/cart/css/success.css"/>
+
+</head>
+
+<body>
+<!--头部-->
+<div class="alert-info">
+  <div class="hd_wrap_top">
+    <ul class="hd_wrap_left">
+      <li class="hd_home"><i class="glyphicon glyphicon-home"></i>
+        <a href="http://glumemall.com">谷粒商城首页</a>
+      </li>
+
+    </ul>
+
+    <ul class="hd_wrap_right">
+      <li>
+        <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.username}]]</a>
+        <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/login.html">你好，请登录</a>
+      </li>
+      <li>
+        <a th:if="${session.loginUser == null}" href="http://auth.glumemall.com/register.html" class="li_2">免费注册</a> |
+      </li>
+      <li class="spacer"></li>
+
+      <li>
+        <a href="http://member.glumemall.com/memberOrder.html">我的订单</a>
+      </li>
+
+
+    </ul>
+
+  </div>
+</div>
+
+<div class="nav-tabs-justified">
+  <div class="nav_wrap">
+
+    <div class="nav_top">
+      <div class="nav_top_one">
+        <a href="http://glumemall.com"><img src="http://cart.glumemall.com/static/glumemall/cart/img/logo1.jpg" style="height: 60px;width:180px;"/></a>
+      </div>
+      <div class="nav_top_two"><input type="text"/>
+        <button>搜索</button>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="success-wrap">
+    <div class="w" id="result">
+      <div class="m succeed-box">
+        <div th:if="${orderSn != null}" class="mc success-cont">
+          <h1>恭喜秒杀成功，订单号[[${orderSn}]]</h1>
+          <h2>正在准备订单数据，10s以后自动跳转支付<a th:href="'http://order.glumemall.com/payOrder?orderSn='+ ${orderSn}">去支付</a></h2>
+        </div>
+        <div th:if="${orderSn == null}">
+          <h1>手气不好，秒杀失败，下次再来！</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+<script type="text/javascript" src="http://cart.glumemall.com/static/glumemall/cart/js/success.js"></script>
+
+</html>

@@ -20,6 +20,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -68,6 +69,7 @@ public class SeckillServiceImpl implements SeckillService {
     public List<SeckillSkuRedisTo> getCurrentSeckillSkus() {
         // 确定当前时间属于哪个秒杀场次
         long time = new Date().getTime();
+        List<SeckillSkuRedisTo> collect = new ArrayList<>();
         Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
         for (String key : keys) {
             String replace = key.replace(SESSION_CACHE_PREFIX, "");
@@ -76,16 +78,40 @@ public class SeckillServiceImpl implements SeckillService {
             long endTime = Long.parseLong(s[1]);
             if (time >= startTime && time <= endTime) {
                 List<String> range = redisTemplate.opsForList().range(key, -100, 100);
-                BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKU_STOCK_SEMAPHORE);
+                BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
                 List<String> list = hashOps.multiGet(range);
-                if (StringUtils.isNotNull(list)) {
-                    List<SeckillSkuRedisTo> collect = list.stream().map(item -> {
+                if (StringUtils.isNotEmpty(list)) {
+                    List<SeckillSkuRedisTo> toList = list.stream().map(item -> {
                         SeckillSkuRedisTo skuRedisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
                         return skuRedisTo;
                     }).collect(Collectors.toList());
-                    return collect;
+                    collect.addAll(toList);
                 }
-                break;
+            }
+        }
+        return collect;
+    }
+
+    /** 获取某一个商品的秒杀信息 */
+    @Override
+    public SeckillSkuRedisTo getSkuSeckillInfo(Long skuId) {
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
+        Set<String> keys = hashOps.keys();
+        if (StringUtils.isNotEmpty(keys)) {
+            String regx = "\\d_" + skuId;
+            for (String key : keys) {
+                if (Pattern.matches(regx, key)) {
+                    String json = hashOps.get(key);
+                    SeckillSkuRedisTo seckillSkuRedisTo = JSON.parseObject(json, SeckillSkuRedisTo.class);
+                    // 随机码处理，只有在活动时间范围内才返回
+                    long current = new Date().getTime();
+                    Long starTime = seckillSkuRedisTo.getStarTime();
+                    Long endTime = seckillSkuRedisTo.getEndTime();
+                    if (!(current >= starTime && current <= endTime)) {
+                        seckillSkuRedisTo.setRandomCode(null);
+                    }
+                    return seckillSkuRedisTo;
+                }
             }
         }
         return null;

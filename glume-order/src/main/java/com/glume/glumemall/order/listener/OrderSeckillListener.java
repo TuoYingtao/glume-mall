@@ -9,6 +9,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
  * @author tuoyingtao
  * @create 2022-03-03 17:46
  */
+@Service
 @RabbitListener(queues = "order.seckill.order.queue")
 public class OrderSeckillListener {
     private final Logger LOGGER = LoggerFactory.getLogger(OrderSeckillListener.class);

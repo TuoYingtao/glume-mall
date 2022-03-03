@@ -6,6 +6,7 @@ import com.glume.common.core.constant.OrderConstant;
 import com.glume.common.core.exception.servlet.NoStockException;
 import com.glume.common.core.to.MemberRespTo;
 import com.glume.common.core.to.mq.OrderTo;
+import com.glume.common.core.to.mq.SeckillOrderTo;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
@@ -277,6 +278,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             }
         }
         return submitOrderResponseVo;
+    }
+
+    /** 秒杀订单保存 */
+    @Override
+    @Transactional
+    public void createSeckillOrder(SeckillOrderTo seckillOrderTo) {
+        // TODO 秒杀订单保存补充详细信息
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderSn(seckillOrderTo.getOrderSn());
+        orderEntity.setMemberId(seckillOrderTo.getMemberId());
+        orderEntity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
+        BigDecimal num = new BigDecimal(seckillOrderTo.getNum().toString());
+        BigDecimal payAmount = seckillOrderTo.getSeckillPrice().multiply(num);
+        orderEntity.setPayAmount(payAmount);
+        baseMapper.insert(orderEntity);
+
+        OrderItemEntity orderItemEntity = new OrderItemEntity();
+        orderItemEntity.setOrderSn(seckillOrderTo.getOrderSn());
+        orderItemEntity.setRealAmount(payAmount);
+        orderItemEntity.setSkuQuantity(seckillOrderTo.getNum());
+        orderItemService.save(orderItemEntity);
     }
 
     /** 保存订单数据 */

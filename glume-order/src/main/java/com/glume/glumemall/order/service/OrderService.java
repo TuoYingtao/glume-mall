@@ -1,6 +1,7 @@
 package com.glume.glumemall.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.glume.common.core.to.mq.SeckillOrderTo;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.order.entity.OrderEntity;
 import com.glume.glumemall.order.vo.*;
@@ -32,5 +33,7 @@ public interface OrderService extends IService<OrderEntity> {
     PageUtils queryPageWithItem(Map<String, Object> params);
 
     String handlerPayResult(PayAsyncVo payAsyncVo);
+
+    void createSeckillOrder(SeckillOrderTo seckillOrderTo);
 }
 

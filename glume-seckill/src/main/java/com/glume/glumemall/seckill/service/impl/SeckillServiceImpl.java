@@ -2,17 +2,21 @@ package com.glume.glumemall.seckill.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.to.mq.SeckillOrderTo;
 import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.seckill.feign.CouponFeignService;
 import com.glume.glumemall.seckill.feign.ProductFeignService;
+import com.glume.glumemall.seckill.interceptor.LoginUserInterceptor;
 import com.glume.glumemall.seckill.service.SeckillService;
 import com.glume.glumemall.seckill.to.SeckillSkuRedisTo;
 import com.glume.glumemall.seckill.vo.SeckillSessionsWithSkusVo;
 import com.glume.glumemall.seckill.vo.SkuInfoVo;
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
@@ -20,6 +24,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -42,6 +47,9 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Autowired
     RedissonClient redissonClient;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     private final String SESSION_CACHE_PREFIX = "seckill:sessions:";
 
@@ -111,6 +119,55 @@ public class SeckillServiceImpl implements SeckillService {
                         seckillSkuRedisTo.setRandomCode(null);
                     }
                     return seckillSkuRedisTo;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String kill(String killId, String key, Integer num) {
+        // 获取当前秒杀商品信息
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
+        String json = hashOps.get(killId);
+        if (StringUtils.isEmpty(json)) return null;
+        SeckillSkuRedisTo seckillSkuRedisTo = JSON.parseObject(json, SeckillSkuRedisTo.class);
+        // 校验合法性
+        Long starTime = seckillSkuRedisTo.getStarTime();
+        Long endTime = seckillSkuRedisTo.getEndTime();
+        long current = new Date().getTime();
+        if (current >= starTime && current <= endTime) {
+            // 校验随机码
+            String randomCode = seckillSkuRedisTo.getRandomCode();
+            String skuId = seckillSkuRedisTo.getPromotionSessionId() + "_" + seckillSkuRedisTo.getSkuId();
+            if (randomCode.equals(key) && skuId.equals(killId)) {
+                // 验证用户购买商品的数量
+                if (num <= seckillSkuRedisTo.getSeckillLimit().intValue()) {
+                    // 验证用户是否已经购买过此类商品，幂等性处理，保持每位用户只能购买一次
+                    String userRedisKey = LoginUserInterceptor.toThreadLocal.get().getId() + "_" + skuId;
+                    long ttl = endTime - current;
+                    Boolean ifAbsent = redisTemplate.opsForValue().setIfAbsent(userRedisKey, num.toString(), ttl, TimeUnit.MILLISECONDS);
+                    if (ifAbsent) {
+                        // 占位成功，当前用户没有买过此类商品；扣减信号量
+                        RSemaphore semaphore = redissonClient.getSemaphore(SKU_STOCK_SEMAPHORE + randomCode);
+                        try {
+                            boolean acquire = semaphore.tryAcquire(num, 100, TimeUnit.MILLISECONDS);
+                            if (acquire) {
+                                // 秒杀成功
+                                String orderSn = IdWorker.getTimeId();
+                                SeckillOrderTo seckillOrderTo = new SeckillOrderTo();
+                                seckillOrderTo.setOrderSn(orderSn);
+                                seckillOrderTo.setPromotionSessionId(seckillSkuRedisTo.getPromotionSessionId());
+                                seckillOrderTo.setSkuId(seckillSkuRedisTo.getSkuId());
+                                seckillOrderTo.setNum(num);
+                                seckillOrderTo.setMemberId(LoginUserInterceptor.toThreadLocal.get().getId());
+                                rabbitTemplate.convertAndSend("order-event-exchange","order.seckill.order",seckillOrderTo);
+                                return orderSn;
+                            }
+                        } catch (InterruptedException e) {
+                            return null;
+                        }
+                    }
                 }
             }
         }

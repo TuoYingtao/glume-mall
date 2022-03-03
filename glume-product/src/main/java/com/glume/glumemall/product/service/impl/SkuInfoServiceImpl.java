@@ -1,13 +1,18 @@
 package com.glume.glumemall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
+import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.product.entity.*;
+import com.glume.glumemall.product.feign.SeckillFeignService;
 import com.glume.glumemall.product.service.*;
 import com.glume.glumemall.product.vo.item.ItemSaleAttrsVo;
 import com.glume.glumemall.product.vo.item.SkuItemVo;
 import com.glume.glumemall.product.vo.item.SpuItemAttrGroupVo;
+import com.glume.glumemall.product.vo.seckill.SeckillInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +44,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     @Autowired
     SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Autowired
+    SeckillFeignService seckillFeignService;
 
     @Autowired
     ThreadPoolExecutor executor;
@@ -129,8 +137,19 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
             skuItemVo.setImages(images);
         }, executor);
 
+        // 查询当前SKU是否参与秒杀优惠
+        CompletableFuture<Void> seckillFuture = CompletableFuture.runAsync(() -> {
+            R result = seckillFeignService.getSkuSeckillInfo(skuId);
+            if (result.getCode() == HttpStatus.SUCCESS) {
+                SeckillInfoVo seckillInfoVo = result.getData(new TypeReference<SeckillInfoVo>() {
+                });
+                skuItemVo.setSeckillInfoVo(seckillInfoVo);
+            }
+        },executor);
+
+
         try {
-            CompletableFuture.allOf(infoFuture,saleAttrFuture,descFuture,baseAttrFuture,imagesFuture).get();
+            CompletableFuture.allOf(infoFuture,saleAttrFuture,descFuture,baseAttrFuture,imagesFuture,seckillFuture).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

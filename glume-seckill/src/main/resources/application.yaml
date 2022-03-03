@@ -30,4 +30,5 @@ spring:
     listener:
       simple:
         acknowledge-mode: manual # 开启手动确认ACK消息；避免多条消息在宕机的时候丢失；（默认为自动确认回复）
-
+  thymeleaf:
+    cache: false

@@ -635,12 +635,12 @@
 
                         </div>
                     </div>
-                    <div class="box-btns-two" th:if="${#dates.createNow().getTime() >= item.seckillInfoVo.starTime && #dates.createNow().getTime() <= item.seckillInfoVo.endTime }">
+                    <div class="box-btns-two" th:if="${item.seckillInfoVo != null && (#dates.createNow().getTime() >= item.seckillInfoVo.starTime && #dates.createNow().getTime() <= item.seckillInfoVo.endTime)}">
                         <a href="#" id="seckillCartA" th:attr="skuId=${item.info.skuId},sessionId=${item.seckillInfoVo.promotionSessionId},code=${item.seckillInfoVo.randomCode}">
                             立即抢购
                         </a>
                     </div>
-                    <div class="box-btns-two" th:if="${#dates.createNow().getTime() < item.seckillInfoVo.starTime || #dates.createNow().getTime() > item.seckillInfoVo.endTime }">
+                    <div class="box-btns-two" th:if="${item.seckillInfoVo == null || (#dates.createNow().getTime() < item.seckillInfoVo.starTime || #dates.createNow().getTime() > item.seckillInfoVo.endTime)}">
                         <a href="#" id="addToCartA" th:attr="skuId=${item.info.skuId}">
                             加入购物车
                         </a>

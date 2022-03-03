@@ -3,6 +3,7 @@ package com.glume.glumemall.product.vo.item;
 import com.glume.glumemall.product.entity.SkuImagesEntity;
 import com.glume.glumemall.product.entity.SkuInfoEntity;
 import com.glume.glumemall.product.entity.SpuInfoDescEntity;
+import com.glume.glumemall.product.vo.seckill.SeckillInfoVo;
 import lombok.Data;
 
 import java.util.List;
@@ -35,10 +36,13 @@ public class SkuItemVo {
      * spu介绍
      */
     SpuInfoDescEntity desp;
-
     /**
      * spu规格参数
      */
     List<SpuItemAttrGroupVo> groupAttrs;
+    /**
+     * 当前商品秒杀优惠信息
+     */
+    SeckillInfoVo seckillInfoVo;
 
 }

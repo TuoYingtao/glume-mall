@@ -79,6 +79,12 @@ spring:
           predicates:
             - Host=member.glumemall.com
 
+        # 秒杀路由
+        - id: glume_seckill_route
+          uri: lb://glume-seckill
+          predicates:
+            - Host=seckill.glumemall.com
+
         # 产品路由
         - id: glume_host_route
           uri: lb://glume-product

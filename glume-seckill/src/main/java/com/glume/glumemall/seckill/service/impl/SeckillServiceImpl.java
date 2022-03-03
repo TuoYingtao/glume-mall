@@ -160,6 +160,7 @@ public class SeckillServiceImpl implements SeckillService {
                                 seckillOrderTo.setPromotionSessionId(seckillSkuRedisTo.getPromotionSessionId());
                                 seckillOrderTo.setSkuId(seckillSkuRedisTo.getSkuId());
                                 seckillOrderTo.setNum(num);
+                                seckillOrderTo.setSeckillPrice(seckillSkuRedisTo.getSeckillPrice());
                                 seckillOrderTo.setMemberId(LoginUserInterceptor.toThreadLocal.get().getId());
                                 rabbitTemplate.convertAndSend("order-event-exchange","order.seckill.order",seckillOrderTo);
                                 return orderSn;

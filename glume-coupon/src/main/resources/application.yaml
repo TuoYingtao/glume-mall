@@ -17,6 +17,9 @@ spring:
     alibaba:
       seata:
         tx-service-group: glume-coupon-fescar-service-group
+    sentinel:
+      transport:
+        dashboard: localhost:8080
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:

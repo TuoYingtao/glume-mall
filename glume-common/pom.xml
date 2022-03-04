@@ -21,5 +21,6 @@
         <module>glume-common-swagger</module>
         <module>glume-common-validator</module>
         <module>glume-common-seata</module>
+        <module>glume-common-sentinel</module>
     </modules>
 </project>

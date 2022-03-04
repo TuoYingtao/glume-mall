@@ -15,6 +15,9 @@ spring:
     alibaba:
       seata:
         tx-service-group: glume-ware-fescar-service-group
+    sentinel:
+      transport:
+        dashboard: localhost:8080
   rabbitmq:
     host: localhost
     port: 5672

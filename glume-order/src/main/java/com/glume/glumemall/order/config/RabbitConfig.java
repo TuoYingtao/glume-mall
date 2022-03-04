@@ -28,12 +28,6 @@ public class RabbitConfig {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    /** 使用JOSN序列化机制，进行消息转换 */
-    @Bean
-    public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
     @Bean
     public Exchange orderEventExchange() {
         return new TopicExchange("order-event-exchange", true, false);
@@ -97,9 +91,15 @@ public class RabbitConfig {
                 "order.seckill.order",null);
     }
 
+    /** 使用JOSN序列化机制，进行消息转换 */
+    public MessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
     /** 定制RabbitTemplate */
     @PostConstruct //@PostConstruct注解：当RabbitConfig 对象创建完成以后执行这个方法
     public void initRabbitTemplate() {
+        rabbitTemplate.setMessageConverter(messageConverter());
         rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
             /**
              * 只要消息抵达Broker就 ack == true

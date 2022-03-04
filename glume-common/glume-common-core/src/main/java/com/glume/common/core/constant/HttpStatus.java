@@ -89,6 +89,8 @@ public class HttpStatus
      * 自定义HTTP常量
      */
     public enum BizCodeEnum {
+        TO_MANY_REQUEST(10000,"请求流量过大！"),
+
         SMS_CODE_EXCEPTION(10001,"短信验证码获取频率太高！"),
 
         USER_EXIST_EXCEPTION(15001,"用户已存在!"),

@@ -22,3 +22,7 @@ spring:
   session:
     store-type: redis
     timeout: 10m
+feign:
+  sentinel:
+    # 开启熔断保护机制
+    enabled: true

@@ -40,3 +40,7 @@ jwt:
 logging:
   level:
     com.glume.glumemall: debug
+feign:
+  sentinel:
+    # 开启熔断保护机制
+    enabled: true

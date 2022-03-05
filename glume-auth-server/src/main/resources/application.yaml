@@ -25,3 +25,7 @@ spring:
 common:
   validator:
     failFast: false
+feign:
+  sentinel:
+    # 开启熔断保护机制
+    enabled: true

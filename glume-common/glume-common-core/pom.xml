@@ -13,6 +13,12 @@
     <description>公共工具类核心模块</description>
 
     <dependencies>
+        <!-- 链路追踪 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+
         <!-- web 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

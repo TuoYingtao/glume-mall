@@ -1,5 +1,9 @@
 package com.glume.glumemall.seckill.service.impl;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -16,6 +20,8 @@ import com.glume.glumemall.seckill.vo.SeckillSessionsWithSkusVo;
 import com.glume.glumemall.seckill.vo.SkuInfoVo;
 import org.redisson.api.RSemaphore;
 import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +41,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SeckillServiceImpl implements SeckillService {
+    private final Logger LOGGER = LoggerFactory.getLogger(SeckillServiceImpl.class);
 
     @Autowired
     CouponFeignService couponFeignService;
@@ -74,30 +81,41 @@ public class SeckillServiceImpl implements SeckillService {
 
     /** 返回当前时间可以参与的秒杀商品 */
     @Override
+    @SentinelResource(value = "getCurrentSeckillSkus", blockHandler = "getCurrentSeckillSkusBlockHandler")
     public List<SeckillSkuRedisTo> getCurrentSeckillSkus() {
         // 确定当前时间属于哪个秒杀场次
         long time = new Date().getTime();
-        List<SeckillSkuRedisTo> collect = new ArrayList<>();
-        Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
-        for (String key : keys) {
-            String replace = key.replace(SESSION_CACHE_PREFIX, "");
-            String[] s = replace.split("_");
-            long startTime = Long.parseLong(s[0]);
-            long endTime = Long.parseLong(s[1]);
-            if (time >= startTime && time <= endTime) {
-                List<String> range = redisTemplate.opsForList().range(key, -100, 100);
-                BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
-                List<String> list = hashOps.multiGet(range);
-                if (StringUtils.isNotEmpty(list)) {
-                    List<SeckillSkuRedisTo> toList = list.stream().map(item -> {
-                        SeckillSkuRedisTo skuRedisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
-                        return skuRedisTo;
-                    }).collect(Collectors.toList());
-                    collect.addAll(toList);
+        try (Entry entry = SphU.entry("seckillSkus")) {
+            List<SeckillSkuRedisTo> collect = new ArrayList<>();
+            Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
+            for (String key : keys) {
+                String replace = key.replace(SESSION_CACHE_PREFIX, "");
+                String[] s = replace.split("_");
+                long startTime = Long.parseLong(s[0]);
+                long endTime = Long.parseLong(s[1]);
+                if (time >= startTime && time <= endTime) {
+                    List<String> range = redisTemplate.opsForList().range(key, -100, 100);
+                    BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
+                    List<String> list = hashOps.multiGet(range);
+                    if (StringUtils.isNotEmpty(list)) {
+                        List<SeckillSkuRedisTo> toList = list.stream().map(item -> {
+                            SeckillSkuRedisTo skuRedisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
+                            return skuRedisTo;
+                        }).collect(Collectors.toList());
+                        collect.addAll(toList);
+                    }
                 }
             }
+            return collect;
+        } catch (BlockException e) {
+            LOGGER.error("资源被限流",e.getMessage());
         }
-        return collect;
+        return null;
+    }
+
+    public List<SeckillSkuRedisTo> getCurrentSeckillSkusBlockHandler(BlockException e) {
+        LOGGER.error("SentinelResource-blockHandler：资源被限流-->{}",e);
+        return null;
     }
 
     /** 获取某一个商品的秒杀信息 */

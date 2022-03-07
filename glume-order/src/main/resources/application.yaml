@@ -59,3 +59,7 @@ glumemall:
     core-pool-size: 50
     maximum-pool-size: 200
     keep-alive-time: 10
+feign:
+  sentinel:
+    # 开启熔断保护机制
+    enabled: true

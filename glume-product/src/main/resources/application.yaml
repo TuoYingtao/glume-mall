@@ -53,5 +53,5 @@ logging:
 # 远程调用
 feign:
   sentinel:
-    # 开启被调用方熔断机制
+    # 开启被调用方熔断保护机制
     enabled: true

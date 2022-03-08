@@ -4,6 +4,12 @@ spring:
   application:
     name: glume-gateway
   cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
     gateway:
       routes:
         # 产品服务路由
@@ -90,6 +96,3 @@ spring:
           uri: lb://glume-product
           predicates:
             - Host=glumemall.com,item.glumemall.com
-    nacos:
-      discovery:
-        server-addr: localhost:8848

@@ -52,7 +52,7 @@ logging:
   level:
     com.glume.glumemall: debug
     org.springframework.cloud.openfeign: debug
-    org.springframework.cloud.sleuth: debugs
+    org.springframework.cloud.sleuth: debug
 # 远程调用
 feign:
   sentinel:

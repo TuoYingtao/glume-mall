@@ -7,6 +7,7 @@ import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.admin.exception.CaptchaException;
 import com.glume.glumemall.admin.security.handler.LoginFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,6 +28,9 @@ public class CaptchaFilter extends OncePerRequestFilter {
     @Autowired
     LoginFailureHandler loginFailureHandler;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = httpServletRequest.getRequestURI();
@@ -34,12 +38,14 @@ public class CaptchaFilter extends OncePerRequestFilter {
             // 校验验证码
             try {
                 validate(httpServletRequest);
+                filterChain.doFilter(httpServletRequest,httpServletResponse);
             } catch (CaptchaException e) {
                 // 如果不正确，就跳转到认证失败处理器
                 loginFailureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
             }
+        } else {
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
         }
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
 
     /**
@@ -52,10 +58,14 @@ public class CaptchaFilter extends OncePerRequestFilter {
         if (StringUtils.isEmpty(code) || StringUtils.isEmpty(key)) {
             throw new CaptchaException("key值与验证码不能为空！");
         }
-        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
-        if (!code.equals(redisUtils.hget(RedisConstant.CAPTCHA_KEY,key))) {
+        Boolean aBoolean = redisTemplate.opsForHash().hasKey(RedisConstant.CAPTCHA_KEY, key);
+        if (!aBoolean) {
+            throw new CaptchaException("验证码已过期");
+        }
+        String redisCode = redisTemplate.opsForHash().get(RedisConstant.CAPTCHA_KEY, key).toString();
+        if (!code.equals(redisCode)) {
             throw new CaptchaException("验证码错误");
         }
-        redisUtils.hdel(RedisConstant.CAPTCHA_KEY,key);
+        redisTemplate.opsForHash().delete(RedisConstant.CAPTCHA_KEY,key);
     }
 }

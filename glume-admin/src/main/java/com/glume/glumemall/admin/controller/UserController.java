@@ -49,57 +49,24 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    @Value("${jwt.header}")
-    private String headerToken;
-    @Autowired
-    private JwtUtils jwtUtils;
     @Autowired
     private UserService userService;
-    @Autowired
-    private Producer producer;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "用户信息")
     @GetMapping("/info")
     public R userInfo(HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader(headerToken);
-        String userName = jwtUtils.getUserNameFromToken(token);
-        HashMap<String, Object> byUserDetail = new HashMap<>();
-        // TODO 1.从Redis中获取用户信息,待优化（暂时拿取SQL数据）
-//        RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
-//        if (redisUtils.hHasKey(RedisConstant.USER_INFO_AND_MENU,userName)) {
-//            Object hget = redisUtils.hget(RedisConstant.USER_INFO_AND_MENU, userName);
-//            byUserDetail.putAll((Map<? extends String, ?>) hget);
-//            LOGGER.info("Redis中获取用户信息：{}",hget);
-//        } else {
-//            byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
-//            Date date = new Date(System.currentTimeMillis() * 1000 + (60 * 60 * 2));
-//            redisUtils.hset(RedisConstant.USER_INFO_AND_MENU,userName,byUserDetail,date.getTime());
-//            LOGGER.info("MySQL中获取用户信息");
-//        }
+        Map<String,Object> map = userService.info(httpServletRequest);
 
-        byUserDetail.putAll(userService.getByUserInfoAndMenu(userName));
-        return R.ok().put("data",byUserDetail);
+        return R.ok().put("data",map);
     }
 
     @ApiOperation(value = "登录验证码",notes = "")
     @GetMapping("/captcha")
     public R captcha() throws IOException {
-        String key = UUID.randomUUID().toString();
-        String code = producer.createText();
-        key = "123123";
-        code = "12345";
-        BufferedImage image = producer.createImage(code);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ImageIO.write(image,"jpg",outputStream);
-        BASE64Encoder encoder = new BASE64Encoder();
-        String str = "data:image/jpeg;base64,";
-        String base64Img = str + encoder.encode(outputStream.toByteArray());
-        SpringUtils.getBean(RedisUtils.class).hset(RedisConstant.CAPTCHA_KEY,key,code,120);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("key",key);
-        map.put("image",base64Img);
+        Map<String,String> map = userService.createCaptcha();
         return R.ok().put("data",map);
     }
 

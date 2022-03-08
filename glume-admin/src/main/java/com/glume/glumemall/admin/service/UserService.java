@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,5 +26,9 @@ public interface UserService extends IService<UserEntity> {
     UserEntity getByUserDetail(String username);
 
     void updateUserDetail(@NotNull UserEntity userEntity);
+
+    Map<String, String> createCaptcha() throws IOException;
+
+    Map<String, Object> info(HttpServletRequest httpServletRequest);
 }
 

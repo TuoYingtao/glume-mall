@@ -86,8 +86,8 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
                 }).distinct().collect(Collectors.toList());
                 list.addAll(roleList);
                 authority = list.stream().distinct().collect(Collectors.joining(","));
-                Date date = new Date(System.currentTimeMillis() + (60 * 60 * 24));
-                redisUtils.set(RedisConstant.REDIS_AUTHORITY_KEY + userId,authority,date.getTime());
+                long outTime = new Date(System.currentTimeMillis() + (60 * 60 * 24)).getTime() / 1000;
+                redisUtils.set(RedisConstant.REDIS_AUTHORITY_KEY + userId,authority,outTime);
                 LOGGER.info("获取SQL角色权限：" + authority);
             }
         }

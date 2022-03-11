@@ -25,11 +25,11 @@
           <el-date-picker
             v-model="paramAccept[item.prop]"
             type="daterange"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
+            :format="item.format ? item.format : 'yyyy-MM-dd HH:mm:ss'"
+            :value-format="item.format ? item.format : 'yyyy-MM-dd HH:mm:ss'"
             range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            start-placeholder="开始日期时间"
+            end-placeholder="结束日期时间"
             @change="parseDate(index)" />
         </el-form-item>
       </div>

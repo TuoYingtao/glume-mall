@@ -47,41 +47,40 @@ public class SeckillSessionController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
 		SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
 
-        return R.ok().put("seckillSession", seckillSession);
+        return R.ok().put("data", seckillSession);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody SeckillSessionEntity seckillSession){
-		seckillSessionService.save(seckillSession);
-
-        return R.ok();
+    @PostMapping("/save")
+    public R save(SeckillSessionEntity seckillSession){
+		seckillSessionService.saveSeckillSession(seckillSession);
+        return R.ok("保存成功！");
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
-    public R update(@RequestBody SeckillSessionEntity seckillSession){
+    @PutMapping("/update")
+    public R update(SeckillSessionEntity seckillSession){
+        seckillSession.setStartTime(seckillSession.getDateTime()[0]);
+        seckillSession.setEndTime(seckillSession.getDateTime()[1]);
 		seckillSessionService.updateById(seckillSession);
-
-        return R.ok();
+        return R.ok("修改成功！");
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    @DeleteMapping("/delete/{ids}")
+    public R delete(@PathVariable Long[] ids){
 		seckillSessionService.removeByIds(Arrays.asList(ids));
-
-        return R.ok();
+        return R.ok("删除成功！");
     }
 
 }

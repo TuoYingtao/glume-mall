@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     LoginSuccessHandler loginSuccessHandler;
 
     /** 退出登录处理 */
+    @Autowired
     LogoutSuccessHandlerImpl logoutSuccessHandler;
 
     /** 登录失败异常配置 */

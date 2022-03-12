@@ -23,14 +23,14 @@
         </el-form-item>
         <el-form-item v-else-if="item.type === 'datetime'" :label="item.label" :prop="item.prop">
           <el-date-picker
-            v-model="paramAccept[item.prop]"
-            type="daterange"
+            v-model="dataTime"
+            type="datetimerange"
             :format="item.format ? item.format : 'yyyy-MM-dd HH:mm:ss'"
             :value-format="item.format ? item.format : 'yyyy-MM-dd HH:mm:ss'"
             range-separator="至"
             start-placeholder="开始日期时间"
             end-placeholder="结束日期时间"
-            @change="parseDate(index)" />
+            @change="parseDate(item.prop)" />
         </el-form-item>
       </div>
       <el-form-item>
@@ -69,17 +69,16 @@
         default: () => new Object()
       },
     },
+    data() {
+      return {
+        dataTime: []
+      }
+    },
     methods: {
       /* 日期格式化 */
-      parseDate: function(date) {
-        let paramData = [];
-        for (let i = 0; i < date.length; i++) {
-          const date1 = new Date(date[i].toString());
-          const fullYear = date1.getFullYear();
-          const number = date1.getMonth() + 1;
-          const month = number < 10 ? "0" + number : number;
-          const day = date1.getDate() < 10 ? "0" + date1.getDate() : date1.getDate();
-          paramData.push(fullYear + "-" + month + "-" + day);
+      parseDate: function(prop) {
+        if (this.dataTime && this.dataTime.length > 0) {
+          this.paramAccept[prop] = this.dataTime.toString();
         }
       },
       /* 选择查询 */

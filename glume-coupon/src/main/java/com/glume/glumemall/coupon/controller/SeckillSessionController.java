@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.coupon.entity.SeckillSessionEntity;
@@ -12,6 +15,7 @@ import com.glume.glumemall.coupon.service.SeckillSessionService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.core.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -30,6 +34,7 @@ public class SeckillSessionController {
     @GetMapping("/lates3DaySession")
     public R getLates3DaySession() {
         List<SeckillSessionEntity> list = seckillSessionService.getLates3DaySession();
+
         return R.ok().put("data",list);
     }
 
@@ -48,7 +53,7 @@ public class SeckillSessionController {
      * 信息
      */
     @GetMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@Validated(IDGroup.class) @PathVariable("id") Long id){
 		SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
 
         return R.ok().put("data", seckillSession);
@@ -58,7 +63,7 @@ public class SeckillSessionController {
      * 保存
      */
     @PostMapping("/save")
-    public R save(SeckillSessionEntity seckillSession){
+    public R save(@Valid SeckillSessionEntity seckillSession){
 		seckillSessionService.saveSeckillSession(seckillSession);
         return R.ok("保存成功！");
     }
@@ -67,7 +72,7 @@ public class SeckillSessionController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(SeckillSessionEntity seckillSession){
+    public R update(@Validated({IDGroup.class, UpdateGroup.class}) SeckillSessionEntity seckillSession){
         seckillSession.setStartTime(seckillSession.getDateTime()[0]);
         seckillSession.setEndTime(seckillSession.getDateTime()[1]);
 		seckillSessionService.updateById(seckillSession);

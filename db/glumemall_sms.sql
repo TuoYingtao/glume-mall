@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 18/02/2022 18:07:47
+ Date: 12/03/2022 18:37:33
 */
 
 SET NAMES utf8mb4;
@@ -212,7 +212,7 @@ CREATE TABLE `sms_seckill_promotion`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `user_id` bigint NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀活动' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀活动' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sms_seckill_promotion
@@ -227,14 +227,20 @@ CREATE TABLE `sms_seckill_session`  (
   `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '场次名称',
   `start_time` datetime(0) NULL DEFAULT NULL COMMENT '每日开始时间',
   `end_time` datetime(0) NULL DEFAULT NULL COMMENT '每日结束时间',
-  `status` tinyint(1) NULL DEFAULT NULL COMMENT '启用状态',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '启用状态 1-启用 2-禁用',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀活动场次' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀活动场次' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sms_seckill_session
 -- ----------------------------
+INSERT INTO `sms_seckill_session` VALUES (1, '8:00', '2022-03-07 08:00:00', '2022-03-07 23:59:59', 1, '2022-03-01 15:32:32');
+INSERT INTO `sms_seckill_session` VALUES (2, '10:00', '2022-03-07 10:00:00', '2022-03-07 23:59:59', 1, '2022-03-02 10:52:37');
+INSERT INTO `sms_seckill_session` VALUES (7, '首发式地方', '1970-01-01 11:03:47', '1970-01-01 12:03:47', 1, '2022-03-12 11:03:50');
+INSERT INTO `sms_seckill_session` VALUES (8, '啊手动阀第三方', '1970-01-01 11:03:51', '1970-01-01 12:03:51', 1, '2022-03-12 11:03:56');
+INSERT INTO `sms_seckill_session` VALUES (9, '啊手动阀手动阀', '1970-01-01 11:04:16', '1970-01-01 12:04:16', 1, '2022-03-12 11:04:22');
+INSERT INTO `sms_seckill_session` VALUES (10, 'AAAAAA', '1970-01-01 11:04:16', '1970-01-01 12:04:16', 1, '2022-03-12 11:18:00');
 
 -- ----------------------------
 -- Table structure for sms_seckill_sku_notice
@@ -249,7 +255,7 @@ CREATE TABLE `sms_seckill_sku_notice`  (
   `send_time` datetime(0) NULL DEFAULT NULL COMMENT '发送时间',
   `notice_type` tinyint(1) NULL DEFAULT NULL COMMENT '通知方式[0-短信，1-邮件]',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀商品通知订阅' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀商品通知订阅' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sms_seckill_sku_notice
@@ -269,11 +275,13 @@ CREATE TABLE `sms_seckill_sku_relation`  (
   `seckill_limit` decimal(10, 0) NULL DEFAULT NULL COMMENT '每人限购数量',
   `seckill_sort` int NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀活动商品关联' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '秒杀活动商品关联' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sms_seckill_sku_relation
 -- ----------------------------
+INSERT INTO `sms_seckill_sku_relation` VALUES (1, 1, 1, 1, 3089, 100, 2, 1);
+INSERT INTO `sms_seckill_sku_relation` VALUES (2, 2, 2, 2, 4289, 100, 2, 2);
 
 -- ----------------------------
 -- Table structure for sms_sku_bounds
@@ -360,7 +368,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of undo_log

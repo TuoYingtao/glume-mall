@@ -83,6 +83,15 @@ public class UserController {
     }
 
     /**
+     * 用户名查找用户信息
+     */
+    @GetMapping("/byUserDetail")
+    public R getByUserDetail(@RequestParam("username") String username) {
+        UserEntity userEntity = userService.getByUserDetail(username);
+        return R.ok().put("data",userEntity);
+    }
+
+    /**
      * 列表
      */
     @PreAuthorize("hasRole('admin')")

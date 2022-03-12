@@ -2,6 +2,7 @@ package com.glume.common.core.exception;
 
 
 import com.glume.common.core.constant.HttpStatus;
+import com.glume.common.core.exception.servlet.FeignException;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.R;
 import io.jsonwebtoken.JwtException;
@@ -127,6 +128,16 @@ public class GlobalExceptionHandler {
         }
         LOGGER.error("请求地址'{}',校验异常'{}'", requestURI, e.getMessage(), e);
         return R.error(HttpStatus.BAD_REQUEST,String.join(",",msgList));
+    }
+
+    /**
+     * 远程调用异常处理
+     */
+    @ExceptionHandler(FeignException.class)
+    public R handlerFeignException(Throwable cause,FeignException e,HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        LOGGER.error("请求地址'{}',远程调用异常'{}'", requestURI, e.getMessage(), e.getDetailMessage());
+        return R.error(e.getCode(),e.getMessage());
     }
 
     /**

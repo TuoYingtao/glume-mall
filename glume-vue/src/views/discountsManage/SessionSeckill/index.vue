@@ -1,4 +1,3 @@
-<!-- TODO 每日秒杀待完成 -->
 <template>
   <layout-container>
     <!--    搜索框-->
@@ -7,6 +6,7 @@
     <el-card class="box-card min-h8">
       <el-row :gutter="10" class="mb8">
         <el-button icon="el-icon-plus" size="mini" @click="addData">新增</el-button>
+        <el-button icon="el-icon-plus" type="danger" size="mini" @click="batchDelete">批量删除</el-button>
         <right-toolbar :showSearch.sync="showSearch" :isFlagShow="$route.meta.search" @queryTable="getList" />
       </el-row>
       <!--    内容展示-->
@@ -23,8 +23,8 @@
         <el-table-column label="创建时间" prop="createTime"/>
         <el-table-column label="操作" prop="sort">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" type="warning" size="mini" @click="amendRole(scope.row)">修改</el-button>
-            <el-button icon="el-icon-delete" type="danger" size="mini" @click="deleteRole(scope.row)">删除</el-button>
+            <el-button icon="el-icon-edit" type="warning" size="mini" @click="amendData(scope.row)">修改</el-button>
+            <el-button icon="el-icon-delete" type="danger" size="mini" @click="deleteData(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,6 +46,7 @@
     components: {MyDialog, LayoutContainer, SearchBox },
     data() {
       return {
+        ids: null,
         total: 0,
         showSearch: true,
         loading: false,
@@ -62,11 +63,6 @@
           status: 1,
         },
         dataList: [],
-        menuOptions: [],
-        defaultProps: {
-          children: "children",
-          label: "label"
-        },
       }
     },
     created() {
@@ -86,9 +82,9 @@
         this.title = "添加场次信息";
         this.$refs["dialog"].open();
       },
-      amendRole(row) {
+      amendData(row) {
         this.reset();
-        this.form.id = row.role;
+        this.form.id = row.id;
         info(row.id).then(response => {
           this.form = response.data;
           if (response.data.startTime && response.data.endTime) {
@@ -114,7 +110,22 @@
           });
         }
       },
-      deleteRole(row) {
+      batchDelete() {
+        if (this.ids && this.ids.length > 0) {
+          let ids = this.ids;
+          MessageBox.confirm('是否确认批量删除数据项？').then(function() {
+            return delData(ids);
+          }).then(() => {
+            this.getList();
+            this.notSuccess("删除成功");
+          }).catch((err) => {
+            console.log(err)
+          });
+        } else {
+          this.notWarning("请选择需要删除的数据");
+        }
+      },
+      deleteData(row) {
         MessageBox.confirm('是否确认删除名称为"' + row.name + '"的数据项？').then(function() {
           return delData(row.id);
         }).then(() => {
@@ -123,7 +134,11 @@
         }).catch(() => {});
       },
       handleSelectionChange(e) {
-        console.log(e)
+        let arr = []
+        e.forEach(item => {
+          arr.push(item.id);
+        })
+        this.ids = arr;
       },
       handleQuery(param) {
         this.getList();

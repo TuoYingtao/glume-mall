@@ -53,11 +53,11 @@ public class SeckillPromotionController {
     }
 
     /**
-     * 保存
+     * 保存 TODO 秒杀活动主题保存
      */
-    @RequestMapping("/save")
-    public R save(@RequestBody SeckillPromotionEntity seckillPromotion){
-		seckillPromotionService.save(seckillPromotion);
+    @PostMapping("/save")
+    public R save(@Valid SeckillPromotionEntity seckillPromotion, HttpServletRequest request){
+		seckillPromotionService.saveSeckillPromotion(seckillPromotion,request);
 
         return R.ok();
     }

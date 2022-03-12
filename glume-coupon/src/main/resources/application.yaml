@@ -31,3 +31,7 @@ feign:
   sentinel:
     # 开启熔断保护机制
     enabled: true
+# JWT配置
+jwt:
+  #JWT存储的请求头
+  header: Authorization

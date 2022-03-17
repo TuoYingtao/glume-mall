@@ -2,15 +2,15 @@ package com.glume.glumemall.coupon.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import com.glume.common.core.constant.HttpStatus;
-import com.glume.common.core.exception.servlet.FeignException;
 import com.glume.common.core.utils.JwtUtils;
 import com.glume.common.core.utils.R;
-import com.glume.glumemall.coupon.feign.AdminFeignService;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.coupon.to.AdminUserTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -29,42 +29,30 @@ import javax.servlet.http.HttpServletRequest;
 @Service("seckillPromotionService")
 public class SeckillPromotionServiceImpl extends ServiceImpl<SeckillPromotionDao, SeckillPromotionEntity> implements SeckillPromotionService {
 
-    @Value("${jwt.header}")
-    private String tokenHeader;
-
-    @Autowired
-    JwtUtils jwtUtils;
-
-    @Autowired
-    AdminFeignService adminFeignService;
-
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<SeckillPromotionEntity> page = this.page(
-                new Query<SeckillPromotionEntity>().getPage(params),
-                new QueryWrapper<SeckillPromotionEntity>()
-        );
+        QueryWrapper<SeckillPromotionEntity> wrapper = new QueryWrapper<>();
+        String title = (String) params.get("title");
+        String status = (String) params.get("status");
+        String dateTime = (String) params.get("dateTime");
+        if (StringUtils.isNotEmpty(title)) {
+            wrapper.like("title",title);
+        }
+        if (StringUtils.isNotEmpty(status)) {
+            wrapper.eq("status", status);
+        }
+        if (StringUtils.isNotEmpty(dateTime)) {
+            String[] time = dateTime.split(",");
+            wrapper.between("start_time",time[0],time[1]);
+        }
+        IPage<SeckillPromotionEntity> page = this.page(new Query<SeckillPromotionEntity>().getPage(params), wrapper);
 
         return new PageUtils(page);
     }
 
     @Override
-    public void saveSeckillPromotion(SeckillPromotionEntity seckillPromotion, HttpServletRequest request) {
-        String token = request.getHeader(tokenHeader);
-        String userNameFromToken = jwtUtils.getUserNameFromToken(token);
-        R result = adminFeignService.getByUserDetail(userNameFromToken);
-        if (result.getCode() == HttpStatus.SUCCESS) {
-            AdminUserTo adminUserTo = result.getData(new TypeReference<AdminUserTo>() {
-            });
-            seckillPromotion.setUsername(userNameFromToken);
-            seckillPromotion.setUserId(adminUserTo.getUserId());
-            seckillPromotion.setCreateTime(new Date());
-            seckillPromotion.setStartTime(seckillPromotion.getDateTime()[0]);
-            seckillPromotion.setEndTime(seckillPromotion.getDateTime()[1]);
-            baseMapper.insert(seckillPromotion);
-        } else {
-            throw new FeignException(result.getCode(),"网络波动，秒杀活动主题保存失败！",result.get("msg").toString());
-        }
+    public void saveSeckillPromotion(SeckillPromotionEntity seckillPromotion) {
+        baseMapper.insert(seckillPromotion);
     }
 
 }

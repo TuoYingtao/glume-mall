@@ -18,6 +18,6 @@ public interface SeckillPromotionService extends IService<SeckillPromotionEntity
 
     PageUtils queryPage(Map<String, Object> params);
 
-    void saveSeckillPromotion(SeckillPromotionEntity seckillPromotion, HttpServletRequest request);
+    void saveSeckillPromotion(SeckillPromotionEntity seckillPromotion);
 }
 

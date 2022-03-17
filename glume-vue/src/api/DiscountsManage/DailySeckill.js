@@ -3,27 +3,27 @@ import qs from "qs"
 
 export function getData(param) {
   return request({
-    url: "/coupon/seckillpromotion/list",
+    url: "/admin/coupon/list/seckillPromotion",
     method: "GET",
     params: param,
   })
 }
 export function save(data) {
   return request({
-    url: "/coupon/seckillpromotion/save",
+    url: "/admin/coupon/save/seckillPromotion",
     method: "POST",
     data: qs.stringify(data),
   })
 }
 export function info(id) {
   return request({
-    url: "/coupon/seckillpromotion/info/" + id,
+    url: "/admin/coupon/info/seckillPromotion/" + id,
     method: "GET",
   })
 }
 export function update(data) {
   return request({
-    url: "/coupon/seckillpromotion/update",
+    url: "/admin/coupon/update/seckillPromotion",
     method: "PUT",
     data: qs.stringify(data),
   })
@@ -31,7 +31,7 @@ export function update(data) {
 export function delData(id) {
   console.log(id)
   return request({
-    url: "/coupon/seckillpromotion/delete/" + id,
+    url: "/admin/coupon/delete/seckillPromotion/" + id,
     method: "DELETE",
   })
 }

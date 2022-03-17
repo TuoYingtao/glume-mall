@@ -21,7 +21,7 @@
             <el-switch v-model="scope.row.status == 1" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="创建人" prop="userId"/>
+        <el-table-column label="创建人" prop="username"/>
         <el-table-column label="创建时间" prop="createTime"/>
         <el-table-column label="操作" prop="sort">
           <template slot-scope="scope">
@@ -42,7 +42,7 @@
   import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
   import {MessageBox} from "element-ui";
   import {getData,save,info,update,delData} from "@/api/DiscountsManage/DailySeckill";
-  import MyDialog from "@/views/discountsManage/SessionSeckill/component/MyDialog";
+  import MyDialog from "@/views/discountsManage/DailySeckill/component/MyDialog";
   export default {
     name: 'index',
     components: {MyDialog, LayoutContainer, SearchBox },
@@ -56,7 +56,7 @@
           page: 1,
           limit: 20,
         },
-        queryDataModel: [{type: "default",label: "场次名称",prop: "name"},
+        queryDataModel: [{type: "default",label: "场次主题",prop: "title"},
           {type: "select",label: "状态",prop: "status",data: [
               {id: 0,name: "禁用"}, {id: 1,name: "启用"}]},
           {type: "datetime",label: "活动日期范围",prop: "dateTime",format: "yyyy-MM-dd"}],

@@ -9,7 +9,7 @@ import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.feign.CouponFeignPromotionService;
-import com.glume.glumemall.admin.service.FeignCouponService;
+import com.glume.glumemall.admin.service.CouponPromotionService;
 import com.glume.glumemall.admin.service.UserService;
 import com.glume.glumemall.admin.to.SeckillPromotionTo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @create 2022-03-15 17:01
  */
 @Service("feignCouponService")
-public class FeignCouponServiceImpl implements FeignCouponService {
+public class CouponPromotionServiceImpl implements CouponPromotionService {
 
     @Value("${jwt.header}")
     String tokenHeader;

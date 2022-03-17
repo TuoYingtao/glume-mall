@@ -11,7 +11,7 @@ import java.util.Map;
  * @author TuoYingtao
  * @create 2022-03-15 16:59
  */
-public interface FeignCouponService {
+public interface CouponPromotionService {
 
     R saveSeckillPromotion(HttpServletRequest request, SeckillPromotionTo seckillPromotionTo);
 

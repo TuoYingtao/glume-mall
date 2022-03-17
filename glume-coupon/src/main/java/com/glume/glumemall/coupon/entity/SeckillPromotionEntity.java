@@ -33,25 +33,24 @@ public class SeckillPromotionEntity implements Serializable {
 	 * id
 	 */
 	@TableId
-	@NotNull(message = "id不能为空",groups = {IDGroup.class, UpdateGroup.class})
 	private Long id;
 	/**
 	 * 活动标题
 	 */
-	@NotBlank(message = "活动标题不能为空")
 	private String title;
 	/**
 	 * 开始日期
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	private Date startTime;
 	/**
 	 * 结束日期
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	private Date endTime;
 	/**
-	 * 上下线状态
+	 * 上下线状态 0-禁用 1-启用
 	 */
-	@NotNull(message = "上下线状态不能为空")
 	private Integer status;
 	/**
 	 * 创建时间
@@ -62,19 +61,5 @@ public class SeckillPromotionEntity implements Serializable {
 	 * 创建人
 	 */
 	private Long userId;
-	/**
-	 * 创建人用户名
-	 */
-	@TableField(exist = false)
-	private String username;
-	/**
-	 * 活动日期范围
-	 */
-	@TableField(exist = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotEmpty(message = "活动日期范围不能为空")
-	@Size(message = "活动日期范围格式不正确",min = 1,max = 2)
-	@Future(message = "活动日期范围不能小于今日",groups = AddGroup.class)
-	private Date[] dateTime;
 
 }

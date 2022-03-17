@@ -46,19 +46,18 @@ public class SeckillPromotionController {
      * 信息
      */
     @GetMapping("/info/{id}")
-    public R info(@Validated(IDGroup.class) @PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id){
 		SeckillPromotionEntity seckillPromotion = seckillPromotionService.getById(id);
 
         return R.ok().put("data", seckillPromotion);
     }
 
     /**
-     * 保存 TODO 秒杀活动主题保存
+     * 保存
      */
     @PostMapping("/save")
-    public R save(@Valid SeckillPromotionEntity seckillPromotion, HttpServletRequest request){
-		seckillPromotionService.saveSeckillPromotion(seckillPromotion,request);
-
+    public R save(@RequestBody SeckillPromotionEntity seckillPromotion){
+		seckillPromotionService.saveSeckillPromotion(seckillPromotion);
         return R.ok();
     }
 
@@ -66,7 +65,7 @@ public class SeckillPromotionController {
      * 修改
      */
     @PutMapping("/update")
-    public R update(@Validated({IDGroup.class, UpdateGroup.class}) SeckillPromotionEntity seckillPromotion){
+    public R update(@RequestBody SeckillPromotionEntity seckillPromotion){
 		seckillPromotionService.updateById(seckillPromotion);
 
         return R.ok();

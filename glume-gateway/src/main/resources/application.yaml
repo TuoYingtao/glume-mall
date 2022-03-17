@@ -3,6 +3,15 @@ server:
 spring:
   application:
     name: glume-gateway
+  # 拦路追踪
+  zipkin:
+    base-url: http://192.168.19.130:9411/
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      rate: 1
   cloud:
     nacos:
       discovery:

@@ -34,6 +34,19 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
+  # zipkin链路追踪
+  zipkin:
+    # zipkin 地址
+    base-url: http://192.168.19.130:9411/
+    # 关闭服务发现，否则Spring Cloud 会把 zipkin 的url当作服务名称
+    discovery-client-enabled: false
+    # 设置传输数据的方式
+    sender:
+      type: web
+  # 设置抽样采集率，默认：0.1，即10%
+  sleuth:
+    sampler:
+      rate: 1
 
 # mybatis-plus配置
 mybatis-plus:

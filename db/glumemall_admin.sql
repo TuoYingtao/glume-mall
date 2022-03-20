@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80025
+ Source Server Version : 80026
  Source Host           : localhost:3306
  Source Schema         : glumemall_admin
 
  Target Server Type    : MySQL
- Target Server Version : 80025
+ Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 12/03/2022 18:37:18
+ Date: 20/03/2022 17:21:13
 */
 
 SET NAMES utf8mb4;
@@ -392,7 +392,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -435,6 +435,7 @@ INSERT INTO `sys_menu` VALUES (50, 38, '发布商品', '/commodityManage/issuedC
 INSERT INTO `sys_menu` VALUES (51, 0, '优惠营销', 'discountsManage', NULL, NULL, '0', '0', NULL, 'M', 'shopping', 6, 'admin', '2022-03-11 16:43:37', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES (52, 51, '秒杀活动场次', '/discountsManage/sessionSeckill', 'discountsManage/SessionSeckill/index', '', '0', '0', 'sys:sessionseckill:list', 'C', '', 2, 'admin', '2022-03-11 16:46:15', 'admin', '2022-03-12 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (53, 51, '秒杀活动主题', '/discountsManage/dailyseckill', 'discountsManage/DailySeckill/index', NULL, '0', '0', 'sys:dailyseckill:list', 'C', '', 1, 'admin', '2022-03-12 15:09:09', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (54, 51, '秒杀商品关联', '/discountsManage/goodsseckillrelation', 'discountsManage/GoodsSeckillRelation/index', '', '0', '0', 'sys:goodsseckillrelation:list', 'C', '', 3, 'admin', '2022-03-17 11:47:09', 'admin', '2022-03-17 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -480,7 +481,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 220 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 221 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -529,6 +530,7 @@ INSERT INTO `sys_role_menu` VALUES (216, 2001, 50);
 INSERT INTO `sys_role_menu` VALUES (217, 2001, 51);
 INSERT INTO `sys_role_menu` VALUES (218, 2001, 52);
 INSERT INTO `sys_role_menu` VALUES (219, 2001, 53);
+INSERT INTO `sys_role_menu` VALUES (220, 2001, 54);
 
 -- ----------------------------
 -- Table structure for sys_user

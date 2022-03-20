@@ -24,6 +24,8 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: auto #主键自增

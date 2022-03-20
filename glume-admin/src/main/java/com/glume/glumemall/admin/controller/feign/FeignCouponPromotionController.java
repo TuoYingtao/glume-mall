@@ -4,7 +4,7 @@ import com.glume.common.core.annotation.valid.IDGroup;
 import com.glume.common.core.annotation.valid.UpdateGroup;
 import com.glume.common.core.utils.R;
 import com.glume.common.mybatis.PageUtils;
-import com.glume.glumemall.admin.feign.CouponFeignPromotionService;
+import com.glume.glumemall.admin.feign.CouponFeignService;
 import com.glume.glumemall.admin.service.CouponPromotionService;
 import com.glume.glumemall.admin.to.SeckillPromotionTo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class FeignCouponPromotionController {
     CouponPromotionService feignCouponService;
 
     @Autowired
-    CouponFeignPromotionService couponFeignPromotionService;
+    CouponFeignService couponFeignService;
 
     @GetMapping("/list/seckillPromotion")
     public R listSeckillPromotion(@RequestParam Map<String,Object> params) {
@@ -37,7 +37,7 @@ public class FeignCouponPromotionController {
 
     @GetMapping("/info/seckillPromotion/{id}")
     public R infoSeckillPromotion(@Validated(IDGroup.class) @PathVariable("id") Long id) {
-        return couponFeignPromotionService.info(id);
+        return couponFeignService.promotionInfo(id);
     }
 
     @PutMapping("/update/seckillPromotion")
@@ -54,6 +54,6 @@ public class FeignCouponPromotionController {
 
     @DeleteMapping("/delete/seckillPromotion/{id}")
     public R deletSeckillPromotion(@Validated(IDGroup.class) @PathVariable("id") Long[] ids) {
-        return couponFeignPromotionService.delete(ids);
+        return couponFeignService.promotionDelete(ids);
     }
 }

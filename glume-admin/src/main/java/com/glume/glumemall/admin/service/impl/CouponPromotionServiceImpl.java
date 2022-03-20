@@ -8,7 +8,7 @@ import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
-import com.glume.glumemall.admin.feign.CouponFeignPromotionService;
+import com.glume.glumemall.admin.feign.CouponFeignService;
 import com.glume.glumemall.admin.service.CouponPromotionService;
 import com.glume.glumemall.admin.service.UserService;
 import com.glume.glumemall.admin.to.SeckillPromotionTo;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author TuoYingtao
  * @create 2022-03-15 17:01
  */
-@Service("feignCouponService")
+@Service("couponPromotionServiceImpl")
 public class CouponPromotionServiceImpl implements CouponPromotionService {
 
     @Value("${jwt.header}")
@@ -37,7 +37,7 @@ public class CouponPromotionServiceImpl implements CouponPromotionService {
     JwtUtils jwtUtils;
 
     @Autowired
-    CouponFeignPromotionService couponFeignPromotionService;
+    CouponFeignService couponFeignService;
 
     @Autowired
     UserService userService;
@@ -52,7 +52,7 @@ public class CouponPromotionServiceImpl implements CouponPromotionService {
         seckillPromotionTo.setStartTime(seckillPromotionTo.getDateTime()[0]);
         seckillPromotionTo.setEndTime(seckillPromotionTo.getDateTime()[1]);
         seckillPromotionTo.setCreateTime(new Date());
-        R result = couponFeignPromotionService.save(seckillPromotionTo);
+        R result = couponFeignService.promotionSave(seckillPromotionTo);
         return result;
     }
 
@@ -60,13 +60,13 @@ public class CouponPromotionServiceImpl implements CouponPromotionService {
     public R updateSeckillPromotion(SeckillPromotionTo seckillPromotionTo) {
         seckillPromotionTo.setStartTime(seckillPromotionTo.getDateTime()[0]);
         seckillPromotionTo.setEndTime(seckillPromotionTo.getDateTime()[1]);
-        R result = couponFeignPromotionService.update(seckillPromotionTo);
+        R result = couponFeignService.promotionUpdate(seckillPromotionTo);
         return result;
     }
 
     @Override
     public PageUtils listSeckillPromotion(Map<String, Object> params) {
-        R list = couponFeignPromotionService.list(params);
+        R list = couponFeignService.promotionList(params);
         if (list.getCode() == HttpStatus.SUCCESS) {
             PageUtils pageUtils = list.getData(new TypeReference<PageUtils>() {
             });

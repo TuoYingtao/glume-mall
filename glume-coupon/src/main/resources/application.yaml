@@ -47,3 +47,7 @@ feign:
   sentinel:
     # 开启熔断保护机制
     enabled: true
+# 日志配置
+logging:
+  level:
+    com.alibaba.nacos.client.naming: warn

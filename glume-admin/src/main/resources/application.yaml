@@ -77,3 +77,5 @@ swagger:
 logging:
   file:
     name: Lab.log
+  level:
+    com.alibaba.nacos.client.naming: warn

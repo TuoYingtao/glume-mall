@@ -1,11 +1,15 @@
 server:
   port: 88
+# 日志配置
+logging:
+  level:
+    com.alibaba.nacos.client.naming: warn
 spring:
   application:
     name: glume-gateway
   # 拦路追踪
   zipkin:
-    base-url: http://192.168.19.130:9411/
+    base-url: http://localhost:9411/
     discovery-client-enabled: false
     sender:
       type: web

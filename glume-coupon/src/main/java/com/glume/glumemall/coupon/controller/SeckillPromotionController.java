@@ -58,7 +58,7 @@ public class SeckillPromotionController {
     @PostMapping("/save")
     public R save(@RequestBody SeckillPromotionEntity seckillPromotion){
 		seckillPromotionService.saveSeckillPromotion(seckillPromotion);
-        return R.ok();
+        return R.ok("保存成功！");
     }
 
     /**
@@ -67,8 +67,7 @@ public class SeckillPromotionController {
     @PutMapping("/update")
     public R update(@RequestBody SeckillPromotionEntity seckillPromotion){
 		seckillPromotionService.updateById(seckillPromotion);
-
-        return R.ok();
+        return R.ok("修改成功！");
     }
 
     /**
@@ -76,9 +75,8 @@ public class SeckillPromotionController {
      */
     @DeleteMapping("/delete/{id}")
     public R delete(@PathVariable("id") Long[] ids){
-		seckillPromotionService.removeByIds(Arrays.asList(ids));
-
-        return R.ok();
+        seckillPromotionService.removePromotionById(Arrays.asList(ids));
+        return R.ok("删除成功！");
     }
 
 }

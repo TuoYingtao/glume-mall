@@ -5,6 +5,7 @@ import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.coupon.entity.SeckillPromotionEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,5 +20,7 @@ public interface SeckillPromotionService extends IService<SeckillPromotionEntity
     PageUtils queryPage(Map<String, Object> params);
 
     void saveSeckillPromotion(SeckillPromotionEntity seckillPromotion);
+
+    void removePromotionById(List<Long> ids);
 }
 

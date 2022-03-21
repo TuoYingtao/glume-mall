@@ -137,4 +137,14 @@ public class SeckillSkuRelationServiceImpl extends ServiceImpl<SeckillSkuRelatio
         map.put("sessions",sessionEntities);
         return map;
     }
+
+    /**
+     * 批量删除：根据主题ID或场次ID作为条件
+     * @param fieid 字段
+     * @param ids id
+     */
+    @Override
+    public void deleteBatchSkuRelation(String fieid, List<Long> ids) {
+        baseMapper.deleteBatchSkuRelation(fieid,ids);
+    }
 }

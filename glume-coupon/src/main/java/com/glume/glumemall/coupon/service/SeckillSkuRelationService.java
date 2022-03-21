@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.coupon.entity.SeckillSkuRelationEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +19,8 @@ public interface SeckillSkuRelationService extends IService<SeckillSkuRelationEn
     PageUtils queryPage(Map<String, Object> params);
 
     Map<String, Object> promotionAdnSessionList();
+
+    void deleteBatchSkuRelation(String fieid, List<Long> ids);
+
 }
 

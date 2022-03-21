@@ -14,6 +14,21 @@
         <result property="seckillLimit" column="seckill_limit"/>
         <result property="seckillSort" column="seckill_sort"/>
     </resultMap>
+    <delete id="deleteBatchSkuRelation" parameterType="java.util.List">
+        DELETE FROM `sms_seckill_sku_relation`
+        <where>
+            <if test="field == 'promotion_id'">
+                <foreach collection="ids" item="id" index="index" open="promotion_id IN (" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="field == 'promotion_session_id'">
+                <foreach collection="ids" item="id" index="index" open="promotion_session_id IN (" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </delete>
 
 
 </mapper>

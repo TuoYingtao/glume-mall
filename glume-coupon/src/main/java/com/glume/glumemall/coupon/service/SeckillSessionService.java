@@ -21,5 +21,7 @@ public interface SeckillSessionService extends IService<SeckillSessionEntity> {
     List<SeckillSessionEntity> getLates3DaySession();
 
     void saveSeckillSession(SeckillSessionEntity seckillSession);
+
+    void removeSessionById(List<Long> ids);
 }
 

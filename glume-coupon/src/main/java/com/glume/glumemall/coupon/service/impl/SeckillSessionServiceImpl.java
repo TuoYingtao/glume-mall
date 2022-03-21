@@ -28,6 +28,7 @@ import com.glume.common.mybatis.Query;
 import com.glume.glumemall.coupon.dao.SeckillSessionDao;
 import com.glume.glumemall.coupon.entity.SeckillSessionEntity;
 import com.glume.glumemall.coupon.service.SeckillSessionService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.crypto.Data;
 
@@ -92,6 +93,13 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
     private String endTime() {
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.MAX);
         return dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
+
+    @Override
+    @Transactional
+    public void removeSessionById(List<Long> ids) {
+        baseMapper.deleteBatchIds(ids);
+        seckillSkuRelationService.deleteBatchSkuRelation("promotion_session_id",ids);
     }
 
 }

@@ -84,7 +84,7 @@ public class SeckillSessionController {
      */
     @DeleteMapping("/delete/{ids}")
     public R delete(@PathVariable Long[] ids){
-		seckillSessionService.removeByIds(Arrays.asList(ids));
+		seckillSessionService.removeSessionById(Arrays.asList(ids));
         return R.ok("删除成功！");
     }
 

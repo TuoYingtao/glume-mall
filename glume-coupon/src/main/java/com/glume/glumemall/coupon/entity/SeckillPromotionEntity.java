@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.annotation.valid.IDGroup;
 import com.glume.common.core.annotation.valid.UpdateGroup;
@@ -61,5 +63,12 @@ public class SeckillPromotionEntity implements Serializable {
 	 * 创建人
 	 */
 	private Long userId;
+
+	/**
+	 * 当天商品的活动场次
+	 */
+	@TableField(exist = false)
+	@JsonInclude(value = JsonInclude.Include.NON_NULL)
+	private List<SeckillSessionEntity> sessionEntities;
 
 }

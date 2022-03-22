@@ -1,8 +1,10 @@
 package com.glume.glumemall.coupon.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.glume.glumemall.coupon.entity.SeckillPromotionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,12 @@ import com.glume.common.core.utils.R;
 public class SeckillSkuRelationController {
     @Autowired
     private SeckillSkuRelationService seckillSkuRelationService;
+
+    @GetMapping("/lates3DaySeckill")
+    public R getLates3DaySeckill() {
+        List<SeckillPromotionEntity> entities = seckillSkuRelationService.getLates3DaySeckill();
+        return R.ok().put("data",entities);
+    }
 
     @GetMapping("/promotionandsession")
     public R promotionAdnSessionList() {

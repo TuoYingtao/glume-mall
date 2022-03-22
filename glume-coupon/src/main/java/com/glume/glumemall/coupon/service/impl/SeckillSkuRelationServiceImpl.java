@@ -12,7 +12,10 @@ import com.glume.glumemall.coupon.to.SkuInfoTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,5 +149,35 @@ public class SeckillSkuRelationServiceImpl extends ServiceImpl<SeckillSkuRelatio
     @Override
     public void deleteBatchSkuRelation(String fieid, List<Long> ids) {
         baseMapper.deleteBatchSkuRelation(fieid,ids);
+    }
+
+    @Override
+    public List<SeckillPromotionEntity> getLates3DaySeckill() {
+        QueryWrapper<SeckillPromotionEntity> wrapper = new QueryWrapper<>();
+        wrapper.between("start_time",startTime(),endTime());
+        List<SeckillPromotionEntity> entities = seckillPromotionService.list(wrapper);
+        if (StringUtils.isNotEmpty(entities)) {
+            List<Long> promotionId = entities.stream().map(SeckillPromotionEntity::getId).collect(Collectors.toList());
+            List<SeckillPromotionEntity> promotionSessionRelation = seckillPromotionSessionHanlder(promotionId);
+            return promotionSessionRelation;
+        }
+        return null;
+    }
+
+    public List<SeckillPromotionEntity> seckillPromotionSessionHanlder(List<Long> ids) {
+        List<SeckillPromotionEntity> promotionSessionRelation = baseMapper.selectPromotionSessionRelation(ids);
+        return promotionSessionRelation;
+    }
+
+    private String startTime() {
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        String format = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return format;
+    }
+
+    private String endTime() {
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.MAX);
+        String format = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return format;
     }
 }

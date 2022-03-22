@@ -60,7 +60,7 @@ public class SeckillSkuRelationController {
     public R save(@RequestBody SeckillSkuRelationEntity seckillSkuRelation){
 		seckillSkuRelationService.save(seckillSkuRelation);
 
-        return R.ok();
+        return R.ok("保存成功！");
     }
 
     /**
@@ -70,7 +70,7 @@ public class SeckillSkuRelationController {
     public R update(@RequestBody SeckillSkuRelationEntity seckillSkuRelation){
 		seckillSkuRelationService.updateById(seckillSkuRelation);
 
-        return R.ok();
+        return R.ok("修改成功！");
     }
 
     /**
@@ -80,7 +80,7 @@ public class SeckillSkuRelationController {
     public R delete(@PathVariable("id") Long[] ids){
 		seckillSkuRelationService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.ok("删除成功！");
     }
 
 }

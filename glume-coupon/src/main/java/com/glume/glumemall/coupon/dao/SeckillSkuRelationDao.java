@@ -1,5 +1,7 @@
 package com.glume.glumemall.coupon.dao;
 
+import com.glume.glumemall.coupon.entity.SeckillPromotionEntity;
+import com.glume.glumemall.coupon.entity.SeckillSessionEntity;
 import com.glume.glumemall.coupon.entity.SeckillSkuRelationEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +20,6 @@ import java.util.List;
 public interface SeckillSkuRelationDao extends BaseMapper<SeckillSkuRelationEntity> {
 
     void deleteBatchSkuRelation(@Param("field") String field, @Param("ids") List<Long> ids);
+
+    List<SeckillPromotionEntity> selectPromotionSessionRelation(@Param("ids") List<Long> ids);
 }

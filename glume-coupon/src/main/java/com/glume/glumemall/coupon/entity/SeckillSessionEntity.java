@@ -45,14 +45,14 @@ public class SeckillSessionEntity implements Serializable {
 	/**
 	 * 每日开始时间
 	 */
-	@JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
-	@DateTimeFormat(pattern = "HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date startTime;
 	/**
 	 * 每日结束时间
 	 */
-	@JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
-	@DateTimeFormat(pattern = "HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date endTime;
 	/**
 	 * 启用状态
@@ -68,8 +68,8 @@ public class SeckillSessionEntity implements Serializable {
 	 * 活动时间范围
 	 */
 	@TableField(exist = false)
-	@JsonFormat(pattern = "HH:mm:ss", timezone = "GMT+8")
-	@DateTimeFormat(pattern = "HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@NotEmpty(message = "活动时间范围不能为空")
 	@Size(message = "活动日期范围格式不正确",min = 1,max = 2)
 	@Future(message = "活动日期范围不能小于今日",groups = AddGroup.class)

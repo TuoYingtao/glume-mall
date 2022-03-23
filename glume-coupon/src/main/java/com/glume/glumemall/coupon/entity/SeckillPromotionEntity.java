@@ -43,12 +43,12 @@ public class SeckillPromotionEntity implements Serializable {
 	/**
 	 * 开始日期
 	 */
-	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date startTime;
 	/**
 	 * 结束日期
 	 */
-	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date endTime;
 	/**
 	 * 上下线状态 0-禁用 1-启用

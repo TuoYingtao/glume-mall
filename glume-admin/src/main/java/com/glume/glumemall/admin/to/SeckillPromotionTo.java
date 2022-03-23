@@ -35,14 +35,14 @@ public class SeckillPromotionTo implements Serializable {
     /**
      * 开始日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /**
      * 结束日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     /**
      * 上下线状态 0-禁用 1-启用
@@ -66,7 +66,7 @@ public class SeckillPromotionTo implements Serializable {
     /**
      * 活动日期范围
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotEmpty(message = "活动日期范围不能为空")
     private Date[] dateTime;
 }

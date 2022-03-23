@@ -14,8 +14,8 @@
       <el-table v-loading="loading" :data="dataList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="80" align="center"/>
         <el-table-column label="活动标题" prop="title"/>
-        <el-table-column label="开始日期" prop="startTime"/>
-        <el-table-column label="结束日期" prop="endTime"/>
+        <el-table-column label="开始日期时间" prop="startTime"/>
+        <el-table-column label="结束日期时间" prop="endTime"/>
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.status == 1" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
@@ -59,7 +59,7 @@
         queryDataModel: [{type: "default",label: "场次主题",prop: "title"},
           {type: "select",label: "状态",prop: "status",data: [
               {id: 0,name: "禁用"}, {id: 1,name: "启用"}]},
-          {type: "datetime",label: "活动日期范围",prop: "dateTime",format: "yyyy-MM-dd"}],
+          {type: "datetime",label: "活动日期时间范围",prop: "dateTime",format: "yyyy-MM-dd HH:mm:ss"}],
         title: "",
         form: {
           status: 1,

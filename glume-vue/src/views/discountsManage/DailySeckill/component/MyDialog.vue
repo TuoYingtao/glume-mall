@@ -10,12 +10,12 @@
         <el-col :span="24">
           <el-form-item label="活动时间：" prop="dateTime">
             <template>
-              <el-date-picker style="width: 100%" v-model="form.dateTime" is-range
-                              type="daterange"
+              <el-date-picker style="width: 100%" v-model="form.dateTime"
+                              type="datetimerange"
                               range-separator="至"
-                              start-placeholder="开始日期"
-                              end-placeholder="结束日期"
-                              placeholder="选择日期范围" value-format="yyyy-MM-dd">
+                              start-placeholder="开始日期时间"
+                              end-placeholder="结束日期时间"
+                              placeholder="选择日期范围" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
             </template>
           </el-form-item>

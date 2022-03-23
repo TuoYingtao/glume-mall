@@ -57,7 +57,7 @@
         queryDataModel: [{type: "default",label: "场次名称",prop: "name"},
           {type: "select",label: "状态",prop: "status",data: [
               {id: 0,name: "禁用"}, {id: 1,name: "启用"}]},
-          {type: "datetime",label: "活动时间范围",prop: "dateTime",format: "HH:mm:ss"}],
+          {type: "datetime",label: "活动日期时间范围",prop: "dateTime",format: "yyyy-MM-dd HH:mm:ss"}],
         title: "",
         form: {
           status: 1,

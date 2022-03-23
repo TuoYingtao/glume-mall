@@ -171,13 +171,13 @@ public class SeckillSkuRelationServiceImpl extends ServiceImpl<SeckillSkuRelatio
 
     private String startTime() {
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        String format = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String format = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return format;
     }
 
     private String endTime() {
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.MAX);
-        String format = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String format = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return format;
     }
 }

@@ -13,6 +13,9 @@
         <result property="sendTime" column="send_time"/>
         <result property="noticeType" column="notice_type"/>
     </resultMap>
+    <select id="selectNearDay3" resultType="com.glume.glumemall.coupon.entity.SeckillSkuNoticeEntity">
+        SELECT id,member_id,sku_id,session_id,subcribe_time,send_time,notice_type FROM `sms_seckill_sku_notice` WHERE DATE_SUB(CURDATE(),INTERVAL 3 DAY) <![CDATA[<=]]> DATE(`send_time`)
+    </select>
 
 
 </mapper>

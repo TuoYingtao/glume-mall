@@ -1,14 +1,11 @@
 package com.glume.glumemall.coupon.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.coupon.entity.SeckillSkuNoticeEntity;
 import com.glume.glumemall.coupon.service.SeckillSkuNoticeService;
@@ -29,6 +26,12 @@ import com.glume.common.core.utils.R;
 public class SeckillSkuNoticeController {
     @Autowired
     private SeckillSkuNoticeService seckillSkuNoticeService;
+
+    @GetMapping("/currentSendNotice")
+    public R currentSendNotice() {
+        List<SeckillSkuNoticeEntity> data = seckillSkuNoticeService.currentSendNotice();
+        return R.ok().put("data",data);
+    }
 
     /**
      * 列表
@@ -54,7 +57,7 @@ public class SeckillSkuNoticeController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody SeckillSkuNoticeEntity seckillSkuNotice){
 		seckillSkuNoticeService.save(seckillSkuNotice);
 

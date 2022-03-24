@@ -53,6 +53,7 @@ logging:
     com.glume.glumemall: debug
     org.springframework.cloud.openfeign: debug
     org.springframework.cloud.sleuth: debug
+    com.alibaba.nacos.client.naming: warn
 # 远程调用
 feign:
   sentinel:

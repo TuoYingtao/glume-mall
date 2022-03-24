@@ -3,6 +3,7 @@ package com.glume.glumemall.seckill.controller;
 import com.glume.common.core.utils.R;
 import com.glume.glumemall.seckill.service.SeckillService;
 import com.glume.glumemall.seckill.to.SeckillSkuRedisTo;
+import com.glume.glumemall.seckill.vo.SeckillSessionsWithSkusVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,16 @@ public class SeckillController {
     public R getCurrentSeckillSkus() {
         List<SeckillSkuRedisTo> vos = seckillService.getCurrentSeckillSkus();
         return R.ok().put("data",vos);
+    }
+
+    /**
+     * 返回即将参与的秒杀商品
+     */
+    @ResponseBody
+    @GetMapping("/getNotCurrentSeckillSkus")
+    public R getNotCurrentSeckillSkus() {
+        List<SeckillSkuRedisTo> data = seckillService.getNotCurrentSeckillSkus();
+        return R.ok().put("data",data);
     }
 
     /**

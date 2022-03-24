@@ -173,6 +173,38 @@ public class SeckillServiceImpl implements SeckillService {
         return null;
     }
 
+    @Override
+    @SentinelResource(value = "getNotCurrentSeckillSkus", blockHandler = "getNotCurrentSeckillSkusBlockHandler")
+    public List<SeckillSkuRedisTo> getNotCurrentSeckillSkus() {
+        long currentTime = new Date().getTime();
+        List<SeckillSkuRedisTo> arrayList = new ArrayList<>();
+        Set<String> keys = redisTemplate.keys(SESSION_CACHE_PREFIX + "*");
+        for (String key : keys) {
+            String replace = key.replace(SESSION_CACHE_PREFIX,"");
+            String[] strings = replace.split("_");
+            long startTime = Long.parseLong(strings[0]);
+            long endTime = Long.parseLong(strings[1]);
+            if (currentTime < startTime && currentTime < endTime) {
+                List<String> range = redisTemplate.opsForList().range(key, -100, 100);
+                BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SKUKILL_CACHE_PREFIX);
+                List<String> list = hashOps.multiGet(range);
+                if (StringUtils.isNotEmpty(list)) {
+                    List<SeckillSkuRedisTo> collect = list.stream().map(item -> {
+                        SeckillSkuRedisTo skuRedisTo = JSON.parseObject(item, SeckillSkuRedisTo.class);
+                        return skuRedisTo;
+                    }).collect(Collectors.toList());
+                    arrayList.addAll(collect);
+                }
+            }
+        }
+        return arrayList;
+    }
+
+    public List<SeckillSkuRedisTo> getNotCurrentSeckillSkusBlockHandler(BlockException e) {
+        LOGGER.error("SentinelResource-blockHandler：资源被限流-->{}",e);
+        return null;
+    }
+
     /** 获取某一个商品的秒杀信息 */
     @Override
     public SeckillSkuRedisTo getSkuSeckillInfo(Long skuId) {

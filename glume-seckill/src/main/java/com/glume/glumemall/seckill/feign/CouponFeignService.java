@@ -14,4 +14,7 @@ public interface CouponFeignService {
 
     @GetMapping("/coupon/seckillsession/lates3DaySession")
     R getLates3DaySession();
+
+    @GetMapping("/coupon/seckillskunotice/currentSendNotice")
+    R currentSendNotice();
 }

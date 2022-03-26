@@ -3,11 +3,12 @@ server:
 spring:
   application:
     name: glume-third-party
+  profiles:
+    active: mail
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
-
 # alibaba 服务
 alibaba:
   cloud:

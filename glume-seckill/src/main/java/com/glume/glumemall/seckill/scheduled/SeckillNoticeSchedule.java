@@ -18,9 +18,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +49,7 @@ public class SeckillNoticeSchedule {
     private String SECKILL_NOTICE_WARN = "seckill:notice:";
 
     @Async
-    @Scheduled(cron = "0 0/30 * * * *")
+    @Scheduled(cron = "0/10 * * * * *")
     public void noticeSendEmail() {
         R result = couponFeignService.currentSendNotice();
         LOGGER.info("需要通知的数据：{}",result);
@@ -54,10 +59,9 @@ public class SeckillNoticeSchedule {
             });
             if (StringUtils.isNotEmpty(resultData)) {
                 resultData.forEach(seckillSkuNoticeVo -> {
-                    long sendTime = seckillSkuNoticeVo.getSendTime().getTime();
-                    String key = SECKILL_NOTICE_WARN + sendTime;
+                    long time = dateHnadler(seckillSkuNoticeVo.getSendTime());
+                    String key = SECKILL_NOTICE_WARN + time;
                     BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(key);
-                    hashOps.expire(sendTime + ttl, TimeUnit.MICROSECONDS);
                     if (!hashOps.hasKey(seckillSkuNoticeVo.getId().toString())) {
                         hashOps.put(seckillSkuNoticeVo.getId().toString(),JSON.toJSONString(seckillSkuNoticeVo));
                     }
@@ -65,4 +69,32 @@ public class SeckillNoticeSchedule {
             }
         }
     }
+
+    @Async
+    @Scheduled(cron = "0/10 * * * * *")
+    public void sendNoticeEmail() {
+        long currentDate = dateHnadler(new Date());
+        BoundHashOperations<String, String, String> hashOps = redisTemplate.boundHashOps(SECKILL_NOTICE_WARN + currentDate);
+        Set<String> keys = hashOps.keys();
+        if (StringUtils.isNotEmpty(keys)) {
+            for (String key : keys) {
+                String result = hashOps.get(key);
+                SeckillSkuNoticeVo seckillSkuNoticeVo = JSON.parseObject(result, SeckillSkuNoticeVo.class);
+                long time = seckillSkuNoticeVo.getSendTime().getTime();
+                long currentTime = new Date().getTime();
+                long second = (time - currentTime) / 1000;
+                if (second <= 60) {
+                    LOGGER.info("开始发送邮箱提醒");
+                }
+            }
+        }
+    }
+
+    /** 日期转时间戳 */
+    private long dateHnadler(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate parse = LocalDate.parse(dateFormat.format(date));
+        return parse.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
 }

@@ -38,8 +38,20 @@ public class SeckillSkuNoticeServiceImpl extends ServiceImpl<SeckillSkuNoticeDao
 
     @Override
     public List<SeckillSkuNoticeEntity> currentSendNotice() {
-        List<SeckillSkuNoticeEntity> list = baseMapper.selectNearDay3();
+        QueryWrapper<SeckillSkuNoticeEntity> wrapper = new QueryWrapper<>();
+        wrapper.between("send_time",startTime(),emdTime());
+        List<SeckillSkuNoticeEntity> list = baseMapper.selectList(wrapper);
         return list;
+    }
+
+    private String emdTime() {
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.MAX);
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    private String startTime() {
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }

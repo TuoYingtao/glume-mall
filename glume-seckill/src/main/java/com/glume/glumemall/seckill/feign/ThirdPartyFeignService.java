@@ -4,6 +4,7 @@ import com.glume.common.core.utils.R;
 import com.glume.glumemall.seckill.to.MailTo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author tuoyingtao
@@ -13,5 +14,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface ThirdPartyFeignService {
 
     @PostMapping("/send/mail")
-    R send(MailTo mailEntity);
+    R send(@RequestBody MailTo mailEntity);
 }

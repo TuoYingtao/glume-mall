@@ -49,7 +49,9 @@ public class MailComponent {
         // 设置邮件发送日期
         messageHelper.setSentDate(new Date());
         // 设置邮件的正文
-        messageHelper.setText(mailEntity.getText(),mailEntity.getMailType() == 3 ? true : false);
+        if (mailEntity.getMailType() != 4) {
+            messageHelper.setText(mailEntity.getText(),mailEntity.getMailType() == 3 ? true : false);
+        }
         // 设置邮件接收者，可以有多个接收者，中间用逗号隔开，以下类似：message.setTo("10*****16@qq.com","12****32*qq.com");
         if (StringUtils.isNotEmpty(mailEntity.getMailNameTo())) {
             messageHelper.setTo(mailEntity.getMailNameTo().toArray(new String[mailEntity.getMailNameTo().size()]));

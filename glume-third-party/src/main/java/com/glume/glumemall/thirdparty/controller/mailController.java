@@ -5,6 +5,7 @@ import com.glume.glumemall.thirdparty.component.MailComponent;
 import com.glume.glumemall.thirdparty.entity.MailEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,7 +19,7 @@ public class mailController {
     MailComponent mailComponent;
 
     @PostMapping("/send/mail")
-    public R send(MailEntity mailEntity) {
+    public R send(@RequestBody MailEntity mailEntity) {
         mailComponent.sendMail(mailEntity);
         return R.ok("邮件发送成功！");
     }

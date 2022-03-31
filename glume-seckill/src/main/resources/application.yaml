@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: glume-seckill
+  profiles:
+    active: sendmail
   cloud:
     nacos:
       discovery:

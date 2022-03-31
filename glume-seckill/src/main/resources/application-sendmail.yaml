@@ -1,0 +1,4 @@
+sendnoticemail:
+  subject: 秒杀活动订阅通知
+  mail-type: 4
+  variable-name: mail.html

@@ -40,4 +40,12 @@ public class SeckillSkuNoticeVo {
      * 通知方式[0-短信，1-邮件]
      */
     private Integer noticeType;
+    /**
+     * Sku 信息
+     */
+    private SkuInfoVo skuInfoVo;
+    /**
+     * 用户信息
+     */
+    private MemberVo memberVo;
 }

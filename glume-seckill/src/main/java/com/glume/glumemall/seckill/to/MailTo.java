@@ -1,6 +1,9 @@
 package com.glume.glumemall.seckill.to;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +16,8 @@ import java.util.Map;
  * @create 2022-03-28 15:08
  */
 @Data
+@Component
+@ConfigurationProperties(prefix = "sendnoticemail")
 public class MailTo implements Serializable {
     private static final long serialVersionUID = 1L;
 

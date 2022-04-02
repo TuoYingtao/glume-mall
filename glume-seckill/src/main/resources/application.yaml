@@ -51,6 +51,9 @@ feign:
   sentinel:
     # 开启熔断保护机制
     enabled: true
+ribbon:
+  ConnectTimeout: 6000
+  ReadTimeout: 6000
 # 链路追踪开启debug日志
 logging:
   level:

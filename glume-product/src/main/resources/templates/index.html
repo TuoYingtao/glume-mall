@@ -555,6 +555,55 @@
     </ul>
   </div>
 
+  <div class="section_second">
+    <!-- 第二层 -->
+    <div class="section_second_header">
+      <p class="section_second_header_img"></p>
+      <div class="section_second_header_left">
+        <p></p>
+        <span class="">即将参与秒杀</span>
+        <span>总有你想不到的低价</span>
+        <span>
+        </span>
+      </div>
+      <div class="section_second_header_right">
+        <p>当前场次</p>
+        <span class="section_second_header_right_hours">00</span>
+        <span class="section_second_header_right_mao">：</span>
+        <span class="section_second_header_right_minutes">00</span>
+        <span class="section_second_header_right_mao">：</span>
+        <span class="section_second_header_right_second">00</span>
+        <p>后结束</p>
+      </div>
+    </div>
+    <div class="section_second_list">
+      <div class="swiper-container swiper_section_second_list_left">
+        <div class="swiper-wrapper" style="transform: none;">
+          <div class="swiper-slide">
+            <!-- 动态拼装秒杀商品信息 -->
+            <ul id="notSeckillSkuContent"></ul>
+          </div>
+        </div>
+        <div class="swiper-button-prev second_list">
+          <p></p>
+        </div>
+        <div class="swiper-button-next second_list">
+          <p></p>
+        </div>
+      </div>
+      <ul class="section_second_list_right">
+        <li>
+          <img src="/static/glumemall/index/img/section_second_list_right_img.jpg" alt="">
+        </li>
+        <li>
+          <img src="/static/glumemall/index/img/section_second_list_right_img.png" alt="">
+        </li>
+        <div class="section_second_list_right_button">
+          <p class="section_second_list_right_button_active"></p>
+          <p></p>
+        </div>
+      </ul>
+    </div>
 
 </div>
 
@@ -598,6 +647,20 @@
           .append($("<span>"+ item.seckillPrice +"</span>"))
           .append($("<s>"+ item.skuInfoVo.price +"</s>"))
           .appendTo("#seckillSkuContent")
+      })
+    }
+  })
+
+  $.get("http://seckill.glumemall.com/getNotCurrentSeckillSkus",function(response) {
+    console.log(response)
+    if (response.data.length > 0) {
+      response.data.forEach(function (item) {
+        $("<li onclick='toDetail(" + item.skuId + ")'></li>")
+          .append($("<img style='width: 130px; height: 130px' src='"+ item.skuInfoVo.skuDefaultImg +"'/>"))
+          .append($("<p>"+ item.skuInfoVo.skuTitle +"</p>"))
+          .append($("<span>"+ item.seckillPrice +"</span>"))
+          .append($("<s>"+ item.skuInfoVo.price +"</s>"))
+          .appendTo("#notSeckillSkuContent")
       })
     }
   })

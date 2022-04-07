@@ -1,6 +1,7 @@
 package com.glume.common.core.utils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
@@ -9,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * JWT 工具类
@@ -35,13 +37,15 @@ public class JwtUtils {
      * @return
      */
     public String generateToken(String username) {
-        return Jwts.builder()
-                .setHeaderParam("typ","JWT")
+        JwtBuilder jwtBuilder = Jwts.builder();
+        jwtBuilder.setHeaderParam("typ", "JWT")
                 .setSubject(username)
+                .setId(UUID.randomUUID().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                .signWith(SignatureAlgorithm.HS512,secret)
-                .compact();
+                .signWith(SignatureAlgorithm.HS512,secret);
+        return jwtBuilder.compact();
+
     }
 
     /**
@@ -68,10 +72,27 @@ public class JwtUtils {
 
     /**
      * 验证Token是否过期
-     * @param token
+     * @param token 用户请求中的令牌
      * @return
      */
     public boolean isExpiration(String token) {
         return getTokenBody(token).getExpiration().before(new Date());
+    }
+
+    /**
+     * 验证 Token 是否失效
+     * @param currentToken 用户请求中的令牌
+     * @param cacheToken 缓存中存贮的令牌
+     * @return 验证 Token 唯一ID（jit）false-同一个凭证 true-不是同一个凭证
+     */
+    public boolean isExpiration(String currentToken, String cacheToken) {
+        Claims currentBody = getTokenBody(currentToken);
+        Claims cacheBody = getTokenBody(cacheToken);
+        String currentTokenID = currentBody.get(Claims.ID).toString();
+        String cacheTokenID = cacheBody.get(Claims.ID).toString();
+        if (!currentTokenID.equals(cacheTokenID)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.glume.glumemall.admin.dao.BlackListDao">
+    <resultMap id="BlackListMap" type="com.glume.glumemall.admin.entity.BlackListEntity">
+        <id property="id" column="id"/>
+        <result property="kickOutId" column="kick_out_id"/>
+        <result property="username" column="username"/>
+        <result property="token" column="token"/>
+        <result property="ip" column="ip"/>
+        <result property="loginOutTime" column="login_out_time"/>
+    </resultMap>
+
+</mapper>

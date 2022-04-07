@@ -1,17 +1,26 @@
 package com.glume.glumemall.admin.security.filter;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.glume.common.core.utils.JwtUtils;
+import com.glume.glumemall.admin.entity.LoginEntity;
 import com.glume.glumemall.admin.entity.UserEntity;
 import com.glume.glumemall.admin.security.UserDetailsServiceImpl;
+import com.glume.glumemall.admin.security.handler.LoginSuccessHandler;
+import com.glume.glumemall.admin.security.handler.LogoutSuccessHandlerImpl;
+import com.glume.glumemall.admin.service.BlackListService;
+import com.glume.glumemall.admin.service.LoginService;
 import com.glume.glumemall.admin.service.impl.UserServiceImpl;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -35,6 +44,15 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     UserServiceImpl userService;
 
     @Autowired
+    BlackListService blackListService;
+
+    @Autowired
+    LogoutSuccessHandlerImpl logoutSuccessHandler;
+
+    @Autowired
+    RedisTemplate redisTemplate;
+
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -55,11 +73,22 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         } catch (Exception e) {
             throw new JwtException("token 异常");
         }
+        try {
+            blackListService.userTokenVerify(token);
+        } catch (Exception e) {
+            logoutSuccessHandler.userOnLienHandler(userNameFromToken);
+            throw new JwtException("当前用户已被踢出下线！");
+        }
         if (jwtUtils.isExpiration(token)) {
+            logoutSuccessHandler.userOnLienHandler(userNameFromToken);
             throw new JwtException("token已过期");
         }
-        String username = jwtUtils.getUserNameFromToken(token);
-        UserEntity userEntity = userService.getByUserDetail(username);
+        BoundHashOperations hashOps = redisTemplate.boundHashOps(LoginSuccessHandler.USER_ON_LIEN);
+        LoginEntity loginEntity = (LoginEntity) hashOps.get(userNameFromToken);
+        if (jwtUtils.isExpiration(token, loginEntity.getToken())) {
+            throw new JwtException("当前用户已在其它地方登录！");
+        }
+        UserEntity userEntity = userService.getByUserDetail(userNameFromToken);
         // 设置权限主体
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(userNameFromToken,null,userDetailsService.getUserAuthority(userEntity.getUserId()));

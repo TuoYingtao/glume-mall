@@ -1,4 +1,4 @@
-import { login, getInfo } from '@/api/login'
+import { login, getInfo, loginOut } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -54,9 +54,12 @@ const user = {
     /* 退出系统 */
     LogOut({ commit }) {
       return new Promise((resolve, reject) => {
-        removeToken()
-        commit('SET_ROLES', {})
-        commit('SET_AVATAR', '')
+        loginOut().then(res => {
+          console.log(res)
+          commit('SET_ROLES', {})
+          commit('SET_AVATAR', '')
+          resolve(removeToken())
+        })
       })
     },
   }

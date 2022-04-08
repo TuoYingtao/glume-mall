@@ -72,7 +72,6 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
         RedisUtils redisUtils = SpringUtils.getBean(RedisUtils.class);
         if (redisUtils.hasKey(RedisConstant.REDIS_AUTHORITY_KEY + userId)) {
             authority = (String) redisUtils.get(RedisConstant.REDIS_AUTHORITY_KEY + userId);
-            LOGGER.info("获取Redis角色权限：" + authority);
         } else {
             List<String> list = new ArrayList<>();
             // 获取角色
@@ -88,7 +87,6 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
                 authority = list.stream().distinct().collect(Collectors.joining(","));
                 long outTime = new Date(System.currentTimeMillis() + (60 * 60 * 24)).getTime() / 1000;
                 redisUtils.set(RedisConstant.REDIS_AUTHORITY_KEY + userId,authority,outTime);
-                LOGGER.info("获取SQL角色权限：" + authority);
             }
         }
         return authority;

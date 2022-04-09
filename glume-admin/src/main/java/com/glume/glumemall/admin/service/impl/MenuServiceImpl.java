@@ -1,33 +1,37 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.common.core.constant.Constants;
+import com.glume.common.core.constant.RedisConstant;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.DateUtils;
 import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
+import com.glume.glumemall.admin.dao.MenuDao;
+import com.glume.glumemall.admin.entity.MenuEntity;
+import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
 import com.glume.glumemall.admin.entity.UserRoleEntity;
+import com.glume.glumemall.admin.service.MenuService;
 import com.glume.glumemall.admin.service.RoleMenuService;
+import com.glume.glumemall.admin.service.RoleService;
 import com.glume.glumemall.admin.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.glume.glumemall.admin.dao.MenuDao;
-import com.glume.glumemall.admin.entity.MenuEntity;
-import com.glume.glumemall.admin.service.MenuService;
-
-import javax.validation.constraints.NotNull;
 
 
 @Service("menuService")
@@ -38,6 +42,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
 
     @Autowired
     RoleMenuService roleMenuService;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -65,14 +75,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
      * @param menuEntity
      */
     @Override
+    @Transactional
     public void addMenuItem(MenuEntity menuEntity,String username) {
         menuEntity.setCreateTime(new Date(DateUtils.getSysDateTime()));
         menuEntity.setCreateBy(username);
         Integer row = baseMapper.insert(menuEntity);
-        // 没添加一个菜单，都给超级管理员加上
-        SpringUtils.getBean(RoleMenuService.class).save(new RoleMenuEntity(2001L,menuEntity.getMenuId()));
-        if (row == 0) {
-            throw new ServiceException("添加失败！");
+        if (row == 0) throw new ServiceException("添加失败！");
+        RoleEntity roleEntity = roleService.getRoleDetail("admin");
+        if (StringUtils.isNotNull(roleEntity)) {
+            // 每添加一个菜单，都给超级管理员加上
+            roleMenuService.save(new RoleMenuEntity(roleEntity.getRoleId(),menuEntity.getMenuId()));
+            BoundHashOperations hashOps = redisTemplate.boundHashOps(RedisConstant.ROLE_MENU);
+            if (hashOps.hasKey(roleEntity.getRoleTag())) {
+                hashOps.delete(roleEntity.getRoleTag());
+            }
         }
     }
 

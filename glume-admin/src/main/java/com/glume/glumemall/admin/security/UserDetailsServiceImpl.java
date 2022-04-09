@@ -3,7 +3,10 @@ package com.glume.glumemall.admin.security;
 import com.glume.common.core.enums.UserStatus;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.StringUtils;
+import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.entity.UserEntity;
+import com.glume.glumemall.admin.entity.UserRoleEntity;
+import com.glume.glumemall.admin.service.RoleService;
 import com.glume.glumemall.admin.service.UserRoleService;
 import com.glume.glumemall.admin.service.UserService;
 import org.slf4j.Logger;
@@ -32,6 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RoleService roleService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userService.getByUserDetail(username);
@@ -45,7 +51,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             LOGGER.info("登录用户：{} 已被停用.", username);
             throw new ServiceException("对不起，您的账号：" + username + " 已停用");
         }
-        return new AccountUser(userEntity.getUsername(), userEntity.getPassword(),getUserAuthority(userEntity.getUserId()));
+        UserRoleEntity userRoleEntity = userRoleService.getUserById(userEntity.getUserId());
+        RoleEntity roleDetail = roleService.getRoleDetail(userRoleEntity.getRoleId());
+        return new AccountUser(
+                userEntity.getUserId(),
+                roleDetail.getRoleTag(),
+                username,
+                userEntity.getPassword(),
+                getUserAuthority(userEntity.getUserId()));
     }
 
     /**

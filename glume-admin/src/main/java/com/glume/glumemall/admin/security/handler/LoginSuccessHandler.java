@@ -8,10 +8,13 @@ import com.glume.common.core.utils.R;
 import com.glume.common.core.utils.ServletUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.glumemall.admin.entity.LoginEntity;
+import com.glume.glumemall.admin.security.AccountUser;
 import com.glume.glumemall.admin.service.LoginService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * security 登录成功结果处理
@@ -45,8 +49,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
-        //生成 JWT,
-        String token = jwtUtils.generateToken(authentication.getName());
+        String token = createToken(authentication);
         LoginEntity loginEntity = new LoginEntity();
         loginEntity.setUsername(authentication.getName());
         loginEntity.setToken(token);
@@ -70,5 +73,26 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .put("data",new HashMap<String,Object>(){{put("token",token);}})
                 .put("code", HttpStatus.SUCCESS);
         ServletUtils.renderString(httpServletResponse, JSON.toJSONString(result));
+    }
+
+    /**
+     * 生成 JWT
+     */
+    private String createToken(Authentication authentication) {
+        AccountUser accountUser = (AccountUser) authentication.getPrincipal();
+        Map<String, Object> map = new HashMap<>();
+        BeanMap beanMap = BeanMap.create(accountUser);
+        for (Object key : beanMap.keySet()) {
+            map.put(key.toString(),beanMap.get(key));
+        }
+        map.entrySet().removeIf(item -> item.getKey() == AccountUser.UserFields.PASSWORD.getMessage()
+                || item.getKey() == AccountUser.UserFields.AUTHORITIES.getMessage()
+                || item.getKey() == AccountUser.UserFields.ACCOUNT_NON_EXPIRED.getMessage()
+                || item.getKey() == AccountUser.UserFields.ACCOUNT_NON_LOCKED.getMessage()
+                || item.getKey() == AccountUser.UserFields.CREDENTIALS_NON_EXPIRED.getMessage()
+                || item.getKey() == AccountUser.UserFields.ENABLED.getMessage());
+        Claims claims = Jwts.claims(map);
+        String token = jwtUtils.generateToken(accountUser.getUsername(),claims);
+        return token;
     }
 }

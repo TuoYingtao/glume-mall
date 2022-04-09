@@ -3,11 +3,11 @@ package com.glume.glumemall.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.UserEntity;
+import com.glume.glumemall.admin.vo.UserInfoAndMenuVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +21,7 @@ public interface UserService extends IService<UserEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    HashMap<String,Object> getByUserInfoAndMenu(String username);
+    UserInfoAndMenuVo getByUserInfoAndMenu(String username);
 
     UserEntity getByUserDetail(String username);
 

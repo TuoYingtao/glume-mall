@@ -30,5 +30,7 @@ public interface RoleService extends IService<RoleEntity> {
     void saveMyRole(RoleEntity roleEntity);
 
     HashMap<String, Object> menuTreeService(Long roleId);
+
+    RoleEntity getRoleDetail(String roleTag);
 }
 

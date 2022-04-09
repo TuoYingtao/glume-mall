@@ -2,7 +2,9 @@ package com.glume.glumemall.admin.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -32,5 +34,7 @@ public class LoginEntity {
     /**
      * 登录时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:dd", timezone = "GMT+8")
     private Date createTime;
 }

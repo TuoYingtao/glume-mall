@@ -21,5 +21,7 @@ public interface UserRoleService extends IService<UserRoleEntity> {
     List<UserRoleEntity> getUserRoleId(Long userId);
 
     String getUserAuthorityInfo(Long userId);
+
+    UserRoleEntity getUserById(Long userId);
 }
 

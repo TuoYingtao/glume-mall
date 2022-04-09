@@ -1,5 +1,6 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.glume.common.core.constant.RedisConstant;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
@@ -90,6 +91,12 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleEntity
             }
         }
         return authority;
+    }
+
+    @Override
+    public UserRoleEntity getUserById(Long userId) {
+        Wrapper<UserRoleEntity> wrapper = new QueryWrapper<UserRoleEntity>().eq("user_id", userId);
+        return baseMapper.selectOne(wrapper);
     }
 
 }

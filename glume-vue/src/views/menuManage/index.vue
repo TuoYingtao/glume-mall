@@ -114,7 +114,7 @@
           <el-col :span="12">
             <el-form-item v-if="form.menuType != 'F'" prop="path">
               <span slot="label">
-                <el-tooltip content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头" placement="top">
+                <el-tooltip content="访问的路由地址，如：`/system`、`/system/index`，默认在`views`目录下" placement="top">
                 <i class="el-icon-question"></i>
                 </el-tooltip>
                 路由地址

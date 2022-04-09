@@ -1,7 +1,10 @@
 package com.glume.glumemall.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.LoginEntity;
+
+import java.util.Map;
 
 /**
  * 在线列表
@@ -10,4 +13,5 @@ import com.glume.glumemall.admin.entity.LoginEntity;
  */
 public interface LoginService extends IService<LoginEntity> {
 
+    PageUtils queryPage(Map<String, Object> params);
 }

@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80026
+ Source Server Version : 80025
  Source Host           : localhost:3306
  Source Schema         : glumemall_admin
 
  Target Server Type    : MySQL
- Target Server Version : 80026
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 20/03/2022 17:21:13
+ Date: 09/04/2022 18:30:28
 */
 
 SET NAMES utf8mb4;
@@ -273,7 +273,7 @@ CREATE TABLE `schedule_job`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of schedule_job
@@ -295,7 +295,7 @@ CREATE TABLE `schedule_job_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of schedule_job_log
@@ -312,6 +312,24 @@ INSERT INTO `schedule_job_log` VALUES (9, 1, 'testTask', 'renren', 0, NULL, 1, '
 INSERT INTO `schedule_job_log` VALUES (10, 1, 'testTask', 'renren', 0, NULL, 0, '2021-10-15 10:30:00');
 INSERT INTO `schedule_job_log` VALUES (11, 1, 'testTask', 'renren', 0, NULL, 1, '2021-10-15 11:00:00');
 INSERT INTO `schedule_job_log` VALUES (12, 1, 'testTask', 'renren', 0, NULL, 3, '2021-10-15 11:30:00');
+
+-- ----------------------------
+-- Table structure for sys_blacklist
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_blacklist`;
+CREATE TABLE `sys_blacklist`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `kick_out_id` bigint NULL DEFAULT NULL COMMENT '踢出者ID',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '被踢出用户名',
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户令牌',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `login_out_time` datetime(0) NULL DEFAULT NULL COMMENT '被提出的时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '黑名单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_blacklist
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -342,7 +360,7 @@ CREATE TABLE `sys_config`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `param_key`(`param_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_config
@@ -368,6 +386,25 @@ CREATE TABLE `sys_log`  (
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_login
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_login`;
+CREATE TABLE `sys_login`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户名',
+  `token` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '用户令牌',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '登录时间\r\n',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `username`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '在线列表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_login
+-- ----------------------------
+INSERT INTO `sys_login` VALUES (17, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY0OTU3NTc0NSwidXNlcklkIjoxMDAxLCJpYXQiOjE2NDk0ODkzNDUsImp0aSI6ImU3ZjFmMGE0LTI5MDgtNGNjNC05YTk3LWMzZDUzNmY5Y2ZiOCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.0Q4e_eH1zGTrKeuoTaQtAxQ9zNYidhni6FuwdUIA1j2rt3Q6Gy109i7GEUdDEY69Z458OdUtY5krAEf1VtFPmQ', '192.168.50.116', '2022-04-09 15:29:05');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -436,6 +473,8 @@ INSERT INTO `sys_menu` VALUES (51, 0, '优惠营销', 'discountsManage', NULL, N
 INSERT INTO `sys_menu` VALUES (52, 51, '秒杀活动场次', '/discountsManage/sessionSeckill', 'discountsManage/SessionSeckill/index', '', '0', '0', 'sys:sessionseckill:list', 'C', '', 2, 'admin', '2022-03-11 16:46:15', 'admin', '2022-03-12 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (53, 51, '秒杀活动主题', '/discountsManage/dailyseckill', 'discountsManage/DailySeckill/index', NULL, '0', '0', 'sys:dailyseckill:list', 'C', '', 1, 'admin', '2022-03-12 15:09:09', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES (54, 51, '秒杀商品关联', '/discountsManage/goodsseckillrelation', 'discountsManage/GoodsSeckillRelation/index', '', '0', '0', 'sys:goodsseckillrelation:list', 'C', '', 3, 'admin', '2022-03-17 11:47:09', 'admin', '2022-03-17 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (55, 0, '在线用户', '/onlineList', '', '', '0', '0', '', 'M', 'diannao-tianchong', 7, 'admin', '2022-04-09 16:24:19', 'admin', '2022-04-09 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (56, 55, '在线用户列表', '/onlineList/list', 'onlineList/index', NULL, '0', '0', 'sys:onlinelist:index', 'C', 'baojiadan', 1, 'admin', '2022-04-09 16:27:54', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -531,6 +570,8 @@ INSERT INTO `sys_role_menu` VALUES (217, 2001, 51);
 INSERT INTO `sys_role_menu` VALUES (218, 2001, 52);
 INSERT INTO `sys_role_menu` VALUES (219, 2001, 53);
 INSERT INTO `sys_role_menu` VALUES (220, 2001, 54);
+INSERT INTO `sys_role_menu` VALUES (221, 2001, 55);
+INSERT INTO `sys_role_menu` VALUES (222, 2001, 56);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -571,8 +612,7 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (1, 1001, 2001);
-INSERT INTO `sys_user_role` VALUES (2, 1001, 2002);
-INSERT INTO `sys_user_role` VALUES (3, 1002, 2002);
+INSERT INTO `sys_user_role` VALUES (2, 1002, 2002);
 
 -- ----------------------------
 -- Table structure for sys_user_token
@@ -604,7 +644,7 @@ CREATE TABLE `tb_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_user

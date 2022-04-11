@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.LoginEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -14,4 +15,6 @@ import java.util.Map;
 public interface LoginService extends IService<LoginEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void forceKikeOut(Integer id, HttpServletRequest request);
 }

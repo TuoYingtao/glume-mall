@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -30,5 +31,14 @@ public class LoginController {
     public R list(@RequestParam Map<String,Object> params) {
         PageUtils page = loginService.queryPage(params);
         return R.ok().put("data",page);
+    }
+
+    /**
+     * 用户强制退出登录
+     */
+    @GetMapping("/online/forceKikeOut")
+    public R forceKikeOut(@RequestParam("id") Integer id, HttpServletRequest request) {
+        loginService.forceKikeOut(id, request);
+        return R.ok("已踢出下线!");
     }
 }

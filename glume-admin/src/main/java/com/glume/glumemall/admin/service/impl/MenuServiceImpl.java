@@ -102,6 +102,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         menuEntity.setUpdateTime(new Date(DateUtils.getSysDateTime()));
         menuEntity.setUpdateBy(username);
         Integer row = baseMapper.updateById(menuEntity);
+        QueryWrapper<RoleMenuEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("menu_id",menuEntity.getMenuId());
+        List<Long> roleIDList = roleMenuService.list(wrapper).stream().map(RoleMenuEntity::getRoleId).collect(Collectors.toList());
+        if (StringUtils.isNotNull(roleIDList)) {
+            List<RoleEntity> roleEntities = roleService.getRoleByIdBatchList(roleIDList);
+            if (StringUtils.isNotNull(roleEntities)) {
+                BoundHashOperations hashOps = redisTemplate.boundHashOps(RedisConstant.ROLE_MENU);
+                List<String> list = roleEntities.stream().filter(roleEntity -> hashOps.hasKey(roleEntity.getRoleTag()))
+                        .map(RoleEntity::getRoleTag).collect(Collectors.toList());
+                hashOps.delete(String.join(",",list));
+            }
+        }
         if (row == 0) {
             throw new ServiceException("更新失败！");
         }
@@ -113,7 +125,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
      */
     @Override
     public void removeMenuByIds(List<Long> menuIds) {
-        // TODO 1.检测当前删除的菜单信息，是否被别的地方引用
         // 存储需要删除的菜单
         List<MenuEntity> delMenuList = new ArrayList<>();
         // 获取所有菜单

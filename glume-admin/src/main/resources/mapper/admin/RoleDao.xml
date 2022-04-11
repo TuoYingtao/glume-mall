@@ -13,5 +13,15 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
+    <select id="getRoleByIdBatchList" resultType="com.glume.glumemall.admin.entity.RoleEntity">
+        SELECT `role_id`,`role_name`,`role_tag`,`remark`,`create_user_id`,`create_time`
+        FROM `sys_role`
+        <where>
+            <foreach collection="ids" item="id" open="role_id IN (" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
 
 </mapper>

@@ -161,4 +161,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
         return baseMapper.selectOne(wrapper);
     }
 
+    /** 传递多个角色ID查询 */
+    @Override
+    public List<RoleEntity> getRoleByIdBatchList(List<Long> ids) {
+        return baseMapper.getRoleByIdBatchList(ids);
+    }
+
 }

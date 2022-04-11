@@ -32,5 +32,7 @@ public interface RoleService extends IService<RoleEntity> {
     HashMap<String, Object> menuTreeService(Long roleId);
 
     RoleEntity getRoleDetail(String roleTag);
+
+    List<RoleEntity> getRoleByIdBatchList(List<Long> ids);
 }
 

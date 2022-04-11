@@ -8,3 +8,10 @@ export function list(param) {
     params: param
   })
 }
+export function forceKikeOut(param) {
+  return request({
+    url: "/admin/login/online/forceKikeOut",
+    method: "GET",
+    params: param
+  })
+}

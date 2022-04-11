@@ -12,7 +12,7 @@
       <!--    内容展示-->
       <el-table v-loading="loading" :data="dataList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="80" align="center"/>
-        <el-table-column label="用户编号" prop="username"/>
+        <el-table-column label="用户名" prop="username"/>
         <el-table-column label="IP地址" prop="ip"/>
         <el-table-column label="令牌" prop="token">
           <template slot-scope="scope">
@@ -26,6 +26,11 @@
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="forceKikeOut(scope.row)">强制下线</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <pagination :page-sizes="[20,40,60,80]" v-show="total>0" :total="total" :current-page.sync="queryParams.page" :page.sync="queryParams.page" :limit.sync="queryParams.limit" @pagination="getList"/>
     </el-card>
@@ -33,7 +38,7 @@
 </template>
 
 <script>
-import {list} from "@/api/onlineList";
+import {list, forceKikeOut} from "@/api/onlineList";
 
 export default {
   name: "index.vue",
@@ -45,9 +50,7 @@ export default {
         page: 1,
         limit: 20,
       },
-      queryDataModel: [{type: "default",label: "用户名",prop: "username"},
-        {type: "default",label: "手机号",prop: "mobile"},
-        {type: "select",label: "邀请排序",data: [{id: 1,name: "降序"},{id: 2,name: "升序"}],prop: "sorts",input: false}],
+      queryDataModel: [{type: "default",label: "用户名",prop: "username"}],
       dataList: [],
       total: 0,
     }
@@ -61,6 +64,11 @@ export default {
         this.dataList = res.data.list;
         console.log(res)
       })
+    },
+    forceKikeOut(row) {
+      forceKikeOut({id: row.id}).then(res => {
+        this.notSuccess(res.msg);
+      });
     },
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)

@@ -13,7 +13,8 @@
       </el-row>
       <!--   表格   -->
       <el-table v-if="refreshTable" v-loading="is_loading" :data="menuList" row-key="menuId" :default-expand-all="isExpandAll"
-                :row-style="rowStyle" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                :row-style="rowStyle" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+                :header-cell-style="{'text-align':'justify-all'}" :cell-style="{'text-align':'justify-all'}">
         <el-table-column prop="name" label="菜单名称" :show-overflow-tooltip="true"/>
         <el-table-column prop="icon" label="图标" align="center">
           <template slot-scope="scope">
@@ -21,20 +22,23 @@
           </template>
         </el-table-column>
         <el-table-column prop="menuType" label="菜单级别" :show-overflow-tooltip="true"/>
-        <el-table-column prop="orderNum" label="排序"></el-table-column>
+        <el-table-column prop="orderNum" label="排序"/>
         <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.perms" type="warning">{{scope.row.perms}}</el-tag>
+            <el-tag type="info" v-else>-------</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.component">{{scope.row.component}}</el-tag>
+            <el-tag type="info" v-else>-------</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="query" label="请求参数" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.query" type="info">{{scope.row.query}}</el-tag>
+            <el-tag type="info" v-else>-------</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态">
@@ -279,13 +283,13 @@ export default {
       })
     },
     rowStyle({row, rowIndex}) {
-      // if (row.menuType == "M") {
-      //   return {"background": "#FFF"}
-      // } else if (row.menuType == "C") {
-      //   return {"background": "#F7F7F7"}
-      // } else {
-      //   return {"background": "#F2F2F2"}
-      // }
+      if (row.menuType == "M") {
+        return {"background": "#FFF"}
+      } else if (row.menuType == "C") {
+        return {"background": "#F7F7F7"}
+      } else {
+        return {"background": "#F2F2F2"}
+      }
     },
     treeselectSelect(e) {
       this.form.parentId = e.menuId;
@@ -392,5 +396,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: justify-all;
 }
 </style>

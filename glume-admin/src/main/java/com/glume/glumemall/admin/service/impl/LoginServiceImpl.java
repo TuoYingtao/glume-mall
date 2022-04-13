@@ -3,6 +3,7 @@ package com.glume.glumemall.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.glume.common.core.constant.RedisConstant;
 import com.glume.common.core.utils.JwtUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
@@ -15,11 +16,12 @@ import com.glume.glumemall.admin.service.BlackListService;
 import com.glume.glumemall.admin.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.BoundSetOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -39,6 +41,9 @@ public class LoginServiceImpl extends ServiceImpl<LoginDao, LoginEntity> impleme
 
     @Autowired
     BlackListService blackListService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -67,5 +72,7 @@ public class LoginServiceImpl extends ServiceImpl<LoginDao, LoginEntity> impleme
         blackListEntity.setLoginOutTime(new Date());
         blackListService.save(blackListEntity);
         baseMapper.deleteById(id);
+        BoundSetOperations setOps = redisTemplate.boundSetOps(RedisConstant.BLACKLIST_KEY + blackListEntity.getUsername());
+        setOps.add(blackListEntity.getToken());
     }
 }

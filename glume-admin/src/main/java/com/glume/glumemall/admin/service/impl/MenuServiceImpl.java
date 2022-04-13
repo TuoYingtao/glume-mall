@@ -172,18 +172,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
     public List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific) {
         List<MenuEntity> menuList = new ArrayList<>();
         List<RoleMenuEntity> menuIdList = new ArrayList<>();
-
+        // 查询当前用户角色
         List<UserRoleEntity> userRoleId = userRoleService.getUserRoleId(userId);
         if (userRoleId.size() > 0) {
-
-            userRoleId.forEach(userRoleEntity -> {
-                menuIdList.addAll(roleMenuService.getRoleMenuEntity(userRoleEntity.getRoleId()));
-            });
-
-            menuIdList.forEach(roleMenuEntity -> {
-                menuList.add(baseMapper.selectOne(new QueryWrapper<MenuEntity>().eq("menu_id",roleMenuEntity.getMenuId())));
-            });
-
+            // 查询角色对应菜单关系数据
+            List<Long> roleIds = userRoleId.stream().map(UserRoleEntity::getRoleId).collect(Collectors.toList());
+            menuIdList.addAll(roleMenuService.getRoleMenuBatch(roleIds));
+            // 查询角色所有菜单数据
+            List<Long> menuIds = menuIdList.stream().map(RoleMenuEntity::getMenuId).distinct().collect(Collectors.toList());
+            List<MenuEntity> menuEntityList = baseMapper.selectList(new QueryWrapper<MenuEntity>().in("menu_id", menuIds));
+            menuList.addAll(menuEntityList);
             // 判读是否过滤按钮项
             if (specific) {
                 List<MenuEntity> list = menuList.stream().filter(menuEntity -> menuEntity.getMenuType().compareTo(Constants.MenuType.BUTTON.getValue()) == 0 ? false : true ).collect(Collectors.toList());

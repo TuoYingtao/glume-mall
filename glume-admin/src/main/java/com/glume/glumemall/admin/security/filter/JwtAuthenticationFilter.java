@@ -92,7 +92,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
      */
     private void jwtBlackList(String token) throws JarException {
         try {
-            blackListService.userTokenVerify(token);
+            blackListService.userTokenVerify(username, token);
         } catch (Exception e) {
             logoutSuccessHandler.userOnLienHandler(username);
             LOGGER.error("{}--当前用户已被踢出下线！", username);
@@ -103,7 +103,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     /**
      * 验证 JWT 唯一ID是否相等,且 Token 是否过期
      * @param token
-     * @param userNameFromToken
      */
     private void jwtExpiation(String token) {
         if (jwtUtils.isExpiration(token)) {

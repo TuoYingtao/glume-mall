@@ -10,5 +10,5 @@ import com.glume.glumemall.admin.entity.BlackListEntity;
  */
 public interface BlackListService extends IService<BlackListEntity> {
 
-    void userTokenVerify(String token);
+    void userTokenVerify(String token, String username);
 }

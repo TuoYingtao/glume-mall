@@ -14,11 +14,13 @@
             @keyup.enter.native="queryParamData" />
         </el-form-item>
         <el-form-item v-else-if="item.type === 'select'" :label="item.label||'状态'" :prop="item.prop">
-          <el-select clearable v-if="!item.input" v-model="paramAccept[item.prop]" placeholder="请选择" @change="selectQuery">
-            <el-option v-for="item in item.data" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
-          <el-select clearable v-else v-model="paramAccept[item.prop]" filterable placeholder="请选择或手动输入" @change="selectQuery">
-            <el-option v-for="item in item.data" :key="item.id" :label="item.name" :value="item.id"/>
+          <el-select clearable :filterable="item.input" v-model="paramAccept[item.prop]" placeholder="请选择" @change="selectQuery">
+            <template v-if="item.field">
+              <el-option v-for="option in item.data" :key="option[item.field.value]" :label="option[item.field.label]" :value="option[item.field.value]"/>
+            </template>
+            <template v-else>
+              <el-option v-for="item in item.data" :key="item.id" :label="item.name" :value="item.id"/>
+            </template>
           </el-select>
         </el-form-item>
         <el-form-item v-else-if="item.type === 'datetime'" :label="item.label" :prop="item.prop">

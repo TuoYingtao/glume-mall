@@ -1,9 +1,6 @@
 package com.glume.glumemall.admin.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.glume.common.core.annotation.valid.AddGroup;
 import com.glume.common.core.utils.*;
@@ -39,6 +36,13 @@ public class RoleController {
 
     @Value("${jwt.header}")
     private String headerToken;
+
+    @GetMapping("/listAll")
+    @ApiOperation(value = "全部角色列表")
+    public R listAll() {
+        List<RoleEntity> list = roleService.list();
+        return R.ok().put("data",list);
+    }
 
     /**
      * 列表

@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/glumemall_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/glumemall_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true
   # nacos 配置
   cloud:
     nacos:
@@ -54,6 +54,12 @@ mybatis-plus:
     db-config:
       # 主键自动增长
       id-type: auto
+      # 全局软删除字段
+      logic-delete-field: delete
+      # 逻辑已删除值
+      logic-delete-value: 2
+      # 逻辑未删除值
+      logic-not-delete-value: 0
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapper-locations: classpath:/mapper/**/*.xml
 
@@ -79,3 +85,4 @@ logging:
     name: Lab.log
   level:
     com.alibaba.nacos.client.naming: warn
+    com.glume.glumemall.admin.dao: debug

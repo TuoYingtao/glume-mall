@@ -30,5 +30,9 @@ public interface UserService extends IService<UserEntity> {
     Map<String, String> createCaptcha() throws IOException;
 
     Map<String, Object> info(HttpServletRequest httpServletRequest);
+
+    void resetPassword(Long userId, String password);
+
+    void saveUserInfo(UserEntity user, HttpServletRequest request);
 }
 

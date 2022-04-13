@@ -11,16 +11,15 @@ import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.JwtUtils;
 import com.glume.common.core.utils.RedisUtils;
 import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
 import com.glume.glumemall.admin.dao.UserDao;
 import com.glume.glumemall.admin.entity.MenuEntity;
 import com.glume.glumemall.admin.entity.UserEntity;
+import com.glume.glumemall.admin.entity.UserRoleEntity;
 import com.glume.glumemall.admin.security.AccountUser;
-import com.glume.glumemall.admin.service.MenuService;
-import com.glume.glumemall.admin.service.RoleMenuService;
-import com.glume.glumemall.admin.service.RoleService;
-import com.glume.glumemall.admin.service.UserService;
+import com.glume.glumemall.admin.service.*;
 import com.glume.glumemall.admin.vo.UserInfoAndMenuVo;
 import com.google.code.kaptcha.Producer;
 import org.slf4j.Logger;
@@ -31,6 +30,7 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
@@ -39,6 +39,7 @@ import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     RoleMenuService roleMenuService;
 
     @Autowired
+    UserRoleService userRoleService;
+
+    @Autowired
     JwtUtils jwtUtils;
 
     @Autowired
@@ -74,10 +78,27 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<UserEntity> page = this.page(
-                new Query<UserEntity>().getPage(params),
-                new QueryWrapper<UserEntity>()
-        );
+        QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
+        String status = (String) params.get("status");
+        if (StringUtils.isNotEmpty(status)) {
+            wrapper.eq("status", status);
+        } else {
+            // 默认条件
+            wrapper.and(a -> a.eq("status",0).or().eq("status",1));
+        }
+        String username = (String) params.get("username");
+        if (StringUtils.isNotEmpty(username)) {
+            wrapper.like("username",username);
+        }
+        String mobile = (String) params.get("mobile");
+        if (StringUtils.isNotEmpty(mobile)) {
+            wrapper.eq("mobile", mobile);
+        }
+        String roleId = (String) params.get("roleId");
+        if (StringUtils.isNotEmpty(roleId)) {
+            wrapper.eq("role_id", roleId);
+        }
+        IPage<UserEntity> page = baseMapper.myPageList(new Query<UserEntity>().getPage(params), wrapper);
 
         return new PageUtils(page);
     }
@@ -118,12 +139,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      */
     @Override
     public void updateUserDetail(@NotNull UserEntity userEntity) {
-        String password = userEntity.getPassword();
-        String encodePassword = new BCryptPasswordEncoder().encode(password);
-        userEntity.setPassword(encodePassword);
         Integer row = baseMapper.updateById(userEntity);
         if (row == 0) {
             throw new ServiceException("更新失败！");
+        }
+    }
+
+    @Override
+    public void resetPassword(Long userId, String password) {
+        String newPassword = new BCryptPasswordEncoder().encode(password);
+        Integer row = baseMapper.updateResetPassword(userId, newPassword);
+        if (row == 0) {
+            throw new ServiceException("密码重置失败！");
         }
     }
 
@@ -180,4 +207,19 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         return map;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveUserInfo(UserEntity user, HttpServletRequest request) {
+        String token = request.getHeader(headerToken);
+        Long createUserID = Long.valueOf(jwtUtils.getTokenBody(AccountUser.UserFields.USER_ID.getMessage(),token).toString());
+        user.setCreateUserId(createUserID);
+        String password = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(password);
+        user.setCreateTime(new Date());
+        baseMapper.insert(user);
+        UserRoleEntity userRoleEntity = new UserRoleEntity();
+        userRoleEntity.setUserId(user.getUserId());
+        userRoleEntity.setRoleId(user.getRoleId());
+        userRoleService.save(userRoleEntity);
+    }
 }

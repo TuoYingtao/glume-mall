@@ -7,6 +7,12 @@
         <result property="username" column="username"/>
         <result property="token" column="token"/>
         <result property="ip" column="ip"/>
+        <result property="browser" column="browser"/>
+        <result property="engine" column="engine"/>
+        <result property="engineVersion" column="engine_version"/>
+        <result property="os" column="os"/>
+        <result property="platform" column="platform"/>
+        <result property="version" column="version"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
 

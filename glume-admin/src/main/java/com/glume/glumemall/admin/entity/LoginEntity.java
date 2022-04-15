@@ -32,6 +32,30 @@ public class LoginEntity {
      */
     private String ip;
     /**
+     * 浏览器类型
+     */
+    private String browser;
+    /**
+     * 浏览器版本
+     */
+    private String version;
+    /**
+     * 浏览器引擎类型
+     */
+    private String engine;
+    /**
+     * 浏览器引擎版本
+     */
+    private String engineVersion;
+    /**
+     * 操作系统类型
+     */
+    private String os;
+    /**
+     * 平台类型
+     */
+    private String platform;
+    /**
      * 登录时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")

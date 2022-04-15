@@ -1,4 +1,4 @@
-package com.glume.glumemall.admin.scheduled;
+package com.glume.glumemall.admin.scheduled.asyncpool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,9 @@
-package com.glume.glumemall.admin.scheduled;
+package com.glume.glumemall.admin.scheduled.asyncpool;
 
-import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.Threads;
 
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ public class AsyncManager {
     /**
      * 异步操作任务调度线程池
      */
-    private ScheduledExecutorService executor = SpringUtils.getBean(ScheduledExecutorService.class);
+    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public AsyncManager() {
     }
@@ -32,7 +32,7 @@ public class AsyncManager {
     }
     /**
      * 执行任务
-     * @param task 任务
+     * @param timerTask 任务
      */
     public void executor(TimerTask timerTask) {
         executor.schedule(timerTask,OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);

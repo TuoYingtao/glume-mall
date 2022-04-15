@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 在线列表
@@ -44,6 +45,8 @@ public class LoginServiceImpl extends ServiceImpl<LoginDao, LoginEntity> impleme
 
     @Autowired
     RedisTemplate redisTemplate;
+
+    private Integer expire = 60 * 60 * 7;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -74,5 +77,6 @@ public class LoginServiceImpl extends ServiceImpl<LoginDao, LoginEntity> impleme
         baseMapper.deleteById(id);
         BoundSetOperations setOps = redisTemplate.boundSetOps(RedisConstant.BLACKLIST_KEY + blackListEntity.getUsername());
         setOps.add(blackListEntity.getToken());
+        setOps.expire(expire, TimeUnit.SECONDS);
     }
 }

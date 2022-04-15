@@ -39,6 +39,8 @@ service.interceptors.response.use(res => {
     Notification.error({ title: res.data.msg })
   } else if (code == 500) {
     Notification.error({ title: res.data.msg })
+  } else if (code == 503) {
+    Notification.error({ title: res.message })
   } else {
     Notification.error({ title: msg })
   }
@@ -66,6 +68,9 @@ service.interceptors.response.use(res => {
       Message({ message: "后端接口连接异常", type: 'error',duration: 5 * 1000})
       return Promise.reject(error)
     case 501:
+      Message({ message: error.response.data.msg, type: 'error',duration: 5 * 1000})
+      return Promise.reject(error)
+    case 503:
       Message({ message: error.response.data.msg, type: 'error',duration: 5 * 1000})
       return Promise.reject(error)
     default: return Promise.reject(error)

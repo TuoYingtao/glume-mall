@@ -16,11 +16,17 @@
         <el-table-column label="IP地址" prop="ip"/>
         <el-table-column label="令牌" prop="token">
           <template slot-scope="scope">
-            <el-tooltip class="tooltip" effect="dark" :content="scope.row.token" placement="top">
+            <el-tooltip class="tooltip" effect="dark" :content="scope.row.token" placement="bottom">
               <span>{{scope.row.token}}</span>
             </el-tooltip>
           </template>
         </el-table-column>
+        <el-table-column label="浏览器" prop="browser"/>
+        <el-table-column label="浏览器版本" prop="version"/>
+        <el-table-column label="浏览器引擎" prop="engine"/>
+        <el-table-column label="浏览器引擎版本" prop="engineVersion"/>
+        <el-table-column label="操作平台" prop="platform"/>
+        <el-table-column label="操作系统" prop="os"/>
         <el-table-column label="登录时间" align="center" prop="createTime">
           <template  slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>

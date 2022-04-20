@@ -18,7 +18,7 @@ public class ScheduleJobEntity implements Serializable {
     /**
      * 任务id
      */
-    private Integer jobId;
+    private Long jobId;
     /**
      * 任务名称
      */
@@ -67,7 +67,7 @@ public class ScheduleJobEntity implements Serializable {
     public ScheduleJobEntity() {
     }
 
-    public ScheduleJobEntity(Integer jobId, String jobName, String jobGroup, String invokeTarget, String beanName, String cronExpression, Integer misfirePolicy, Integer concurrent, Integer status, String params, String remark, Date createTime) {
+    public ScheduleJobEntity(Long jobId, String jobName, String jobGroup, String invokeTarget, String beanName, String cronExpression, Integer misfirePolicy, Integer concurrent, Integer status, String params, String remark, Date createTime) {
         this.jobId = jobId;
         this.jobName = jobName;
         this.jobGroup = jobGroup;
@@ -86,11 +86,11 @@ public class ScheduleJobEntity implements Serializable {
         return serialVersionUID;
     }
 
-    public Integer getJobId() {
+    public Long getJobId() {
         return jobId;
     }
 
-    public void setJobId(Integer jobId) {
+    public void setJobId(Long jobId) {
         this.jobId = jobId;
     }
 

@@ -1,7 +1,10 @@
 package com.glume.glumemall.admin.scheduled.quartz.job;
 
+import com.glume.common.core.utils.SpringUtils;
 import com.glume.glumemall.admin.entity.ScheduleJobEntity;
+import com.glume.glumemall.admin.entity.ScheduleJobLogEntity;
 import com.glume.glumemall.admin.scheduled.quartz.constants.ScheduleConstants;
+import com.glume.glumemall.admin.service.ScheduleJobLogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -10,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 
 /**
@@ -57,6 +62,24 @@ public abstract class AbstractQuartzJob implements Job {
     protected void after(JobExecutionContext context, ScheduleJobEntity scheduleJobEntity, Exception e) {
         Date startTime = threadLocal.get();
         threadLocal.remove();
+        ScheduleJobLogEntity jobLogEntity = new ScheduleJobLogEntity();
+        jobLogEntity.setJobId(scheduleJobEntity.getJobId());
+        jobLogEntity.setStartTime(startTime);
+        jobLogEntity.setStopTime(new Date());
+        long runTime = jobLogEntity.getStopTime().getTime() - jobLogEntity.getStartTime().getTime();
+        jobLogEntity.setTimes(runTime);
+        jobLogEntity.setJobMessage(scheduleJobEntity.getJobName() + "-总耗时：" + runTime + "毫秒");
+        if (e != null) {
+            jobLogEntity.setStatus(Integer.getInteger(ScheduleConstants.FAIL));
+            // 获取错误信息
+            StringWriter stringWriter = new StringWriter();
+            e.printStackTrace(new PrintWriter(stringWriter));
+            String str = stringWriter.toString();
+            jobLogEntity.setExceptionInfo(str);
+        } else {
+            scheduleJobEntity.setStatus(Integer.getInteger(ScheduleConstants.SUCCESS));
+        }
+        SpringUtils.getBean(ScheduleJobLogService.class).save(jobLogEntity);
     }
 
     /**

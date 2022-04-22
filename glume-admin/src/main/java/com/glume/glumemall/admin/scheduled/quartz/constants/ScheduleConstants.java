@@ -30,6 +30,12 @@ public class ScheduleConstants {
     /** 不触发立即执行 */
     public static final String MISFIRE_DO_NOTHING = "3";
 
+    /** 成功标识 */
+    public static final String SUCCESS = "0";
+
+    /** 失败标识 */
+    public static final String FAIL = "1";
+
     public enum Status {
         /**
          * 正常

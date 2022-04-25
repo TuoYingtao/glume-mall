@@ -139,7 +139,9 @@ export default {
             Cookies.remove(this.defaultSettings.login_rememberMe);
           }
           this.$store.dispatch("Login", this.loginForm).then( response => {
-            this.$store.dispatch('GetInfo').then();
+            this.$store.dispatch('GetInfo').then(res => {
+              this.$store.dispatch('GenerateRoutes',res.data.menus).then(accessRoutes => this.$router.addRoutes(accessRoutes))
+            });
             this.$router.push({ path: this.redirect || "/" });
           }).catch(() => {
             this.loading = false;

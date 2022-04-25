@@ -3,25 +3,13 @@ import store from './store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
+import {Message} from "element-ui";
 
 NProgress.configure({ showSpinner: false })
 
 router.beforeEach((to, from, next) => {
-    NProgress.start()
-    // if (getToken()) {
-    //   next()
-    // } else {
-    //   // 没有token
-    //   if (to.path == '/login') {
-    //     next();
-    //   } else {
-    //     next(`/login`) // 否则全部重定向到登录页
-    //     NProgress.done()
-    //   }
-    // }
-
+  NProgress.start()
   if (getToken()) {
-    // to.meta.title && store.dispatch('settings/setTitle', to.meta.title)
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done()
@@ -36,8 +24,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch(err => {
           store.dispatch('LogOut').then(() => {
-            Message.error(err)
-            next({ path: '/' })
+            Message.error(err).then(() => next({ path: '/' }))
           })
         })
       } else {
@@ -45,8 +32,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    // 没有token
-    console.log(to.path)
+    /** 没有token */
     // 在免登录白名单，直接进入
     if (to.path == '/login') {
       next()

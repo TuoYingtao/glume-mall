@@ -6,18 +6,21 @@ import errorCode from '@/utils/errorCode'
 import router from '../router'
 
 let isMessageBox = false;
+let cancelToken = axios.CancelToken;
+const source = cancelToken.source();
 
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-// 创建axios实例
+
+/** 创建axios实例 */
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
   baseURL: process.env.VUE_APP_BASE_API,
   // 超时
   timeout: 10000,
-  // headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+  cancelToken: source.token,
 })
 
-// request拦截器
+/** request拦截器 */
 service.interceptors.request.use(config => {
   // 是否需要设置 token
   if (store.getters.token) {
@@ -27,26 +30,26 @@ service.interceptors.request.use(config => {
 }, error => {
     Promise.reject(error)
 })
-// 响应拦截器
+
+/** 响应拦截器 */
 service.interceptors.response.use(res => {
   // 未设置状态码则默认成功状态
   const code = res.data.code || 200;
   // 获取错误信息
-  const msg = errorCode[code] || res.data.data || errorCode['default']
+  const message = errorCode[code] || res.data.msg || errorCode['default'];
   if (code === 200) {
     return res.data
-  }else if (code == 400) {
-    Notification.error({ title: res.data.msg })
-  } else if (code == 500) {
-    Notification.error({ title: res.data.msg })
-  } else if (code == 503) {
-    Notification.error({ title: res.message })
-  } else {
-    Notification.error({ title: msg })
+  }else {
+    Notification.error(message);
   }
 },error => {
+  // 未设置状态码则默认成功状态
+  const code = error.response.status;
+  // 获取错误信息
+  const message = errorCode[code] || error.response.data.error || errorCode['default'];
   switch (error.response.status) {
     case 401:
+      source.cancel(error);
       removeToken();
       if (isMessageBox) {
         MessageBox.close();
@@ -61,19 +64,9 @@ service.interceptors.response.use(res => {
         router.push({path: "/login"})
       })
       break;
-    case 408:
-      Message({ message: "系统接口请求超时", type: 'error',duration: 5 * 1000})
+    default:
+      Message({ message: message, type: 'error',duration: 5 * 1000})
       return Promise.reject(error)
-    case 500:
-      Message({ message: "后端接口连接异常", type: 'error',duration: 5 * 1000})
-      return Promise.reject(error)
-    case 501:
-      Message({ message: error.response.data.msg, type: 'error',duration: 5 * 1000})
-      return Promise.reject(error)
-    case 503:
-      Message({ message: error.response.data.msg, type: 'error',duration: 5 * 1000})
-      return Promise.reject(error)
-    default: return Promise.reject(error)
   }
 })
 

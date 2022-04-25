@@ -24,7 +24,7 @@ public class QuartzConfig implements SchedulerFactoryBeanCustomizer {
     public Properties properties() throws IOException {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
         // 对quartz.properties文件进行读取
-        propertiesFactoryBean.setLocation(new ClassPathResource("/quartz.properties"));
+        propertiesFactoryBean.setLocation(new ClassPathResource("/my-quartz.properties"));
         // 在quartz.properties中的属性被读取并注入后再初始化对象
         propertiesFactoryBean.afterPropertiesSet();
         return propertiesFactoryBean.getObject();

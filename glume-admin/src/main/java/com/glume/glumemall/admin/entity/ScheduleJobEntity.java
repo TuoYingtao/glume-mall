@@ -1,6 +1,10 @@
 package com.glume.glumemall.admin.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,6 +22,7 @@ public class ScheduleJobEntity implements Serializable {
     /**
      * 任务id
      */
+    @TableId
     private Long jobId;
     /**
      * 任务名称
@@ -60,14 +65,23 @@ public class ScheduleJobEntity implements Serializable {
      */
     private String remark;
     /**
+     * 下一次执行时间
+     */
+    @TableField(exist = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    private Date nextValidTime;
+    /**
      * 创建时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     public ScheduleJobEntity() {
     }
 
-    public ScheduleJobEntity(Long jobId, String jobName, String jobGroup, String invokeTarget, String beanName, String cronExpression, Integer misfirePolicy, Integer concurrent, Integer status, String params, String remark, Date createTime) {
+    public ScheduleJobEntity(Long jobId, String jobName, String jobGroup, String invokeTarget, String beanName, String cronExpression, Integer misfirePolicy, Integer concurrent, Integer status, String params, String remark, Date nextValidTime, Date createTime) {
         this.jobId = jobId;
         this.jobName = jobName;
         this.jobGroup = jobGroup;
@@ -79,6 +93,7 @@ public class ScheduleJobEntity implements Serializable {
         this.status = status;
         this.params = params;
         this.remark = remark;
+        this.nextValidTime = nextValidTime;
         this.createTime = createTime;
     }
 
@@ -174,6 +189,14 @@ public class ScheduleJobEntity implements Serializable {
         this.remark = remark;
     }
 
+    public Date getNextValidTime() {
+        return nextValidTime;
+    }
+
+    public void setNextValidTime(Date nextValidTime) {
+        this.nextValidTime = nextValidTime;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -187,12 +210,12 @@ public class ScheduleJobEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduleJobEntity that = (ScheduleJobEntity) o;
-        return jobId.equals(that.jobId) && Objects.equals(jobName, that.jobName) && Objects.equals(jobGroup, that.jobGroup) && Objects.equals(invokeTarget, that.invokeTarget) && Objects.equals(beanName, that.beanName) && Objects.equals(cronExpression, that.cronExpression) && Objects.equals(misfirePolicy, that.misfirePolicy) && Objects.equals(concurrent, that.concurrent) && Objects.equals(status, that.status) && Objects.equals(params, that.params) && Objects.equals(remark, that.remark) && Objects.equals(createTime, that.createTime);
+        return jobId.equals(that.jobId) && Objects.equals(jobName, that.jobName) && Objects.equals(jobGroup, that.jobGroup) && Objects.equals(invokeTarget, that.invokeTarget) && Objects.equals(beanName, that.beanName) && Objects.equals(cronExpression, that.cronExpression) && Objects.equals(misfirePolicy, that.misfirePolicy) && Objects.equals(concurrent, that.concurrent) && Objects.equals(status, that.status) && Objects.equals(params, that.params) && Objects.equals(remark, that.remark) && Objects.equals(nextValidTime, that.nextValidTime) && Objects.equals(createTime, that.createTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobId, jobName, jobGroup, invokeTarget, beanName, cronExpression, misfirePolicy, concurrent, status, params, remark, createTime);
+        return Objects.hash(jobId, jobName, jobGroup, invokeTarget, beanName, cronExpression, misfirePolicy, concurrent, status, params, remark, nextValidTime, createTime);
     }
 
     @Override
@@ -209,6 +232,7 @@ public class ScheduleJobEntity implements Serializable {
                 ", status=" + status +
                 ", params='" + params + '\'' +
                 ", remark='" + remark + '\'' +
+                ", nextValidTime=" + nextValidTime +
                 ", createTime=" + createTime +
                 '}';
     }

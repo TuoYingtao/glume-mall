@@ -62,6 +62,15 @@ public class Constants {
      *  升序
      */
     public static final String ASC = "asc";
+    /**
+     * RMI 远程方法调用
+     */
+    public static final String LOOKUP_RMI = "rmi://";
+
+    /**
+     * LDAP 远程方法调用
+     */
+    public static final String LOOKUP_LDAP = "ldap://";
 
     /**
      * 菜单类型
@@ -138,7 +147,7 @@ public class Constants {
         ScheduleStatus(int value) {
             this.value = value;
         }
-        
+
         public int getValue() {
             return value;
         }

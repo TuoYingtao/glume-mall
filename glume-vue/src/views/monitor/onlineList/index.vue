@@ -44,14 +44,17 @@
 </template>
 
 <script>
+import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import {list, forceKikeOut} from "@/api/onlineList";
 
 export default {
   name: "index.vue",
+  components: {LayoutContainer},
   data() {
     return {
       ids: null,
       showSearch: true,
+      loading: false,
       queryParams: {
         page: 1,
         limit: 20,
@@ -66,9 +69,10 @@ export default {
   },
   methods: {
     getList() {
+      this.loading = true
       list(this.queryParams).then(res => {
         this.dataList = res.data.list;
-        console.log(res)
+        this.loading = false;
       })
     },
     forceKikeOut(row) {

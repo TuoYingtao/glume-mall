@@ -46,7 +46,7 @@ service.interceptors.response.use(res => {
   // 未设置状态码则默认成功状态
   const code = error.response.status;
   // 获取错误信息
-  const message = errorCode[code] || error.response.data.error || errorCode['default'];
+  const message = errorCode[code] || error.response.data.error || error.response.data.msg || errorCode['default'];
   switch (error.response.status) {
     case 401:
       source.cancel(error);

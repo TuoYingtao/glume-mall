@@ -1,5 +1,6 @@
 package com.glume.glumemall.admin.scheduled.quartz.schedule;
 
+import com.alibaba.fastjson.JSON;
 import com.glume.glumemall.admin.entity.ScheduleJobEntity;
 import com.glume.glumemall.admin.scheduled.quartz.constants.ScheduleConstants;
 import com.glume.glumemall.admin.scheduled.quartz.exception.TaskException;
@@ -68,7 +69,7 @@ public class ScheduleUtils {
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(cronScheduleBuilder).build();
 
         // 放入参数，运行时的方法可以获取
-        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, scheduleJobEntity);
+        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, JSON.toJSONString(scheduleJobEntity));
 
         // 判断是否存在
         if (scheduler.checkExists(jobKey)) {

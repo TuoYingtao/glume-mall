@@ -1,5 +1,6 @@
 package com.glume.glumemall.admin.scheduled.quartz.job;
 
+import com.alibaba.fastjson.JSON;
 import com.glume.common.core.utils.SpringUtils;
 import com.glume.glumemall.admin.entity.ScheduleJobEntity;
 import com.glume.glumemall.admin.entity.ScheduleJobLogEntity;
@@ -33,7 +34,8 @@ public abstract class AbstractQuartzJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         ScheduleJobEntity scheduleJobEntity = new ScheduleJobEntity();
-        BeanUtils.copyProperties(scheduleJobEntity,context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES));
+        ScheduleJobEntity jobEntity = JSON.parseObject((String) context.getMergedJobDataMap().get(ScheduleConstants.TASK_PROPERTIES), ScheduleJobEntity.class);
+        BeanUtils.copyProperties(jobEntity,scheduleJobEntity);
         before(context,scheduleJobEntity);
         try {
             if (!StringUtils.isEmpty(scheduleJobEntity)) {

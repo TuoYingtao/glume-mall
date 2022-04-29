@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 28/04/2022 18:27:08
+ Date: 29/04/2022 18:29:03
 */
 
 SET NAMES utf8mb4;
@@ -312,23 +312,31 @@ CREATE TABLE `schedule_job_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of schedule_job_log
 -- ----------------------------
-INSERT INTO `schedule_job_log` VALUES (1, 1, 0, NULL, NULL, 0, NULL, NULL, '2021-10-13 11:30:00');
-INSERT INTO `schedule_job_log` VALUES (2, 1, 0, NULL, NULL, 2, NULL, NULL, '2021-10-13 12:00:00');
-INSERT INTO `schedule_job_log` VALUES (3, 1, 0, NULL, NULL, 0, NULL, NULL, '2021-10-13 12:30:00');
-INSERT INTO `schedule_job_log` VALUES (4, 1, 0, NULL, NULL, 6, NULL, NULL, '2021-10-13 13:00:00');
-INSERT INTO `schedule_job_log` VALUES (5, 1, 0, NULL, NULL, 3, NULL, NULL, '2021-10-13 13:30:00');
-INSERT INTO `schedule_job_log` VALUES (6, 1, 0, NULL, NULL, 4, NULL, NULL, '2021-10-13 14:00:00');
-INSERT INTO `schedule_job_log` VALUES (7, 1, 0, NULL, NULL, 1, NULL, NULL, '2021-10-13 14:30:00');
-INSERT INTO `schedule_job_log` VALUES (8, 1, 0, NULL, NULL, 2, NULL, NULL, '2021-10-13 15:00:00');
-INSERT INTO `schedule_job_log` VALUES (9, 1, 0, NULL, NULL, 1, NULL, NULL, '2021-10-13 15:30:00');
-INSERT INTO `schedule_job_log` VALUES (10, 1, 0, NULL, NULL, 0, NULL, NULL, '2021-10-15 10:30:00');
-INSERT INTO `schedule_job_log` VALUES (11, 1, 0, NULL, NULL, 1, NULL, NULL, '2021-10-15 11:00:00');
-INSERT INTO `schedule_job_log` VALUES (12, 1, 0, NULL, NULL, 3, NULL, NULL, '2021-10-15 11:30:00');
+INSERT INTO `schedule_job_log` VALUES (1, 6, 1, '系统默认（无参）-总耗时：6毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 6, '2022-04-29 17:27:12', '2022-04-29 17:27:12', '2022-04-29 17:27:12');
+INSERT INTO `schedule_job_log` VALUES (2, 6, 1, '系统默认（无参）-总耗时：3453毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 3453, '2022-04-29 17:28:55', '2022-04-29 17:28:59', '2022-04-29 17:28:59');
+INSERT INTO `schedule_job_log` VALUES (3, 6, 1, '系统默认（无参）-总耗时：1毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 1, '2022-04-29 17:29:05', '2022-04-29 17:29:05', '2022-04-29 17:29:05');
+INSERT INTO `schedule_job_log` VALUES (4, 7, 0, '系统默认（多参）-总耗时：5毫秒', NULL, 5, '2022-04-29 17:29:06', '2022-04-29 17:29:06', '2022-04-29 17:29:06');
+INSERT INTO `schedule_job_log` VALUES (5, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:07', '2022-04-29 17:29:07', '2022-04-29 17:29:07');
+INSERT INTO `schedule_job_log` VALUES (6, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:08', '2022-04-29 17:29:08', '2022-04-29 17:29:08');
+INSERT INTO `schedule_job_log` VALUES (7, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:09', '2022-04-29 17:29:09', '2022-04-29 17:29:09');
+INSERT INTO `schedule_job_log` VALUES (8, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:10', '2022-04-29 17:29:10', '2022-04-29 17:29:10');
+INSERT INTO `schedule_job_log` VALUES (9, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:11', '2022-04-29 17:29:11', '2022-04-29 17:29:11');
+INSERT INTO `schedule_job_log` VALUES (10, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:12', '2022-04-29 17:29:12', '2022-04-29 17:29:12');
+INSERT INTO `schedule_job_log` VALUES (11, 1, 0, '系统默认（有参）-总耗时：1毫秒', NULL, 1, '2022-04-29 17:29:14', '2022-04-29 17:29:14', '2022-04-29 17:29:14');
+INSERT INTO `schedule_job_log` VALUES (12, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:14', '2022-04-29 17:29:14', '2022-04-29 17:29:14');
+INSERT INTO `schedule_job_log` VALUES (13, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:15', '2022-04-29 17:29:15', '2022-04-29 17:29:15');
+INSERT INTO `schedule_job_log` VALUES (14, 6, 1, '系统默认（无参）-总耗时：1毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 1, '2022-04-29 17:29:17', '2022-04-29 17:29:17', '2022-04-29 17:29:17');
+INSERT INTO `schedule_job_log` VALUES (15, 6, 1, '系统默认（无参）-总耗时：15毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 15, '2022-04-29 17:29:18', '2022-04-29 17:29:18', '2022-04-29 17:29:18');
+INSERT INTO `schedule_job_log` VALUES (16, 6, 1, '系统默认（无参）-总耗时：0毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 0, '2022-04-29 17:29:19', '2022-04-29 17:29:19', '2022-04-29 17:29:19');
+INSERT INTO `schedule_job_log` VALUES (17, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:20', '2022-04-29 17:29:20', '2022-04-29 17:29:20');
+INSERT INTO `schedule_job_log` VALUES (18, 7, 0, '系统默认（多参）-总耗时：1毫秒', NULL, 1, '2022-04-29 17:29:21', '2022-04-29 17:29:21', '2022-04-29 17:29:21');
+INSERT INTO `schedule_job_log` VALUES (19, 7, 0, '系统默认（多参）-总耗时：1毫秒', NULL, 1, '2022-04-29 17:29:22', '2022-04-29 17:29:22', '2022-04-29 17:29:22');
+INSERT INTO `schedule_job_log` VALUES (20, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:23', '2022-04-29 17:29:23', '2022-04-29 17:29:23');
 
 -- ----------------------------
 -- Table structure for sys_blacklist
@@ -381,7 +389,7 @@ CREATE TABLE `sys_config`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `param_key`(`param_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_config
@@ -402,7 +410,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
@@ -431,7 +439,7 @@ CREATE TABLE `sys_login`  (
 -- ----------------------------
 -- Records of sys_login
 -- ----------------------------
-INSERT INTO `sys_login` VALUES (24, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY1MTIwMzQzMSwidXNlcklkIjoxMDAxLCJpYXQiOjE2NTExMTcwMzEsImp0aSI6IjdjNGZmMzI1LTg5MTUtNDdiNS05YzFiLTQ1ODY3OWJhYTU1OCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.lRMQpw5vBoYWGj28j8NzU2Dvi2FwjOR0_HHLgX3NC8Et64QZN7eFqZJS_1F8ImzBhjfuUyZVsSQLvqeyfN8D3w', '192.168.50.116', '2022-04-28 11:37:11', 'Chrome', '100.0.4896.127', 'Webkit', '537.36', 'Windows 10 or Windows Server 2016', 'Windows');
+INSERT INTO `sys_login` VALUES (24, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY1MTI4OTg1OCwidXNlcklkIjoxMDAxLCJpYXQiOjE2NTEyMDM0NTgsImp0aSI6IjEwZmY0ZjAyLTYwZjctNDQ5OS05NDE1LWU3MDFlY2E4ZWEyNCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.LE3-LjR9ErsKn2MZOCYSMr97IkYsAs5JKHWZYQCkpsUN4NkGb3pPL5X0RuDz1pWe48gzH-vsNHe-Q4TrzhcFag', '192.168.50.116', '2022-04-29 11:37:38', 'Chrome', '100.0.4896.127', 'Webkit', '537.36', 'Windows 10 or Windows Server 2016', 'Windows');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -456,7 +464,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -503,6 +511,7 @@ INSERT INTO `sys_menu` VALUES (54, 51, '秒杀商品关联', '/discountsManage/g
 INSERT INTO `sys_menu` VALUES (56, 58, '在线用户列表', '/monitor/onlineList/list', 'monitor/onlineList/index', '', '0', '0', 'sys:onlinelist:index', 'C', 'diannao-tianchong', 1, 'admin', '2022-04-09 16:27:54', 'admin', '2022-04-13 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (57, 0, '管理员列表', '/system/userInfo', '', '', '0', '0', '', 'M', 'peoples', 3, 'admin', '2022-04-11 12:11:42', 'admin', '2022-04-11 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (58, 0, '监控器', '/monitor', NULL, NULL, '0', '0', NULL, 'M', 'monitor', 7, 'admin', '2022-04-13 14:44:26', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (59, 58, '调度日志', '/monitor/jobsechdulelog', 'monitor/jobScheduleLog/index', '', '1', '0', 'sys:jobsechdulelog:list', 'C', 'log', 99, 'admin', '2022-04-29 11:05:37', 'admin', '2022-04-29 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -513,7 +522,7 @@ CREATE TABLE `sys_oss`  (
   `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oss
@@ -549,7 +558,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 236 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 237 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -613,6 +622,7 @@ INSERT INTO `sys_role_menu` VALUES (232, 2003, 12);
 INSERT INTO `sys_role_menu` VALUES (233, 2003, 13);
 INSERT INTO `sys_role_menu` VALUES (234, 2003, 14);
 INSERT INTO `sys_role_menu` VALUES (235, 2001, 58);
+INSERT INTO `sys_role_menu` VALUES (236, 2001, 59);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -687,7 +697,7 @@ CREATE TABLE `tb_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_user

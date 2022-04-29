@@ -8,6 +8,7 @@
         <el-col>
           <el-button icon="el-icon-plus" size="mini" @click="addJob">新增</el-button>
           <el-button icon="el-icon-delete" type="danger" size="mini" @click="batchDelete">删除</el-button>
+          <el-button icon="el-icon-s-operation" type="info" size="mini" @click="toLogRouter">日志</el-button>
           <right-toolbar :showSearch.sync="showSearch" :isFlagShow="$route.meta.search" @queryTable="getList" />
         </el-col>
       </el-row>
@@ -156,6 +157,7 @@ export default {
           this.formData = res.data;
           this.$refs["infoDialogBox"].open();
         }); break;
+        case 3: this.toLogRouter(e.row); break;
       }
 
     },
@@ -193,6 +195,12 @@ export default {
     },
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
+    },
+    toLogRouter(query) {
+      this.$router.push({
+        path: "/monitor/jobsechdulelog",
+        query: query
+      });
     },
     handleQuery() {
       this.queryParams.page = 1;

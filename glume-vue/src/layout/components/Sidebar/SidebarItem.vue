@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!item.hidden">
+  <div v-if="item && item.meta && item.meta.visible != 1">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
@@ -55,6 +55,9 @@ export default {
     this.onlyOneChild = null
     return {}
   },
+  created() {
+    // console.log(this.item.path,this.item.meta.visible);
+  },
   methods: {
     /**
      * @param children 当前子路由数组
@@ -64,7 +67,7 @@ export default {
     hasOneShowingChild(children = [], parent) {
       // console.log(children,parent)
       const showingChildren = children.filter(item => {
-        if (item.hidden) return false;
+        if (item && item.meta && item.meta.visible == 1) return false;
         // 临时设置(将在只有一个显示子元素时使用); 拿出子路由
         this.onlyOneChild = item
         return true;

@@ -41,6 +41,12 @@
             <el-tag type="info" v-else>-------</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="status" label="显示/隐藏">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.visible == 0">显示</el-tag>
+            <el-tag v-else type="info">隐藏</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status == 0" type="success">正常</el-tag>

@@ -23,5 +23,6 @@ public class JobTest {
 
     public void jobNoParams() {
         System.out.println(LocalDateTime.now() + "执行无参方法");
+        int i = 1 / 0;
     }
 }

@@ -42,9 +42,10 @@ public abstract class AbstractQuartzJob implements Job {
                 doExecute(context,scheduleJobEntity);
             }
         } catch (Exception e) {
-            LOGGER.error("系统定时任务执行异常：{}",e);
+            LOGGER.error("系统定时任务执行异常：",e);
             after(context,scheduleJobEntity,e);
         }
+        after(context,scheduleJobEntity,null);
     }
 
     /**
@@ -65,6 +66,7 @@ public abstract class AbstractQuartzJob implements Job {
         Date startTime = threadLocal.get();
         threadLocal.remove();
         ScheduleJobLogEntity jobLogEntity = new ScheduleJobLogEntity();
+        jobLogEntity.setCreateTime(new Date());
         jobLogEntity.setJobId(scheduleJobEntity.getJobId());
         jobLogEntity.setStartTime(startTime);
         jobLogEntity.setStopTime(new Date());
@@ -72,14 +74,14 @@ public abstract class AbstractQuartzJob implements Job {
         jobLogEntity.setTimes(runTime);
         jobLogEntity.setJobMessage(scheduleJobEntity.getJobName() + "-总耗时：" + runTime + "毫秒");
         if (e != null) {
-            jobLogEntity.setStatus(Integer.getInteger(ScheduleConstants.FAIL));
+            jobLogEntity.setStatus(Integer.valueOf(ScheduleConstants.FAIL));
             // 获取错误信息
             StringWriter stringWriter = new StringWriter();
             e.printStackTrace(new PrintWriter(stringWriter));
             String str = stringWriter.toString();
             jobLogEntity.setExceptionInfo(str);
         } else {
-            scheduleJobEntity.setStatus(Integer.getInteger(ScheduleConstants.SUCCESS));
+            jobLogEntity.setStatus(Integer.valueOf(ScheduleConstants.SUCCESS));
         }
         SpringUtils.getBean(ScheduleJobLogService.class).save(jobLogEntity);
     }

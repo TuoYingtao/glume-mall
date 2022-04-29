@@ -3,6 +3,7 @@ package com.glume.glumemall.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.ScheduleJobLogEntity;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Map;
 
@@ -15,4 +16,5 @@ public interface ScheduleJobLogService extends IService<ScheduleJobLogEntity> {
 
     PageUtils queryPage(Map<String,Object> params);
 
+    void emptyLog();
 }

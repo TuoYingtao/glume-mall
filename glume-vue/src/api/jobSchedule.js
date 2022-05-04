@@ -53,3 +53,9 @@ export function runJob(id) {
     params: id
   })
 }
+export function groupAll() {
+  return request({
+    url: "/admin/schedulejob/group/all",
+    method: "GET",
+  })
+}

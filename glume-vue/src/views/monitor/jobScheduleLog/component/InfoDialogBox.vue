@@ -3,6 +3,18 @@
     <el-descriptions class="margin-top" title="日志详情" :column="2" :size="size" border direction="vertical">
       <el-descriptions-item>
         <template slot="label">
+          <i class="el-icon-user"></i>任务名称
+        </template>
+        <span>{{formData.jobName}}</span>
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-user"></i>任务分组
+        </template>
+        <span>{{formData.jobGroup}}</span>
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
           <i class="el-icon-user"></i>日志信息
         </template>
         <span>{{formData.jobMessage}}</span>

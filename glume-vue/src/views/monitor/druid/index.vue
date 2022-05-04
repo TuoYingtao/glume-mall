@@ -18,8 +18,10 @@
 </template>
 
 <script>
+import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 export default {
   name: "druid",
+  components: {LayoutContainer},
   data() {
     return {
       title: "",

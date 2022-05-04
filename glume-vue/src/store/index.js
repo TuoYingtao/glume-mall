@@ -10,6 +10,8 @@ import issuedCommodity from "@/store/modules/issuedCommodity"
 
 Vue.use(Vuex)
 
+console.log("app",app)
+console.log("user",user)
 const store = new Vuex.Store({
   modules: {
     app,
@@ -21,5 +23,4 @@ const store = new Vuex.Store({
   },
   getters
 })
-
 export default store

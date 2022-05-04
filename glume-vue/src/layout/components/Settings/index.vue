@@ -35,7 +35,7 @@
 
       <div class="drawer-item">
         <span>target 总数设置</span>
-        <el-input-number class="drawer-switch" v-model="targetCunt" @change="handleChange" :min="3" :max="9" label="描述文字"/>
+        <el-input-number class="drawer-switch" v-model="targetCunt" @change="handleChange" :min="3" label="描述文字"/>
       </div>
 
     </div>
@@ -111,7 +111,6 @@ export default {
         return this.$store.state.settings.targetCunt
       },
       set(val) {
-        console.log(val)
         this.$store.dispatch('settings/changeSetting', {
           key: 'targetCunt',
           value: val

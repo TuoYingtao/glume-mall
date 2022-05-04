@@ -10,8 +10,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="任务分组" prop="jobGroup">
-              <el-select style="width: 100%" v-model="formData.jobGroup" placeholder="请选择">
-                <el-option v-for="item in jobGroupType" :key="item.id" :label="item.name" :value="item.name"/>
+              <el-select allow-create filterable style="width: 100%" v-model="formData.jobGroup" placeholder="请选择">
+                <el-option v-for="item in jobGroupType" :key="item.id" :label="item.jobGroup" :value="item.jobGroup"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -97,11 +97,15 @@ export default {
   props: {
     title: String,
     data: Object,
+    groupList: Array,
   },
   watch: {
     data(val) {
       this.formData = val;
       this.expression = val.cronExpression;
+    },
+    groupList(newVal) {
+      this.jobGroupType = newVal;
     }
   },
   data() {
@@ -115,7 +119,7 @@ export default {
       },
       // 传入的表达式
       expression: "",
-      jobGroupType: [{id: 1, name: "DEFAULT"},{id: 2, name: "SYSTEM"}],
+      jobGroupType: [],
       rules: {
         jobName: [{ required: true, message: "任务名称不能为空", trigger: "blur" }],
         jobGroup: [{ required: true, message: "任务分组不能为空", trigger: "blur" }],

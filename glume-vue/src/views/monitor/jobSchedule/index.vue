@@ -72,14 +72,14 @@
       </el-table>
       <pagination :page-sizes="[20,40,60,80]" v-show="total>0" :total="total" :current-page.sync="queryParams.page" :page.sync="queryParams.page" :limit.sync="queryParams.limit" @pagination="getList"/>
     </el-card>
-    <dialog-box ref="dialogBox" :title="title" :data="formData" @submitForm="submitForm" />
+    <dialog-box ref="dialogBox" :title="title" :data="formData" :groupList="groupList" @submitForm="submitForm" />
     <info-dialog-box ref="infoDialogBox" :data="formData" />
   </layout-container>
 </template>
 
 <script>
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
-import {deleteData, editData, infoData, listData, runJob, saveData, switchStatus} from "@/api/jobSchedule";
+import {deleteData, editData, groupAll, infoData, listData, runJob, saveData, switchStatus} from "@/api/jobSchedule";
 import DialogBox from "@/views/monitor/jobSchedule/component/DialogBox";
 import InfoDialogBox from "@/views/monitor/jobSchedule/component/InfoDialogBox";
 
@@ -96,25 +96,16 @@ export default {
         limit: 20,
       },
       queryDataModel: [{type: "default",label: "任务名称",prop: "jobName"},
-        {type: "select",label: "任务分组",prop: "jobGroup",data: [
-            {id: 1,name: "DEFAULT"}, {id: 2,name: "SYSTEM"}]},
+        {type: "select",label: "任务分组",prop: "jobGroup",data: [], field: {value: "jobGroup",label: "jobGroup"}},
         {type: "default",label: "Bean 名称",prop: "beanName"},
         {type: "select",label: "状态",prop: "status",data: [
             {id: 0,name: "正常"}, {id: 1,name: "暂停"}]},],
       dataList: [],
       total: 0,
+      groupList: [],
       // form 表单
       title: null,
       formData: {},
-    }
-  },
-  watch: {
-    ['queryParams.jobGroup']: {
-      handler(newVal){
-        if (newVal && typeof newVal == "number") {
-          this.queryParams.jobGroup = newVal == 1 ? "DEFAULT" : "SYSTEM";
-        }
-      }
     }
   },
   created() {
@@ -122,11 +113,18 @@ export default {
   },
   methods: {
     getList() {
+      this.groupAll();
       this.loading = true
       listData(this.queryParams).then(res => {
         this.dataList = res.data.list;
         this.total = res.data.totalCount;
         this.loading = false;
+      });
+    },
+    groupAll() {
+      groupAll().then(res => {
+        this.groupList = res.data;
+        this.queryDataModel[1].data = res.data;
       });
     },
     addJob() {

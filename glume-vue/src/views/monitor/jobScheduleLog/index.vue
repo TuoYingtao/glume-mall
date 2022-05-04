@@ -14,7 +14,9 @@
       <!--    内容展示-->
       <el-table v-loading="loading" :data="dataList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="80" align="center"/>
-        <el-table-column label="日志信息" prop="jobMessage"/>
+        <el-table-column label="任务名称" prop="jobName"/>
+        <el-table-column label="任务分组" prop="jobGroup"/>
+        <el-table-column label="日志信息" prop="jobMessage" width="300"/>
         <el-table-column label="任务状态" prop="status">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == 0">成功</el-tag>
@@ -57,6 +59,7 @@
 import LayoutContainer from '@/components/LayoutContainer/LayoutContainer'
 import {deleteData, emptyLogData, infoData, listData} from "@/api/jobLogSchedule";
 import InfoDialogBox from "@/views/monitor/jobScheduleLog/component/InfoDialogBox";
+import {groupAll} from "@/api/jobSchedule";
 export default {
   name: "index",
   components: {InfoDialogBox, LayoutContainer},
@@ -69,7 +72,9 @@ export default {
         page: 1,
         limit: 20,
       },
-      queryDataModel: [{type: "default",label: "日志信息",prop: "jobMessage"},
+      queryDataModel: [{type: "default",label: "任务名称",prop: "jobName"},
+        {type: "select",label: "任务分组",prop: "jobGroup",data: [],field: {value: "jobGroup", label: "jobGroup"}},
+        {type: "default",label: "日志信息",prop: "jobMessage"},
         {type: "select",label: "任务状态",prop: "status",data: [
             {id: 0,name: "正常"}, {id: 1,name: "暂停"}]},
         {type: "datetime",label: "日期范围",prop: "dateTime",format: "yyyy-MM-dd HH:mm:ss"}],
@@ -87,10 +92,19 @@ export default {
   },
   methods: {
     getList() {
+      this.groupAll();
+      this.loading = true
       listData(this.queryParams).then(res => {
         this.dataList = res.data.list;
         this.total = res.data.totalCount;
+        this.loading = false;
       })
+    },
+    groupAll() {
+      groupAll().then(res => {
+        this.groupList = res.data;
+        this.queryDataModel[1].data = res.data;
+      });
     },
     jobLogInfo(row) {
       infoData(row.logId).then(res => {

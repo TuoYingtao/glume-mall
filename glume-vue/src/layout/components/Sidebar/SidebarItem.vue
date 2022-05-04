@@ -1,7 +1,7 @@
 <template>
   <div v-if="item && item.meta && item.meta.visible != 1">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
@@ -55,9 +55,6 @@ export default {
     this.onlyOneChild = null
     return {}
   },
-  created() {
-    // console.log(this.item.path,this.item.meta.visible);
-  },
   methods: {
     /**
      * @param children 当前子路由数组
@@ -65,7 +62,6 @@ export default {
      * @returns {boolean}
      */
     hasOneShowingChild(children = [], parent) {
-      // console.log(children,parent)
       const showingChildren = children.filter(item => {
         if (item && item.meta && item.meta.visible == 1) return false;
         // 临时设置(将在只有一个显示子元素时使用); 拿出子路由
@@ -83,12 +79,16 @@ export default {
       }
       return false
     },
-    resolvePath(routePath) {
+    resolvePath(routePath,routeQuery) {
       if (isExternal(routePath)) {
         return routePath
       }
       if (isExternal(this.basePath)) {
         return this.basePath
+      }
+      if (routeQuery) {
+        let query = JSON.parse(routeQuery);
+        return { path: path.resolve(this.basePath, routePath), query: query }
       }
       return path.resolve(this.basePath, routePath)
     }

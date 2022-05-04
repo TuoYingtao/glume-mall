@@ -2,10 +2,10 @@ module.exports = {
   title: 'glumemall系统',
 
   /** 是否系统布局配置 */
-  showSettings: false,
+  showSettings: true,
 
   /** 是否显示 tagsView */
-  tagsView: false,
+  tagsView: true,
 
   /** 是否固定头部 */
   fixedHeader: true,

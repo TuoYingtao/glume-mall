@@ -1,7 +1,10 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
-      <router-link v-for="tag in visitedViews" ref="tag" :key="tag.path" :class="isActive(tag)?'active':''"
+      <router-link v-for="tag in visitedViews"
+                   ref="tag"
+                   :key="tag.path"
+                   :class="isActive(tag)?'active':''"
                    :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
                    tag="span"
                    class="tags-view-item"
@@ -24,7 +27,6 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
-import { constantRoutes } from '@/router'
 
 export default {
   components: { ScrollPane },
@@ -42,7 +44,7 @@ export default {
       return this.$store.state.tagsView.visitedViews
     },
     routes() {
-      return constantRoutes
+      return this.$store.state.permission.menuRoutes
     },
     theme() {
       return this.$store.state.settings.theme;

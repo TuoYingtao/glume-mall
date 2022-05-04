@@ -47,9 +47,13 @@ swagger:
   enabled: true
 jwt:
   header: "Authorization"
+# 链路追踪开启debug日志
 logging:
   level:
     com.glume.glumemall: debug
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug
+    com.alibaba.nacos.client.naming: warn
 # 远程调用
 feign:
   sentinel:

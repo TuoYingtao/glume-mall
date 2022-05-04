@@ -1,6 +1,8 @@
 package com.glume.glumemall.admin.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -20,7 +22,7 @@ import javax.validation.constraints.*;
 
 /**
  * 系统用户
- * 
+ *
  * @author tuoyingtao
  * @email tuoyingtao@163.com
  * @date 2021-10-18 09:31:33
@@ -31,7 +33,7 @@ public class UserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	@TableId
 	@NotNull(message = "用户ID不能为空",
@@ -52,9 +54,9 @@ public class UserEntity implements Serializable {
 	 */
 	@JsonIgnore
 	@NotBlank(message = "密码不能为空",
-			groups = {AddGroup.class,UpdateGroup.class})
+			groups = {AddGroup.class})
 	@Length(min = 6, max = 16,message = "密码必须在6到16位之间",
-			groups = {AddGroup.class,UpdateGroup.class})
+			groups = {AddGroup.class})
 	private String password;
 	/**
 	 * 盐
@@ -82,11 +84,12 @@ public class UserEntity implements Serializable {
 			groups = {AddGroup.class,UpdateGroup.class})
 	private String mobile;
 	/**
-	 * 状态  0：禁用   1：正常
+	 * 状态  0：启用   1：禁用   2：删除
 	 */
 	@NotNull(message = "状态不能为空",
 			groups = {AddGroup.class,UpdateGroup.class})
 	@Logic(vals = {0,1}, groups = {AddGroup.class,UpdateGroup.class})
+	@TableLogic(value = "0", delval = "2")
 	private Integer status;
 	/**
 	 * 创建者ID
@@ -99,5 +102,19 @@ public class UserEntity implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
-
+	/**
+	 * 角色ID
+	 */
+	@TableField(exist = false)
+	private Long roleId;
+	/**
+	 * 角色名称
+	 */
+	@TableField(exist = false)
+	private String roleName;
+	/**
+	 * 角色标签
+	 */
+	@TableField(exist = false)
+	private String roleTag;
 }

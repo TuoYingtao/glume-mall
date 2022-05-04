@@ -1,12 +1,9 @@
 package com.glume.glumemall.admin.config;
 
-import com.glume.glumemall.admin.security.handler.JwtAccessDeniedHandler;
-import com.glume.glumemall.admin.security.handler.JwtAuthenticationEntryPoint;
+import com.glume.glumemall.admin.security.handler.*;
 import com.glume.glumemall.admin.security.*;
 import com.glume.glumemall.admin.security.filter.CaptchaFilter;
 import com.glume.glumemall.admin.security.filter.JwtAuthenticationFilter;
-import com.glume.glumemall.admin.security.handler.LoginFailureHandler;
-import com.glume.glumemall.admin.security.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     LoginSuccessHandler loginSuccessHandler;
 
+    /** 退出登录处理 */
+    @Autowired
+    LogoutSuccessHandlerImpl logoutSuccessHandler;
+
     /** 登录失败异常配置 */
     @Autowired
     LoginFailureHandler loginFailureHandler;
@@ -54,21 +55,70 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** 定义白名单 */
     private static final String[] URL_WHITELIST = {
         "/admin/user/login",
-        "/logout",
+        "/admin/user/logout",
         "/admin/user/captcha",
         "/admin/user/test/password",
-        "/swagger-ui.html",
-        "/v2/api-docs",
-        "/swagger-resources",
-        "/swagger-resources/**",
-        "/webjars/springfox-swagger-ui/**",
-        "/favicon.ico"
     };
 
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
         return jwtAuthenticationFilter;
+    }
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.cors();
+
+        /** CSRF禁用，因为不使用session */
+        httpSecurity.csrf().disable();
+
+        /** 基于token, 所以不需要session */
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        /** 认证失败处理类 */
+        httpSecurity.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler);
+
+        /** 登录配置 定义登录接口（默认：/login） */
+        httpSecurity.formLogin().loginProcessingUrl("/admin/user/login")
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler);
+
+        /** 退出登录配置 定义退出登录接口（默认：/logout） */
+        httpSecurity.logout().logoutUrl("/admin/user/logout")
+                .logoutSuccessHandler(logoutSuccessHandler);
+
+        /** 拦截规则 白名单跳过 其它的会自动拦截 */
+        httpSecurity.authorizeRequests()
+                .antMatchers(URL_WHITELIST).anonymous()
+                .antMatchers(
+                        "/",
+                        "/*.html",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/favicon.ico").anonymous()
+                .antMatchers("/swagger-ui.html").anonymous()
+                .antMatchers("/swagger-resources/**").anonymous()
+                .antMatchers("/webjars/**").anonymous()
+                .antMatchers("/*/api-docs").anonymous()
+                .antMatchers("/druid/**").anonymous()
+                // 除上面外的所有请求全部需要鉴权认证
+                .anyRequest().authenticated()
+                .and()
+                .headers().frameOptions().disable();
+
+        /** 自定义过滤器 */
+        httpSecurity.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class) // 在什么过滤器之前
+            .addFilter(jwtAuthenticationFilter());
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
     /** 强散列哈希加密实现 */
@@ -85,42 +135,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 把默认值改为 false 解决无法捕获UsernameNotFoundException 问题
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         return daoAuthenticationProvider;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-            /** 登录配置 */
-            .formLogin()
-                .loginProcessingUrl("/admin/user/login") //定义登录接口（默认：/login）
-                .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailureHandler)
-        .and()
-            /** 禁用session */
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            /** 拦截规则 */
-            .authorizeRequests()
-                // 白名单跳过
-                .antMatchers(URL_WHITELIST).permitAll()
-                // 其它的会自动拦截
-                .anyRequest().authenticated()
-        .and()
-            /** 异常处理器 */
-            .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
-        .and()
-            /** 自定义过滤器 */
-            .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class) // 在什么过滤器之前
-            .addFilter(jwtAuthenticationFilter())
-        ;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-        auth.authenticationProvider(daoAuthenticationProvider());
     }
 }

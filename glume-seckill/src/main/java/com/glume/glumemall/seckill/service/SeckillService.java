@@ -1,6 +1,7 @@
 package com.glume.glumemall.seckill.service;
 
 import com.glume.glumemall.seckill.to.SeckillSkuRedisTo;
+import com.glume.glumemall.seckill.vo.SeckillSessionsWithSkusVo;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface SeckillService {
     SeckillSkuRedisTo getSkuSeckillInfo(Long skuId);
 
     String kill(String killId, String key, Integer num);
+
+    List<SeckillSkuRedisTo> getNotCurrentSeckillSkus();
 }

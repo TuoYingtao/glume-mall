@@ -1,33 +1,37 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.glume.common.core.constant.Constants;
+import com.glume.common.core.constant.RedisConstant;
 import com.glume.common.core.exception.servlet.ServiceException;
 import com.glume.common.core.utils.DateUtils;
 import com.glume.common.core.utils.SpringUtils;
+import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
+import com.glume.glumemall.admin.dao.MenuDao;
+import com.glume.glumemall.admin.entity.MenuEntity;
+import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
 import com.glume.glumemall.admin.entity.UserRoleEntity;
+import com.glume.glumemall.admin.service.MenuService;
 import com.glume.glumemall.admin.service.RoleMenuService;
+import com.glume.glumemall.admin.service.RoleService;
 import com.glume.glumemall.admin.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.glume.glumemall.admin.dao.MenuDao;
-import com.glume.glumemall.admin.entity.MenuEntity;
-import com.glume.glumemall.admin.service.MenuService;
-
-import javax.validation.constraints.NotNull;
 
 
 @Service("menuService")
@@ -38,6 +42,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
 
     @Autowired
     RoleMenuService roleMenuService;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -65,14 +75,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
      * @param menuEntity
      */
     @Override
+    @Transactional
     public void addMenuItem(MenuEntity menuEntity,String username) {
         menuEntity.setCreateTime(new Date(DateUtils.getSysDateTime()));
         menuEntity.setCreateBy(username);
         Integer row = baseMapper.insert(menuEntity);
-        // 没添加一个菜单，都给超级管理员加上
-        SpringUtils.getBean(RoleMenuService.class).save(new RoleMenuEntity(2001L,menuEntity.getMenuId()));
-        if (row == 0) {
-            throw new ServiceException("添加失败！");
+        if (row == 0) throw new ServiceException("添加失败！");
+        RoleEntity roleEntity = roleService.getRoleDetail("admin");
+        if (StringUtils.isNotNull(roleEntity)) {
+            // 每添加一个菜单，都给超级管理员加上
+            roleMenuService.save(new RoleMenuEntity(roleEntity.getRoleId(),menuEntity.getMenuId()));
+            BoundHashOperations hashOps = redisTemplate.boundHashOps(RedisConstant.ROLE_MENU);
+            if (hashOps.hasKey(roleEntity.getRoleTag())) {
+                hashOps.delete(roleEntity.getRoleTag());
+            }
         }
     }
 
@@ -86,6 +102,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
         menuEntity.setUpdateTime(new Date(DateUtils.getSysDateTime()));
         menuEntity.setUpdateBy(username);
         Integer row = baseMapper.updateById(menuEntity);
+        QueryWrapper<RoleMenuEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("menu_id",menuEntity.getMenuId());
+        List<Long> roleIDList = roleMenuService.list(wrapper).stream().map(RoleMenuEntity::getRoleId).collect(Collectors.toList());
+        if (StringUtils.isNotNull(roleIDList)) {
+            List<RoleEntity> roleEntities = roleService.getRoleByIdBatchList(roleIDList);
+            if (StringUtils.isNotNull(roleEntities)) {
+                BoundHashOperations hashOps = redisTemplate.boundHashOps(RedisConstant.ROLE_MENU);
+                List<String> list = roleEntities.stream().filter(roleEntity -> hashOps.hasKey(roleEntity.getRoleTag()))
+                        .map(RoleEntity::getRoleTag).collect(Collectors.toList());
+                hashOps.delete(String.join(",",list));
+            }
+        }
         if (row == 0) {
             throw new ServiceException("更新失败！");
         }
@@ -97,7 +125,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
      */
     @Override
     public void removeMenuByIds(List<Long> menuIds) {
-        // TODO 1.检测当前删除的菜单信息，是否被别的地方引用
         // 存储需要删除的菜单
         List<MenuEntity> delMenuList = new ArrayList<>();
         // 获取所有菜单
@@ -145,18 +172,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuEntity> implements
     public List<MenuEntity> getMenuList(Long userId, @NotNull Boolean specific) {
         List<MenuEntity> menuList = new ArrayList<>();
         List<RoleMenuEntity> menuIdList = new ArrayList<>();
-
+        // 查询当前用户角色
         List<UserRoleEntity> userRoleId = userRoleService.getUserRoleId(userId);
         if (userRoleId.size() > 0) {
-
-            userRoleId.forEach(userRoleEntity -> {
-                menuIdList.addAll(roleMenuService.getRoleMenuEntity(userRoleEntity.getRoleId()));
-            });
-
-            menuIdList.forEach(roleMenuEntity -> {
-                menuList.add(baseMapper.selectOne(new QueryWrapper<MenuEntity>().eq("menu_id",roleMenuEntity.getMenuId())));
-            });
-
+            // 查询角色对应菜单关系数据
+            List<Long> roleIds = userRoleId.stream().map(UserRoleEntity::getRoleId).collect(Collectors.toList());
+            menuIdList.addAll(roleMenuService.getRoleMenuBatch(roleIds));
+            // 查询角色所有菜单数据
+            List<Long> menuIds = menuIdList.stream().map(RoleMenuEntity::getMenuId).distinct().collect(Collectors.toList());
+            List<MenuEntity> menuEntityList = baseMapper.selectList(new QueryWrapper<MenuEntity>().in("menu_id", menuIds));
+            menuList.addAll(menuEntityList);
             // 判读是否过滤按钮项
             if (specific) {
                 List<MenuEntity> list = menuList.stream().filter(menuEntity -> menuEntity.getMenuType().compareTo(Constants.MenuType.BUTTON.getValue()) == 0 ? false : true ).collect(Collectors.toList());

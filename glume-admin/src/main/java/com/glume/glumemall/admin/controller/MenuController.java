@@ -48,8 +48,7 @@ public class MenuController {
     @GetMapping("/list/{userId}")
     @ApiOperation(value = "获取用户菜单",notes = "")
     @ApiImplicitParam(name = "userId",value = "用户ID",required = true,dataType = "Long")
-    public R getMenuDetail(@RequestParam Map<String,Object> params, @PathVariable("userId") Long userId) {
-        PageUtils page = menuService.queryPage(params);
+    public R getMenuDetail(@PathVariable("userId") Long userId) {
         List<MenuEntity> menuList = menuService.getMenuList(userId,false);
         HashMap<String, List<MenuEntity>> map = new HashMap<>();
         map.put("menus",menuList);

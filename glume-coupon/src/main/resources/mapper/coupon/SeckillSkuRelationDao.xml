@@ -14,6 +14,56 @@
         <result property="seckillLimit" column="seckill_limit"/>
         <result property="seckillSort" column="seckill_sort"/>
     </resultMap>
+    <resultMap id="seckillSessionMap" type="com.glume.glumemall.coupon.entity.SeckillSessionEntity">
+        <id property="id" column="se_id"/>
+        <result property="name" column="se_name"/>
+        <result property="startTime" column="se_start_time"/>
+        <result property="endTime" column="se_end_time"/>
+        <result property="status" column="se_status"/>
+        <result property="createTime" column="se_create_time"/>
+        <collection property="relationSkus" resultMap="seckillSkuRelationMap"/>
+    </resultMap>
+    <resultMap id="seckillPromotionSessionMap" type="com.glume.glumemall.coupon.entity.SeckillPromotionEntity">
+        <id property="id" column="pro_id"/>
+        <result property="title" column="pro_title"/>
+        <result property="startTime" column="pro_start_time"/>
+        <result property="endTime" column="pro_end_time"/>
+        <result property="status" column="pro_status"/>
+        <result property="createTime" column="pro_create_time"/>
+        <collection property="sessionEntities" column="se_id" resultMap="seckillSessionMap"/>
+    </resultMap>
+    <delete id="deleteBatchSkuRelation" parameterType="java.util.List">
+        DELETE FROM `sms_seckill_sku_relation`
+        <where>
+            <if test="field == 'promotion_id'">
+                <foreach collection="ids" item="id" index="index" open="promotion_id IN (" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="field == 'promotion_session_id'">
+                <foreach collection="ids" item="id" index="index" open="promotion_session_id IN (" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectPromotionSessionRelation" parameterType="java.util.List" resultMap="seckillPromotionSessionMap">
+        SELECT relation.*,
+        promotion.id as `pro_id`, promotion.title as `pro_title`, promotion.start_time as `pro_start_time`, promotion.end_time as `pro_end_time`,
+               promotion.`status` as `pro_status`, promotion.user_id as `pro_user_id`, promotion.create_time as `pro_create_time`,
+        resion.id as `se_id`, resion.`name` as `se_name`, resion.start_time as `se_start_time`, resion.end_time as `se_end_time`, resion.`status` as `se_status`,
+               resion.`create_time` as `se_create_time`
+        FROM `sms_seckill_sku_relation` as relation
+        LEFT JOIN `sms_seckill_promotion` as promotion ON relation.promotion_id = promotion.id
+        LEFT JOIN `sms_seckill_session` as resion ON relation.promotion_session_id = resion.id
+        <where>
+            <foreach collection="ids" item="id" index="index" open="relation.promotion_id IN (" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+        ORDER BY promotion.start_time,resion.start_time,relation.seckill_sort DESC
+    </select>
 
 
 </mapper>

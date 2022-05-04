@@ -80,11 +80,11 @@ public class MemberController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
 		MemberEntity member = memberService.getById(id);
 
-        return R.ok().put("member", member);
+        return R.ok().put("data", member);
     }
 
     /**

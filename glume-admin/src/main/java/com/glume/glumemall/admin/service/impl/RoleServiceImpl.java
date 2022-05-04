@@ -1,5 +1,8 @@
 package com.glume.glumemall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.glume.common.core.constant.HttpStatus;
 import com.glume.common.core.exception.servlet.ServiceException;
@@ -7,23 +10,20 @@ import com.glume.common.core.utils.SpringUtils;
 import com.glume.common.core.utils.StringUtils;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.common.mybatis.Query;
+import com.glume.glumemall.admin.dao.RoleDao;
 import com.glume.glumemall.admin.entity.MenuEntity;
+import com.glume.glumemall.admin.entity.RoleEntity;
 import com.glume.glumemall.admin.entity.RoleMenuEntity;
 import com.glume.glumemall.admin.entity.TreeSelectEntity;
 import com.glume.glumemall.admin.service.MenuService;
 import com.glume.glumemall.admin.service.RoleMenuService;
+import com.glume.glumemall.admin.service.RoleService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.glume.glumemall.admin.dao.RoleDao;
-import com.glume.glumemall.admin.entity.RoleEntity;
-import com.glume.glumemall.admin.service.RoleService;
 
 
 @Service("roleService")
@@ -151,6 +151,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleEntity> implements
             return item;
         }).distinct().sorted((num1, num2) -> num1.getOrderNum() - num2.getOrderNum()).collect(Collectors.toList());
         return menuEntityList;
+    }
+
+    /** 更具标签获取角色信息 */
+    @Override
+    public RoleEntity getRoleDetail(String roleTag) {
+        QueryWrapper<RoleEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_tag",roleTag);
+        return baseMapper.selectOne(wrapper);
+    }
+
+    /** 传递多个角色ID查询 */
+    @Override
+    public List<RoleEntity> getRoleByIdBatchList(List<Long> ids) {
+        return baseMapper.getRoleByIdBatchList(ids);
     }
 
 }

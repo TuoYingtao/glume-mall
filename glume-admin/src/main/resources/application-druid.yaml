@@ -1,0 +1,74 @@
+spring:
+  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: root
+#    url: jdbc:mysql://localhost:3306/glumemall_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true
+#    type: com.alibaba.druid.pool.DruidDataSource
+    # Spring Boot 默认是不注入这些属性值的，需要自己绑定
+    # druid 数据源专有配置
+#    initialSize: 5
+#    minIdle: 5
+#    maxActive: 20
+#    maxWait: 60000
+#    timeBetweenEvictionRunsMillis: 60000
+#    minEvictableIdleTimeMillis: 300000
+#    validationQuery: SELECT 1 FROM DUAL
+#    testWhileIdle: true
+#    testOnBorrow: false
+#    testOnReturn: false
+#    poolPreparedStatements: true
+    # 配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+#    filters: stat,wall,slf4j
+#    maxPoolPreparedStatementPerConnectionSize: 20
+#    useGlobalDataSourceStat: true
+#    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/glumemall_admin?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true
+      username: root
+      password: root
+      initialSize: 5      # 初始化连接池连接数大小
+      min-idle: 5         # 最小空闲连接数，一般等于initial-size
+      max-active: 20      # 最大连接数
+      max-wait: 60000     # 获取连接时最大等待时间，单位毫秒
+      time-between-eviction-runs-millis: 60000      # 间隔多久检测需要关闭的空闲连接的时间，单位毫秒
+      min-evictable-idle-time-millis: 300000        # 连接保持空闲而不被关闭的最小时间
+      test-on-borrow: true    # 申请连接时执行validationQuery检测连接是否有效。设置为true时会影响性能
+      test-on-return: true   # 归还连接时执行validationQuery检测连接是否有效。设置为true时会影响性能
+      # 设置申请连接的时候有空闲连接时进行检测，如果连接空闲时间大于timeBetweenEvictionRunsMillis，
+      # 执行validationQuery检测连接是否有效。建议设置为true来保证安全性且不影响性能。
+      test-while-idle: false
+      validation-query: SELECT 1 FROM DUAL    # 配置一个sql查询语句来检测连接是否有效
+      pool-prepared-statements: true          # 配置是否缓存preparedStatement（PSCache），PSCache对支持游标的数据库性能有较大的提升，比如oracle。mysql建议设置为false
+
+      # druid 监控配置  访问路径：http://localhost:8088/druid/login.html
+      max-pool-prepared-statement-per-connection-size: 20   # 缓存preparedStatement（PSCache），配置时必须大于0，当大于0时，poolPreparedStatements自动触发修改为true。
+      # 过滤器配置 可配置多个 ，使用逗号分隔 stat,wall,slf4j；  不指定过滤器的参数使用默认，也可单独制定过滤器
+      # 此方法与下面的 filter 单独配置开启是一样的，只不过filter可以使用个性化配置，而filters使用默认配置，所以这两个配置可以不同时使用
+      # filters: stat,wall
+      filter:
+        stat:                 # 用于统计监控信息。
+          enabled: true       # 启用
+          slow-sql-millis: 1000  # 记录超过此指定时间的 慢sql 单位：ms
+          merge-sql: true     # 合并相同sql的统计
+        wall:
+          enabled: true       # 启用sql检测功能 ，防止sql注入攻击，sql防火墙启用
+        slf4j:
+          enabled: true       # 开启日志管理，监控页面可重置记录
+      web-stat-filter:        # web应用 监控配置
+        enabled: true
+        profile-enable: true  # 能够监控单个url调用的sql列表
+        url-pattern: /*       # 监控路径控制  eg: /admin/*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'     # \u4E0D\u62E6\u622A\u7684\u8DEF\u5F84
+      stat-view-servlet:      # druid 监控页面入口控制
+        enabled: true
+        allow: 127.0.0.1,192.168.1.1/27   # ip白名单 只有当前名单中的ip才能访问 1/27表示ip前27位相同即可
+        deny: 192.168.1.255               # ip黑名单，禁止访问的地址 优先级高于白名单
+        login-username: druid             # druid 监控页面登录账号
+        login-password: druid             # druid 监控页面登录密码
+        url-pattern: /druid/*             # 监控页面访问路径配置
+        reset-enable: true                # 是否能够重置数据
+      useGlobalDataSourceStat: true       # 合并多个DruidDataSource的监控数据
+      aop-patterns: com.xlcloud.business.vip.service.*   # Spring 监控路径
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500    # 通过配置connectProperties属性来打开mergeSql功能；慢SQL记录

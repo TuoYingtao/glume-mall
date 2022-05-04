@@ -150,4 +150,13 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuEntity
         }
     }
 
+    /**
+     * 批量查询
+     * @param roleIds 角色ID 集合
+     * @return 角色菜单关系集合
+     */
+    @Override
+    public List<RoleMenuEntity> getRoleMenuBatch(List<Long> roleIds) {
+        return baseMapper.selectList(new QueryWrapper<RoleMenuEntity>().in("role_id",roleIds));
+    }
 }

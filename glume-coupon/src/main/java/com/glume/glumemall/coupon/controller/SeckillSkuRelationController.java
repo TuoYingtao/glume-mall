@@ -1,14 +1,12 @@
 package com.glume.glumemall.coupon.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.glume.glumemall.coupon.entity.SeckillPromotionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.glume.glumemall.coupon.entity.SeckillSkuRelationEntity;
 import com.glume.glumemall.coupon.service.SeckillSkuRelationService;
@@ -30,55 +28,67 @@ public class SeckillSkuRelationController {
     @Autowired
     private SeckillSkuRelationService seckillSkuRelationService;
 
+    @GetMapping("/lates3DaySeckill")
+    public R getLates3DaySeckill() {
+        List<SeckillPromotionEntity> entities = seckillSkuRelationService.getLates3DaySeckill();
+        return R.ok().put("data",entities);
+    }
+
+    @GetMapping("/promotionandsession")
+    public R promotionAdnSessionList() {
+        Map<String,Object> data = seckillSkuRelationService.promotionAdnSessionList();
+        return R.ok().put("data",data);
+    }
+
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = seckillSkuRelationService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.ok().put("data", page);
     }
 
 
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     public R info(@PathVariable("id") Long id){
 		SeckillSkuRelationEntity seckillSkuRelation = seckillSkuRelationService.getById(id);
 
-        return R.ok().put("seckillSkuRelation", seckillSkuRelation);
+        return R.ok().put("data", seckillSkuRelation);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody SeckillSkuRelationEntity seckillSkuRelation){
 		seckillSkuRelationService.save(seckillSkuRelation);
 
-        return R.ok();
+        return R.ok("保存成功！");
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     public R update(@RequestBody SeckillSkuRelationEntity seckillSkuRelation){
 		seckillSkuRelationService.updateById(seckillSkuRelation);
 
-        return R.ok();
+        return R.ok("修改成功！");
     }
 
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    @DeleteMapping("/delete/{id}")
+    public R delete(@PathVariable("id") Long[] ids){
 		seckillSkuRelationService.removeByIds(Arrays.asList(ids));
 
-        return R.ok();
+        return R.ok("删除成功！");
     }
 
 }

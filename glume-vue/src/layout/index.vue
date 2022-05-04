@@ -1,5 +1,5 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
+  <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <!--  侧边导航栏   -->
     <sidebar class="sidebar-container"/>
@@ -41,6 +41,7 @@
     mixins: [ResizeMixin],
     computed: {
       ...mapState({
+        theme: state => state.settings.theme,
         sidebar: state => state.app.sidebar,
         device: state => state.app.device,
         showSettings: state => state.settings.showSettings,

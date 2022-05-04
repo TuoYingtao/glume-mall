@@ -18,10 +18,10 @@
           <i class="el-icon-s-tools"/>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/profile" v-if="avatar">
+          <router-link to="/user/profile">
             <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
-<!--          <el-dropdown-item @click.native="openDrawer">布局配置</el-dropdown-item>-->
+          <el-dropdown-item @click.native="openDrawer">布局配置</el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     openDrawer() {
-      console.log("AA")
       this.drawer = !this.drawer;
     },
     toggleSideBar() {

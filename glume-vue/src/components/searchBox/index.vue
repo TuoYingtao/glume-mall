@@ -14,23 +14,25 @@
             @keyup.enter.native="queryParamData" />
         </el-form-item>
         <el-form-item v-else-if="item.type === 'select'" :label="item.label||'状态'" :prop="item.prop">
-          <el-select clearable v-if="!item.input" v-model="paramAccept[item.prop]" placeholder="请选择" @change="selectQuery">
-            <el-option v-for="item in item.data" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
-          <el-select clearable v-else v-model="paramAccept[item.prop]" filterable placeholder="请选择或手动输入" @change="selectQuery">
-            <el-option v-for="item in item.data" :key="item.id" :label="item.name" :value="item.id"/>
+          <el-select clearable :filterable="item.input" v-model="paramAccept[item.prop]" placeholder="请选择" @change="selectQuery">
+            <template v-if="item.field">
+              <el-option v-for="option in item.data" :key="option[item.field.value]" :label="option[item.field.label]" :value="option[item.field.value]"/>
+            </template>
+            <template v-else>
+              <el-option v-for="item in item.data" :key="item.id" :label="item.name" :value="item.id"/>
+            </template>
           </el-select>
         </el-form-item>
         <el-form-item v-else-if="item.type === 'datetime'" :label="item.label" :prop="item.prop">
           <el-date-picker
-            v-model="paramAccept[item.prop]"
-            type="daterange"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
+            v-model="dataTime"
+            type="datetimerange"
+            :format="item.format ? item.format : 'yyyy-MM-dd HH:mm:ss'"
+            :value-format="item.format ? item.format : 'yyyy-MM-dd HH:mm:ss'"
             range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            @change="parseDate(index)" />
+            start-placeholder="开始日期时间"
+            end-placeholder="结束日期时间"
+            @change="parseDate(item.prop)" />
         </el-form-item>
       </div>
       <el-form-item>
@@ -69,17 +71,16 @@
         default: () => new Object()
       },
     },
+    data() {
+      return {
+        dataTime: []
+      }
+    },
     methods: {
       /* 日期格式化 */
-      parseDate: function(date) {
-        let paramData = [];
-        for (let i = 0; i < date.length; i++) {
-          const date1 = new Date(date[i].toString());
-          const fullYear = date1.getFullYear();
-          const number = date1.getMonth() + 1;
-          const month = number < 10 ? "0" + number : number;
-          const day = date1.getDate() < 10 ? "0" + date1.getDate() : date1.getDate();
-          paramData.push(fullYear + "-" + month + "-" + day);
+      parseDate: function(prop) {
+        if (this.dataTime && this.dataTime.length > 0) {
+          this.paramAccept[prop] = this.dataTime.toString();
         }
       },
       /* 选择查询 */

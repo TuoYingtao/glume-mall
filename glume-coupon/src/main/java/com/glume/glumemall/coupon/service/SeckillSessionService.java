@@ -19,5 +19,9 @@ public interface SeckillSessionService extends IService<SeckillSessionEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     List<SeckillSessionEntity> getLates3DaySession();
+
+    void saveSeckillSession(SeckillSessionEntity seckillSession);
+
+    void removeSessionById(List<Long> ids);
 }
 

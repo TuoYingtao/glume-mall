@@ -14,7 +14,31 @@
         <result property="status" column="status"/>
         <result property="createUserId" column="create_user_id"/>
         <result property="createTime" column="create_time"/>
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
     </resultMap>
+    <update id="updateResetPassword">
+        UPDATE `sys_user`
+        <set>
+            <if test="password != null">
+                `password` = #{password}
+            </if>
+        </set>
+        <where>
+            <if test="userId != null">
+                `user_id` = #{userId}
+            </if>
+        </where>
+    </update>
+    <select id="myPageList" resultType="com.glume.glumemall.admin.entity.UserEntity">
+        SELECT * FROM (
+          SELECT u.*,r.role_id AS role_id,r.role_name AS role_name,r.role_tag  AS role_tag
+          FROM sys_user AS `u`
+                   LEFT JOIN sys_user_role AS `ur` ON u.user_id = ur.user_id
+                   LEFT JOIN sys_role AS `r` ON ur.role_id = r.role_id
+        ) AS result
+        ${ew.customSqlSegment}
+    </select>
 
 
 </mapper>

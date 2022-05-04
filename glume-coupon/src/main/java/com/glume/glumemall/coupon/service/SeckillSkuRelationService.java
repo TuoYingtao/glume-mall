@@ -2,8 +2,11 @@ package com.glume.glumemall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
+import com.glume.glumemall.coupon.entity.SeckillPromotionEntity;
+import com.glume.glumemall.coupon.entity.SeckillSessionEntity;
 import com.glume.glumemall.coupon.entity.SeckillSkuRelationEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +19,11 @@ import java.util.Map;
 public interface SeckillSkuRelationService extends IService<SeckillSkuRelationEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    Map<String, Object> promotionAdnSessionList();
+
+    void deleteBatchSkuRelation(String fieid, List<Long> ids);
+
+    List<SeckillPromotionEntity> getLates3DaySeckill();
 }
 

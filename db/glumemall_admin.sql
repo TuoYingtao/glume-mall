@@ -11,7 +11,7 @@
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 18/02/2022 18:07:15
+ Date: 29/04/2022 18:29:03
 */
 
 SET NAMES utf8mb4;
@@ -67,6 +67,9 @@ CREATE TABLE `qrtz_cron_triggers`  (
 -- ----------------------------
 -- Records of qrtz_cron_triggers
 -- ----------------------------
+INSERT INTO `qrtz_cron_triggers` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', '0/10 * * * * ?', 'Asia/Shanghai');
+INSERT INTO `qrtz_cron_triggers` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME6', 'DEFAULT', '0/5 * * * * ?', 'Asia/Shanghai');
+INSERT INTO `qrtz_cron_triggers` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME7', 'DEFAULT', '0/15 * * * * ?', 'Asia/Shanghai');
 INSERT INTO `qrtz_cron_triggers` VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', '0 0/30 * * * ?', 'Asia/Shanghai');
 
 -- ----------------------------
@@ -123,6 +126,9 @@ CREATE TABLE `qrtz_job_details`  (
 -- ----------------------------
 -- Records of qrtz_job_details
 -- ----------------------------
+INSERT INTO `qrtz_job_details` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 'com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution', '0', '1', '0', '0', 0x230D0A23546875204170722032382031343A34393A30342043535420323032320D0A5441534B5F50524F504552544945533D7B226265616E4E616D65225C3A224A6F6254657374222C22636F6E63757272656E74225C3A312C2263726561746554696D65225C3A313633343039353232333030302C2263726F6E45787072657373696F6E225C3A22302F3130202A202A202A202A203F222C22696E766F6B65546172676574225C3A226A6F62546573742E6A6F62506172616D732827746573742729222C226A6F6247726F7570225C3A2244454641554C54222C226A6F624964225C3A312C226A6F624E616D65225C3A225C75374346425C75374544465C75394544385C75384241345C75464630385C75363730395C75353343325C7546463039222C226D697366697265506F6C696379225C3A322C22706172616D73225C3A2274657374222C2272656D61726B225C3A225C75354239415C75363546365C75344546425C75353241315C75363730395C75353343325C75364434425C7538424435222C22737461747573225C3A307D0D0A);
+INSERT INTO `qrtz_job_details` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME6', 'DEFAULT', NULL, 'com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution', '0', '1', '0', '0', 0x230D0A23546875204170722032382031373A30373A31322043535420323032320D0A5441534B5F50524F504552544945533D7B226265616E4E616D65225C3A224A6F6254657374222C22636F6E63757272656E74225C3A312C2263726561746554696D65225C3A313635313039333431373030302C2263726F6E45787072657373696F6E225C3A22302F35202A202A202A202A203F222C22696E766F6B65546172676574225C3A226A6F62546573742E6A6F624E6F506172616D73222C226A6F6247726F7570225C3A2244454641554C54222C226A6F624964225C3A362C226A6F624E616D65225C3A225C75374346425C75374544465C75394544385C75384241345C75464630385C75363545305C75353343325C7546463039222C226D697366697265506F6C696379225C3A312C226E65787456616C696454696D65225C3A313635313039333633353030302C22706172616D73225C3A22222C2272656D61726B225C3A225C75354239415C75363546365C75344546425C75353241315C75363545305C75353343325C75364434425C7538424435222C22737461747573225C3A317D0D0A);
+INSERT INTO `qrtz_job_details` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME7', 'DEFAULT', NULL, 'com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution', '0', '1', '0', '0', 0x230D0A23546875204170722032382031343A34393A33312043535420323032320D0A5441534B5F50524F504552544945533D7B226265616E4E616D65225C3A224A6F6254657374222C22636F6E63757272656E74225C3A312C2263726561746554696D65225C3A313635313131323233323030302C2263726F6E45787072657373696F6E225C3A22302F3135202A202A202A202A203F222C22696E766F6B65546172676574225C3A226A6F62546573742E6A6F624D756C7469706C65506172616D732820275C75353443385C7535344338272C20747275652C2031304C2C2032352E35442C2031302029222C226A6F6247726F7570225C3A2244454641554C54222C226A6F624964225C3A372C226A6F624E616D65225C3A225C75374346425C75374544465C75394544385C75384241345C75464630385C75353931415C75353343325C7546463039222C226D697366697265506F6C696379225C3A332C22706172616D73225C3A22222C2272656D61726B225C3A225C75354239415C75363546365C75344546425C75353241315C75353931415C75353343325C75364434425C75384244355C5C6E222C22737461747573225C3A307D0D0A);
 INSERT INTO `qrtz_job_details` VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', NULL, 'io.renren.modules.job.utils.ScheduleJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372002E696F2E72656E72656E2E6D6F64756C65732E6A6F622E656E746974792E5363686564756C654A6F62456E7469747900000000000000010200074C00086265616E4E616D657400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000E63726F6E45787072657373696F6E71007E00094C00056A6F6249647400104C6A6176612F6C616E672F4C6F6E673B4C0006706172616D7371007E00094C000672656D61726B71007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B7870740008746573745461736B7372000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000017C77AA50D87874000E3020302F3330202A202A202A203F7372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000174000672656E72656E74000CE58F82E695B0E6B58BE8AF95737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E0013000000007800);
 
 -- ----------------------------
@@ -258,6 +264,9 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
+INSERT INTO `qrtz_triggers` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', NULL, 1651129030000, 1651129020000, 5, 'PAUSED', 'CRON', 1651128544000, 0, NULL, 1, '');
+INSERT INTO `qrtz_triggers` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME6', 'DEFAULT', 'TASK_CLASS_NAME6', 'DEFAULT', NULL, 1651136835000, -1, 5, 'PAUSED', 'CRON', 1651136832000, 0, NULL, -1, '');
+INSERT INTO `qrtz_triggers` VALUES ('MyDefaultQuartzScheduler', 'TASK_CLASS_NAME7', 'DEFAULT', 'TASK_CLASS_NAME7', 'DEFAULT', NULL, 1651129035000, 1651129020000, 5, 'PAUSED', 'CRON', 1651128571000, 0, NULL, 2, '');
 INSERT INTO `qrtz_triggers` VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', NULL, 1634270400000, 1634268600000, 5, 'WAITING', 'CRON', 1634095628000, 0, NULL, 2, 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372002E696F2E72656E72656E2E6D6F64756C65732E6A6F622E656E746974792E5363686564756C654A6F62456E7469747900000000000000010200074C00086265616E4E616D657400124C6A6176612F6C616E672F537472696E673B4C000A63726561746554696D657400104C6A6176612F7574696C2F446174653B4C000E63726F6E45787072657373696F6E71007E00094C00056A6F6249647400104C6A6176612F6C616E672F4C6F6E673B4C0006706172616D7371007E00094C000672656D61726B71007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B7870740008746573745461736B7372000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000017C77AA50D87874000E3020302F3330202A202A202A203F7372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B0200007870000000000000000174000672656E72656E74000CE58F82E695B0E6B58BE8AF95737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E0013000000007800);
 
 -- ----------------------------
@@ -266,19 +275,26 @@ INSERT INTO `qrtz_triggers` VALUES ('RenrenScheduler', 'TASK_1', 'DEFAULT', 'TAS
 DROP TABLE IF EXISTS `schedule_job`;
 CREATE TABLE `schedule_job`  (
   `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务id',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务名称',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务分组',
+  `invoke_target` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '调用目标字符串',
   `bean_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  `params` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '参数',
   `cron_expression` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'cron表达式',
+  `misfire_policy` bigint NULL DEFAULT NULL COMMENT 'cron 计划策略：0-默认 、1-立即触发执行、2-触发一次执行、3-不触发立即执行',
+  `concurrent` bigint NULL DEFAULT NULL COMMENT '是否并发执行：0-允许、1-禁止',
   `status` tinyint NULL DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
+  `params` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '参数',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of schedule_job
 -- ----------------------------
-INSERT INTO `schedule_job` VALUES (1, 'testTask', 'renren', '0 0/30 * * * ?', 0, '参数测试', '2021-10-13 11:20:23');
+INSERT INTO `schedule_job` VALUES (1, '系统默认（有参）', 'DEFAULT', 'jobTest.jobParams(\'test\')', 'JobTest', '0/10 * * * * ?', 2, 1, 1, 'test', '定时任务有参测试', '2021-10-13 11:20:23');
+INSERT INTO `schedule_job` VALUES (6, '系统默认（无参）', 'DEFAULT', 'jobTest.jobNoParams', 'JobTest', '0/5 * * * * ?', 1, 1, 1, '', '定时任务无参测试', '2022-04-28 05:03:37');
+INSERT INTO `schedule_job` VALUES (7, '系统默认（多参）', 'DEFAULT', 'jobTest.jobMultipleParams( \'哈哈\', true, 10L, 25.5D, 10 )', 'JobTest', '0/15 * * * * ?', 3, 1, 1, '', '定时任务多参测试\n', '2022-04-28 10:17:12');
 
 -- ----------------------------
 -- Table structure for schedule_job_log
@@ -287,31 +303,62 @@ DROP TABLE IF EXISTS `schedule_job_log`;
 CREATE TABLE `schedule_job_log`  (
   `log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志id',
   `job_id` bigint NOT NULL COMMENT '任务id',
-  `bean_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'spring bean名称',
-  `params` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '参数',
   `status` tinyint NOT NULL COMMENT '任务状态    0：成功    1：失败',
-  `error` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '失败信息',
+  `job_message` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '日志信息',
+  `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '异常信息',
   `times` int NOT NULL COMMENT '耗时(单位：毫秒)',
+  `start_time` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
+  `stop_time` datetime(0) NULL DEFAULT NULL COMMENT '停止时间',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of schedule_job_log
 -- ----------------------------
-INSERT INTO `schedule_job_log` VALUES (1, 1, 'testTask', 'renren', 0, NULL, 0, '2021-10-13 11:30:00');
-INSERT INTO `schedule_job_log` VALUES (2, 1, 'testTask', 'renren', 0, NULL, 2, '2021-10-13 12:00:00');
-INSERT INTO `schedule_job_log` VALUES (3, 1, 'testTask', 'renren', 0, NULL, 0, '2021-10-13 12:30:00');
-INSERT INTO `schedule_job_log` VALUES (4, 1, 'testTask', 'renren', 0, NULL, 6, '2021-10-13 13:00:00');
-INSERT INTO `schedule_job_log` VALUES (5, 1, 'testTask', 'renren', 0, NULL, 3, '2021-10-13 13:30:00');
-INSERT INTO `schedule_job_log` VALUES (6, 1, 'testTask', 'renren', 0, NULL, 4, '2021-10-13 14:00:00');
-INSERT INTO `schedule_job_log` VALUES (7, 1, 'testTask', 'renren', 0, NULL, 1, '2021-10-13 14:30:00');
-INSERT INTO `schedule_job_log` VALUES (8, 1, 'testTask', 'renren', 0, NULL, 2, '2021-10-13 15:00:00');
-INSERT INTO `schedule_job_log` VALUES (9, 1, 'testTask', 'renren', 0, NULL, 1, '2021-10-13 15:30:00');
-INSERT INTO `schedule_job_log` VALUES (10, 1, 'testTask', 'renren', 0, NULL, 0, '2021-10-15 10:30:00');
-INSERT INTO `schedule_job_log` VALUES (11, 1, 'testTask', 'renren', 0, NULL, 1, '2021-10-15 11:00:00');
-INSERT INTO `schedule_job_log` VALUES (12, 1, 'testTask', 'renren', 0, NULL, 3, '2021-10-15 11:30:00');
+INSERT INTO `schedule_job_log` VALUES (1, 6, 1, '系统默认（无参）-总耗时：6毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 6, '2022-04-29 17:27:12', '2022-04-29 17:27:12', '2022-04-29 17:27:12');
+INSERT INTO `schedule_job_log` VALUES (2, 6, 1, '系统默认（无参）-总耗时：3453毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 3453, '2022-04-29 17:28:55', '2022-04-29 17:28:59', '2022-04-29 17:28:59');
+INSERT INTO `schedule_job_log` VALUES (3, 6, 1, '系统默认（无参）-总耗时：1毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 1, '2022-04-29 17:29:05', '2022-04-29 17:29:05', '2022-04-29 17:29:05');
+INSERT INTO `schedule_job_log` VALUES (4, 7, 0, '系统默认（多参）-总耗时：5毫秒', NULL, 5, '2022-04-29 17:29:06', '2022-04-29 17:29:06', '2022-04-29 17:29:06');
+INSERT INTO `schedule_job_log` VALUES (5, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:07', '2022-04-29 17:29:07', '2022-04-29 17:29:07');
+INSERT INTO `schedule_job_log` VALUES (6, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:08', '2022-04-29 17:29:08', '2022-04-29 17:29:08');
+INSERT INTO `schedule_job_log` VALUES (7, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:09', '2022-04-29 17:29:09', '2022-04-29 17:29:09');
+INSERT INTO `schedule_job_log` VALUES (8, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:10', '2022-04-29 17:29:10', '2022-04-29 17:29:10');
+INSERT INTO `schedule_job_log` VALUES (9, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:11', '2022-04-29 17:29:11', '2022-04-29 17:29:11');
+INSERT INTO `schedule_job_log` VALUES (10, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:12', '2022-04-29 17:29:12', '2022-04-29 17:29:12');
+INSERT INTO `schedule_job_log` VALUES (11, 1, 0, '系统默认（有参）-总耗时：1毫秒', NULL, 1, '2022-04-29 17:29:14', '2022-04-29 17:29:14', '2022-04-29 17:29:14');
+INSERT INTO `schedule_job_log` VALUES (12, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:14', '2022-04-29 17:29:14', '2022-04-29 17:29:14');
+INSERT INTO `schedule_job_log` VALUES (13, 1, 0, '系统默认（有参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:15', '2022-04-29 17:29:15', '2022-04-29 17:29:15');
+INSERT INTO `schedule_job_log` VALUES (14, 6, 1, '系统默认（无参）-总耗时：1毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 1, '2022-04-29 17:29:17', '2022-04-29 17:29:17', '2022-04-29 17:29:17');
+INSERT INTO `schedule_job_log` VALUES (15, 6, 1, '系统默认（无参）-总耗时：15毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 15, '2022-04-29 17:29:18', '2022-04-29 17:29:18', '2022-04-29 17:29:18');
+INSERT INTO `schedule_job_log` VALUES (16, 6, 1, '系统默认（无参）-总耗时：0毫秒', 'java.lang.reflect.InvocationTargetException\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\r\n	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\r\n	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\r\n	at java.lang.reflect.Method.invoke(Method.java:498)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:52)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.JobInvokeUtil.invokeMethod(JobInvokeUtil.java:31)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.QuartzJobDisallowConcurrentExecution.doExecute(QuartzJobDisallowConcurrentExecution.java:17)\r\n	at com.glume.glumemall.admin.scheduled.quartz.job.AbstractQuartzJob.execute(AbstractQuartzJob.java:42)\r\n	at org.quartz.core.JobRunShell.run(JobRunShell.java:202)\r\n	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)\r\nCaused by: java.lang.ArithmeticException: / by zero\r\n	at com.glume.glumemall.admin.scheduled.quartz.test.JobTest.jobNoParams(JobTest.java:26)\r\n	... 10 more\r\n', 0, '2022-04-29 17:29:19', '2022-04-29 17:29:19', '2022-04-29 17:29:19');
+INSERT INTO `schedule_job_log` VALUES (17, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:20', '2022-04-29 17:29:20', '2022-04-29 17:29:20');
+INSERT INTO `schedule_job_log` VALUES (18, 7, 0, '系统默认（多参）-总耗时：1毫秒', NULL, 1, '2022-04-29 17:29:21', '2022-04-29 17:29:21', '2022-04-29 17:29:21');
+INSERT INTO `schedule_job_log` VALUES (19, 7, 0, '系统默认（多参）-总耗时：1毫秒', NULL, 1, '2022-04-29 17:29:22', '2022-04-29 17:29:22', '2022-04-29 17:29:22');
+INSERT INTO `schedule_job_log` VALUES (20, 7, 0, '系统默认（多参）-总耗时：0毫秒', NULL, 0, '2022-04-29 17:29:23', '2022-04-29 17:29:23', '2022-04-29 17:29:23');
+
+-- ----------------------------
+-- Table structure for sys_blacklist
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_blacklist`;
+CREATE TABLE `sys_blacklist`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `kick_out_id` bigint NULL DEFAULT NULL COMMENT '踢出者ID',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '被踢出用户名',
+  `token` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '用户令牌',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `login_out_time` datetime(0) NULL DEFAULT NULL COMMENT '被提出的时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '黑名单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_blacklist
+-- ----------------------------
+INSERT INTO `sys_blacklist` VALUES (1, 1001, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY0OTcyNzA1NSwidXNlcklkIjoxMDAxLCJpYXQiOjE2NDk2NDA2NTUsImp0aSI6ImVmNzgzYWUwLWRlMjQtNDY3My1iMWQxLWQ5ZmFlOWMyMGNjNyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.pj9yhLjYjf5tGCsjYxzQKZGo89CjUteOp4AQtnLHoDpJ9w6TZfgJfY-F5gb9pYV1_HpuylvMyU5MUDuv354hsA', '192.168.50.116', '2022-04-11 11:36:50');
+INSERT INTO `sys_blacklist` VALUES (2, 1001, 'user', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZVRhZyI6ImNvbW1vbiIsImV4cCI6MTY0OTczNDcxOCwidXNlcklkIjoxMDAyLCJpYXQiOjE2NDk2NDgzMTgsImp0aSI6IjZiNGI3Mjc2LWUxYmEtNDZhNS04ZDg5LTIyZDIyOTkxZjcwOSIsInVzZXJuYW1lIjoidXNlciJ9.tMFjb9oqnImKaXfVTL98aEC-ahncEqHI6y4qKSZggwB4ZJlMhfdbLqljJ-rVwm-IE7akVF9mKF0Ev7QuO2tKmA', '192.168.50.116', '2022-04-11 11:39:13');
+INSERT INTO `sys_blacklist` VALUES (3, 1001, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY1MDk2MzA0MywidXNlcklkIjoxMDAxLCJpYXQiOjE2NTA4NzY2NDMsImp0aSI6ImVlOGRlMjkwLWUzOTgtNGMwOC1iOTNiLTUzYjNmYjEzNzk3ZCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.rClvLer9M1WaFgDN3onJrwnLL5vvrVErgL89JyvuaWbe_9QluGCZWYs_GSHdmemEPXkCdiz6RpB9RB7SB6zRFw', '192.168.50.116', '2022-04-25 17:00:39');
+INSERT INTO `sys_blacklist` VALUES (4, 1001, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY1MDk2Mzc5MCwidXNlcklkIjoxMDAxLCJpYXQiOjE2NTA4NzczOTAsImp0aSI6ImJjMzI5ODI1LTFlNzMtNGY2OC1hNGVhLTA1N2E4NGI4NDMwMSIsInVzZXJuYW1lIjoiYWRtaW4ifQ.dapX3UTrqdxcDpHD0tRGXwQ6si5c-wo7nfl32GTtYowSSlZkUzJlbyPDmFoDPKAyBSofsTy1keoYXPjE1jqTfw', '192.168.50.116', '2022-04-25 17:27:48');
 
 -- ----------------------------
 -- Table structure for sys_captcha
@@ -342,7 +389,7 @@ CREATE TABLE `sys_config`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `param_key`(`param_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_config
@@ -363,11 +410,36 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_login
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_login`;
+CREATE TABLE `sys_login`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户名',
+  `token` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '用户令牌',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '登录时间\r\n',
+  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '浏览器类型',
+  `version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '浏览器版本',
+  `engine` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '浏览器引擎类型',
+  `engine_version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '浏览器引擎版本',
+  `os` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作系统类型',
+  `platform` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '平台类型',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `username`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '在线列表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_login
+-- ----------------------------
+INSERT INTO `sys_login` VALUES (24, 'admin', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVUYWciOiJhZG1pbiIsImV4cCI6MTY1MTI4OTg1OCwidXNlcklkIjoxMDAxLCJpYXQiOjE2NTEyMDM0NTgsImp0aSI6IjEwZmY0ZjAyLTYwZjctNDQ5OS05NDE1LWU3MDFlY2E4ZWEyNCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.LE3-LjR9ErsKn2MZOCYSMr97IkYsAs5JKHWZYQCkpsUN4NkGb3pPL5X0RuDz1pWe48gzH-vsNHe-Q4TrzhcFag', '192.168.50.116', '2022-04-29 11:37:38', 'Chrome', '100.0.4896.127', 'Webkit', '537.36', 'Windows 10 or Windows Server 2016', 'Windows');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -392,17 +464,17 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', 'sys', NULL, NULL, '0', '0', NULL, 'M', 'system', 0, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (2, 0, '管理员列表', 'sys/user', '', '', '0', '0', '', 'M', 'peoples', 1, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', '/roleManage', NULL, NULL, '0', '0', NULL, 'M', 'user', 2, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
-INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', '/menuManage', '', '', '0', '0', '', 'M', 'tree-table', 3, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (5, 0, 'SQL监控', 'http://localhost:8080/glume-admin/druid/sql.html', '', '', '0', '0', '', 'M', 'data', 98, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-18 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (6, 0, '定时任务', 'job/schedule', '', '', '0', '0', '', 'M', 'job', 99, 'admin', '2016-11-11 11:11:11', 'admin', '2021-11-18 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (2, 57, '管理员列表', '/system/userInfo', 'system/userInfo/index', '', '0', '0', 'sys:userinfo:list', 'C', 'peoples', 3, 'admin', '2016-11-11 00:00:00', 'admin', '2022-04-11 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (3, 0, '角色管理', '/roleManage', '', '', '0', '0', '', 'M', 'user', 2, 'admin', '2016-11-11 11:11:11', 'admin', '2022-04-11 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (4, 0, '菜单管理', '/menuManage', '', '', '0', '0', '', 'M', 'tree-table', 1, 'admin', '2016-11-11 00:00:00', 'admin', '2022-04-11 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (5, 58, 'SQL监控', '/monitor/druid', 'monitor/druid/index', '', '0', '0', 'sys:monitor:druid', 'C', 'druid', 98, 'admin', '2016-11-11 00:00:00', 'admin', '2022-04-13 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (6, 58, '定时任务', '/monitor/jobSchedule', 'monitor/jobSchedule/index', '', '0', '0', 'sys:monitor:jobschedule', 'C', 'job', 99, 'admin', '2016-11-11 11:11:11', 'admin', '2022-04-26 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (7, 6, '查看', NULL, NULL, NULL, '0', '0', 'sys:schedule:list,sys:schedule:info', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (8, 6, '新增', NULL, NULL, NULL, '0', '0', 'sys:schedule:save', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (9, 6, '修改', NULL, NULL, NULL, '0', '0', 'sys:schedule:update', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
@@ -425,13 +497,21 @@ INSERT INTO `sys_menu` VALUES (25, 33, '修改', NULL, NULL, NULL, '0', '0', 'sy
 INSERT INTO `sys_menu` VALUES (26, 33, '删除', NULL, NULL, NULL, '0', '0', 'sys:menu:delete', 'F', '#', 999, 'admin', '2016-11-11 11:11:11', 'admin', '2016-11-11 11:11:11', NULL);
 INSERT INTO `sys_menu` VALUES (33, 4, '菜单列表', '/menuManage/list', 'menuManage/index', '', '0', '0', 'sys:menu:list', 'C', 'list', 6, 'admin', '2016-11-11 00:00:00', 'admin', '2021-11-06 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (37, 3, '角色列表', '/role/list', 'roleManage/index', '', '0', '0', 'sys:role:lsit', 'C', 'user', 1, 'admin', '2021-11-06 00:00:00', 'admin', '2021-11-06 00:00:00', '');
-INSERT INTO `sys_menu` VALUES (38, 0, '商品管理', '/commodityManage', '', '', '0', '0', '', 'M', 'dianpu', 4, 'admin', '2021-11-09 14:49:38', 'admin', '2021-11-12 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (38, 0, '商品管理', '/commodityManage', '', '', '0', '0', '', 'M', 'dianpu', 5, 'admin', '2021-11-09 14:49:38', 'admin', '2022-04-11 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (39, 38, '属性分组', '/commodityManage/property/list', 'commodityManage/propertyManage/index', '', '0', '0', 'sys:property:list', 'C', 'input', 2, 'admin', '2021-11-09 14:51:33', 'admin', '2021-11-15 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (45, 38, '品牌管理', '/commodityManage/brandManage', 'commodityManage/brandManage/index', '', '0', '0', 'sys:brand:list', 'C', 'shopping', 1, 'admin', '2021-11-12 15:13:41', 'admin', '2021-11-12 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (47, 38, '商品属性', '/commodityManage/commodityProperty/list', 'commodityManage/commodityProperty/index', NULL, '0', '0', 'sys:commodity:list', 'C', 'express-model', 3, 'admin', '2021-11-15 15:30:40', NULL, NULL, NULL);
-INSERT INTO `sys_menu` VALUES (48, 0, '会员管理', 'memberManage', '', '', '0', '0', '', 'M', 'peoples', 5, 'admin', '2021-11-18 22:04:38', 'admin', '2021-11-18 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (48, 0, '会员管理', 'memberManage', '', '', '0', '0', '', 'M', 'peoples', 4, 'admin', '2021-11-18 22:04:38', 'admin', '2022-04-11 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (49, 48, '会员等级', '/memberManage/memberLevel', 'memberManage/memberLevel/index', '', '0', '0', 'sys:memberlevel:list', 'C', 'tree', 1, 'admin', '2021-11-18 22:07:45', 'admin', '2021-11-18 00:00:00', '');
 INSERT INTO `sys_menu` VALUES (50, 38, '发布商品', '/commodityManage/issuedCommodity', 'commodityManage/issuedCommodity/index', '', '0', '0', 'sys:issuedcommodity:form', 'C', 'jiageprice1', 4, 'admin', '2021-11-19 14:21:17', 'admin', '2021-11-19 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (51, 0, '优惠营销', 'discountsManage', NULL, NULL, '0', '0', NULL, 'M', 'shopping', 6, 'admin', '2022-03-11 16:43:37', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (52, 51, '秒杀活动场次', '/discountsManage/sessionSeckill', 'discountsManage/SessionSeckill/index', '', '0', '0', 'sys:sessionseckill:list', 'C', '', 2, 'admin', '2022-03-11 16:46:15', 'admin', '2022-03-12 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (53, 51, '秒杀活动主题', '/discountsManage/dailyseckill', 'discountsManage/DailySeckill/index', NULL, '0', '0', 'sys:dailyseckill:list', 'C', '', 1, 'admin', '2022-03-12 15:09:09', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (54, 51, '秒杀商品关联', '/discountsManage/goodsseckillrelation', 'discountsManage/GoodsSeckillRelation/index', '', '0', '0', 'sys:goodsseckillrelation:list', 'C', '', 3, 'admin', '2022-03-17 11:47:09', 'admin', '2022-03-17 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (56, 58, '在线用户列表', '/monitor/onlineList/list', 'monitor/onlineList/index', '', '0', '0', 'sys:onlinelist:index', 'C', 'diannao-tianchong', 1, 'admin', '2022-04-09 16:27:54', 'admin', '2022-04-13 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (57, 0, '管理员列表', '/system/userInfo', '', '', '0', '0', '', 'M', 'peoples', 3, 'admin', '2022-04-11 12:11:42', 'admin', '2022-04-11 00:00:00', '');
+INSERT INTO `sys_menu` VALUES (58, 0, '监控器', '/monitor', NULL, NULL, '0', '0', NULL, 'M', 'monitor', 7, 'admin', '2022-04-13 14:44:26', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (59, 58, '调度日志', '/monitor/jobsechdulelog', 'monitor/jobScheduleLog/index', '', '1', '0', 'sys:jobsechdulelog:list', 'C', 'log', 99, 'admin', '2022-04-29 11:05:37', 'admin', '2022-04-29 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -442,7 +522,7 @@ CREATE TABLE `sys_oss`  (
   `url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'URL地址',
   `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件上传' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oss
@@ -460,13 +540,14 @@ CREATE TABLE `sys_role`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `role_tag` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色标签',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (2001, '超级管理员', 'admin', 1001, '2021-10-15 22:09:44', 'admin');
 INSERT INTO `sys_role` VALUES (2002, '普通用户', '普通用户', 1001, '2021-10-15 22:09:44', 'common');
+INSERT INTO `sys_role` VALUES (2003, '测试用户', '测试用户', 1001, '2022-04-12 18:01:05', 'TestUser');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -477,7 +558,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 216 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 237 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色与菜单对应关系' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -523,6 +604,25 @@ INSERT INTO `sys_role_menu` VALUES (213, 2001, 47);
 INSERT INTO `sys_role_menu` VALUES (214, 2001, 48);
 INSERT INTO `sys_role_menu` VALUES (215, 2001, 49);
 INSERT INTO `sys_role_menu` VALUES (216, 2001, 50);
+INSERT INTO `sys_role_menu` VALUES (217, 2001, 51);
+INSERT INTO `sys_role_menu` VALUES (218, 2001, 52);
+INSERT INTO `sys_role_menu` VALUES (219, 2001, 53);
+INSERT INTO `sys_role_menu` VALUES (220, 2001, 54);
+INSERT INTO `sys_role_menu` VALUES (222, 2001, 56);
+INSERT INTO `sys_role_menu` VALUES (223, 2001, 57);
+INSERT INTO `sys_role_menu` VALUES (224, 2003, 1);
+INSERT INTO `sys_role_menu` VALUES (225, 2003, 5);
+INSERT INTO `sys_role_menu` VALUES (226, 2003, 6);
+INSERT INTO `sys_role_menu` VALUES (227, 2003, 7);
+INSERT INTO `sys_role_menu` VALUES (228, 2003, 8);
+INSERT INTO `sys_role_menu` VALUES (229, 2003, 9);
+INSERT INTO `sys_role_menu` VALUES (230, 2003, 10);
+INSERT INTO `sys_role_menu` VALUES (231, 2003, 11);
+INSERT INTO `sys_role_menu` VALUES (232, 2003, 12);
+INSERT INTO `sys_role_menu` VALUES (233, 2003, 13);
+INSERT INTO `sys_role_menu` VALUES (234, 2003, 14);
+INSERT INTO `sys_role_menu` VALUES (235, 2001, 58);
+INSERT INTO `sys_role_menu` VALUES (236, 2001, 59);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -540,13 +640,14 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1002 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1004 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统用户' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1001, 'admin', '$2a$10$9zvuRVKXL5asr8OyR3XQB.nGGdjZplG1fb6Ef3aWaZA5hHZUfoVp2', 'YzcmCZNvbXocrsz9dm8e', 'tuoyingtao@163.com', '15207777777', 0, 1, '2016-11-11 11:11:11');
-INSERT INTO `sys_user` VALUES (1002, 'user', '$2a$10$Ltu1hFd4Qg0P4uZ.CQ3b.ua22eBo3cOP2z36uiXN1SgvV9Klv.CaS', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 0, 1, '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES (1001, 'admin', '$2a$10$9zvuRVKXL5asr8OyR3XQB.nGGdjZplG1fb6Ef3aWaZA5hHZUfoVp2', 'YzcmCZNvbXocrsz9dm8e', 'tuoyingtao@163.com', '15233333333', 0, 1, '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES (1002, 'user', '$2a$10$06mEvledBGQu/086v0ZC9eT39ViGR.jZ1kbi.fvfut7Vc1Rdp49.u', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', 0, 1, '2016-11-11 11:11:11');
+INSERT INTO `sys_user` VALUES (1003, 'dytest', '$2a$10$DgJxOuvI4fLNti2s6vR2J.UHFSfAMqCGvpJej7DHHDetjxdDDdPvK', NULL, '15888888888@163.com', '15888888888', 0, 1001, '2022-04-12 18:22:29');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -557,14 +658,14 @@ CREATE TABLE `sys_user_role`  (
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (1, 1001, 2001);
-INSERT INTO `sys_user_role` VALUES (2, 1001, 2002);
-INSERT INTO `sys_user_role` VALUES (3, 1002, 2002);
+INSERT INTO `sys_user_role` VALUES (2, 1002, 2002);
+INSERT INTO `sys_user_role` VALUES (4, 1003, 2003);
 
 -- ----------------------------
 -- Table structure for sys_user_token
@@ -596,7 +697,7 @@ CREATE TABLE `tb_user`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tb_user

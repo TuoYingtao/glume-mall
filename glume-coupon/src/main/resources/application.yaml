@@ -22,8 +22,24 @@ spring:
         dashboard: localhost:8080
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: 192.168.19.130
+    port: 6379
+    database: 0
+  # 拦路追踪
+  zipkin:
+    base-url: http://192.168.19.130:9411/
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      rate: 1
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: auto #主键自增
@@ -31,3 +47,7 @@ feign:
   sentinel:
     # 开启熔断保护机制
     enabled: true
+# 日志配置
+logging:
+  level:
+    com.alibaba.nacos.client.naming: warn

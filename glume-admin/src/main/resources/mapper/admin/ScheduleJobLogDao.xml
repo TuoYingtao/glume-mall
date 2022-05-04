@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.glume.glumemall.admin.dao.ScheduleJobLogDao">
+    <resultMap id="scheduleJobLog" type="com.glume.glumemall.admin.entity.ScheduleJobLogEntity">
+        <id property="logId" column="log_id"/>
+        <result property="jobId" column="job_id"/>
+        <result property="status" column="status"/>
+        <result property="jobMessage" column="job_message"/>
+        <result property="exceptionInfo" column="exception_info"/>
+        <result property="times" column="times"/>
+        <result property="startTime" column="start_time"/>
+        <result property="stopTime" column="stop_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="jobName" column="job_name"/>
+        <result property="jobGroup" column="job_group"/>
+    </resultMap>
+    <select id="myPageList" resultType="com.glume.glumemall.admin.entity.ScheduleJobLogEntity">
+        SELECT * FROM (
+            SELECT jg.log_id, jg.job_id, jg.`status`, jg.job_message, jg.exception_info, jg.times, jg.start_time, jg.stop_time, jg.create_time,
+                   j.job_name, j.job_group
+            FROM schedule_job_log AS jg
+            LEFT JOIN schedule_job AS j ON jg.job_id = j.job_id
+        ) AS result
+        ${ew.customSqlSegment}
+    </select>
+    <select id="getInfoById" resultType="com.glume.glumemall.admin.entity.ScheduleJobLogEntity">
+        SELECT jg.log_id, jg.job_id, jg.`status`, jg.job_message, jg.exception_info, jg.times, jg.start_time, jg.stop_time, jg.create_time,
+               j.job_name, j.job_group
+        FROM schedule_job_log AS jg
+        LEFT JOIN schedule_job AS j ON jg.job_id = j.job_id
+        WHERE jg.log_id = #{logId}
+    </select>
+</mapper>

@@ -1,6 +1,7 @@
 package com.glume.glumemall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.glume.common.mybatis.PageUtils;
@@ -42,6 +43,16 @@ public class SkuInfoController {
         return R.ok().put("page", page);
     }
 
+    /**
+     * 全部列表
+     */
+    @GetMapping("/list/all")
+    public R listAll(){
+        List<SkuInfoEntity> list = skuInfoService.list();
+
+        return R.ok().put("data", list);
+    }
+
 
     /**
      * 信息
@@ -52,6 +63,17 @@ public class SkuInfoController {
 
         return R.ok().put("data", skuInfo);
     }
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/list")
+    public R infoList(@RequestBody Long[] skuId){
+        List<SkuInfoEntity> skuInfoEntities = skuInfoService.listByIds(Arrays.asList(skuId));
+
+        return R.ok().put("data", skuInfoEntities);
+    }
+
 
     /**
      * 保存

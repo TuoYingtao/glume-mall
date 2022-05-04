@@ -10,6 +10,13 @@ export function login(login) {
   })
 }
 
+export function loginOut() {
+  return request({
+    url: '/admin/user/logout',
+    method: 'GET',
+  })
+}
+
 export function captcha() {
   return request({
     url: '/admin/user/captcha',

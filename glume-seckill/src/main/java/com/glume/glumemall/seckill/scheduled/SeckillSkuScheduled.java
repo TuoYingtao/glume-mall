@@ -32,7 +32,7 @@ public class SeckillSkuScheduled {
 
     private final String UPLOAD_LOCK = "seckill:upload:lock:";
 
-    @Scheduled(cron = "*/5 * * * * ?")
+    @Scheduled(cron = "0 0 0/1 * * ?")
     public void uploadSeckillSku3Day() {
         LOGGER.info("开始上架近三天的活动商品....");
         /** 分布式锁 */

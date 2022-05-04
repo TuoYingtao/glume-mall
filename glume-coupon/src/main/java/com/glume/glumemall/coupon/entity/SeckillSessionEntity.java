@@ -9,8 +9,15 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.glume.common.core.annotation.valid.AddGroup;
+import com.glume.common.core.annotation.valid.IDGroup;
+import com.glume.common.core.annotation.valid.UpdateGroup;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.*;
 
 /**
  * 秒杀活动场次
@@ -28,10 +35,12 @@ public class SeckillSessionEntity implements Serializable {
 	 * id
 	 */
 	@TableId
+	@NotNull(message = "ID不能为空", groups = {UpdateGroup.class, IDGroup.class})
 	private Long id;
 	/**
 	 * 场次名称
 	 */
+	@NotBlank(message = "场次名称不能为空")
 	private String name;
 	/**
 	 * 每日开始时间
@@ -48,19 +57,27 @@ public class SeckillSessionEntity implements Serializable {
 	/**
 	 * 启用状态
 	 */
+	@NotNull(message = "启用状态不能为空")
 	private Integer status;
 	/**
 	 * 创建时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createTime;
 	/**
 	 * 活动时间范围
 	 */
 	@TableField(exist = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@NotEmpty(message = "活动时间范围不能为空")
+	@Size(message = "活动日期范围格式不正确",min = 1,max = 2)
+	@Future(message = "活动日期范围不能小于今日",groups = AddGroup.class)
 	private Date[] dateTime;
 	/**
 	 * 所有优惠秒杀商品
 	 */
 	@TableField(exist = false)
+	@JsonInclude(value = JsonInclude.Include.NON_NULL)
 	private List<SeckillSkuRelationEntity> relationSkus;
 }

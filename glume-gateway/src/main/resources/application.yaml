@@ -1,9 +1,28 @@
 server:
   port: 88
+# 日志配置
+logging:
+  level:
+    com.alibaba.nacos.client.naming: warn
 spring:
   application:
     name: glume-gateway
+  # 拦路追踪
+  zipkin:
+    base-url: http://localhost:9411/
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      rate: 1
   cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
     gateway:
       routes:
         # 产品服务路由
@@ -90,6 +109,3 @@ spring:
           uri: lb://glume-product
           predicates:
             - Host=glumemall.com,item.glumemall.com
-    nacos:
-      discovery:
-        server-addr: localhost:8848

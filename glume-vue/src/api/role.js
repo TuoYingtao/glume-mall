@@ -9,6 +9,13 @@ export function roleList(param) {
     params: param
   })
 }
+// 获取全部角色列表
+export function roleListAll() {
+  return request({
+    url: `/admin/role/listAll`,
+    method: 'GET',
+  })
+}
 
 // 角色下拉菜单权限列表
 export function getTreeSelect(roleId) {

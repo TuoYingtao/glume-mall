@@ -13,7 +13,8 @@
       </el-row>
       <!--   表格   -->
       <el-table v-if="refreshTable" v-loading="is_loading" :data="menuList" row-key="menuId" :default-expand-all="isExpandAll"
-                :row-style="rowStyle" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                :row-style="rowStyle" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+                :header-cell-style="{'text-align':'justify-all'}" :cell-style="{'text-align':'justify-all'}">
         <el-table-column prop="name" label="菜单名称" :show-overflow-tooltip="true"/>
         <el-table-column prop="icon" label="图标" align="center">
           <template slot-scope="scope">
@@ -21,20 +22,29 @@
           </template>
         </el-table-column>
         <el-table-column prop="menuType" label="菜单级别" :show-overflow-tooltip="true"/>
-        <el-table-column prop="orderNum" label="排序"></el-table-column>
+        <el-table-column prop="orderNum" label="排序"/>
         <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.perms" type="warning">{{scope.row.perms}}</el-tag>
+            <el-tag type="info" v-else>-------</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.component">{{scope.row.component}}</el-tag>
+            <el-tag type="info" v-else>-------</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="query" label="请求参数" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.query" type="info">{{scope.row.query}}</el-tag>
+            <el-tag type="info" v-else>-------</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="显示/隐藏">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.visible == 0">显示</el-tag>
+            <el-tag v-else type="info">隐藏</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态">
@@ -114,7 +124,7 @@
           <el-col :span="12">
             <el-form-item v-if="form.menuType != 'F'" prop="path">
               <span slot="label">
-                <el-tooltip content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头" placement="top">
+                <el-tooltip content="访问的路由地址，如：`/system`、`/system/index`，默认在`views`目录下" placement="top">
                 <i class="el-icon-question"></i>
                 </el-tooltip>
                 路由地址
@@ -279,13 +289,13 @@ export default {
       })
     },
     rowStyle({row, rowIndex}) {
-      // if (row.menuType == "M") {
-      //   return {"background": "#FFF"}
-      // } else if (row.menuType == "C") {
-      //   return {"background": "#F7F7F7"}
-      // } else {
-      //   return {"background": "#F2F2F2"}
-      // }
+      if (row.menuType == "M") {
+        return {"background": "#FFF"}
+      } else if (row.menuType == "C") {
+        return {"background": "#F7F7F7"}
+      } else {
+        return {"background": "#F2F2F2"}
+      }
     },
     treeselectSelect(e) {
       this.form.parentId = e.menuId;
@@ -392,5 +402,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: justify-all;
 }
 </style>

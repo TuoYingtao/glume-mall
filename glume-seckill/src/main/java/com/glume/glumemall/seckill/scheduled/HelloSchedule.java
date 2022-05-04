@@ -34,7 +34,7 @@ public class HelloSchedule {
      *  3)  让定时任务异步执行。 (推荐)
      */
     @Async
-    @Scheduled(cron = "* * * ? * 2")
+//    @Scheduled(cron = "* * * ? * 2")
     public void hello() throws InterruptedException {
         LOGGER.info("hello...");
         Thread.sleep(3000);

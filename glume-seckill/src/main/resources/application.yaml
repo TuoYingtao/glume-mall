@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: glume-seckill
+  profiles:
+    active: sendmail
   cloud:
     nacos:
       discovery:
@@ -36,7 +38,25 @@ spring:
         acknowledge-mode: manual # 开启手动确认ACK消息；避免多条消息在宕机的时候丢失；（默认为自动确认回复）
   thymeleaf:
     cache: false
+  # 链路追踪
+  zipkin:
+    base-url: http://192.168.19.130:9411
+    discovery-client-enabled: false       # 关闭服务发现，否则Spring Cloud 会把 zipkin 的url当作服务名称
+    sender:
+      type: web      # 设置传输数据的方式
+  sleuth:
+    sampler:
+      rate: 1        # 设置抽样采集率，默认：0.1，即10%
 feign:
   sentinel:
     # 开启熔断保护机制
     enabled: true
+ribbon:
+  ConnectTimeout: 6000
+  ReadTimeout: 6000
+# 链路追踪开启debug日志
+logging:
+  level:
+    com.glume.glumemall: debug
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

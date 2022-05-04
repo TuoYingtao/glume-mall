@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.glume.glumemall.admin.entity.ScheduleJobEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 定时任务
  * @author tuoyingtao
@@ -12,4 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ScheduleJobDao extends BaseMapper<ScheduleJobEntity> {
 
+    List<String> groupAll();
 }

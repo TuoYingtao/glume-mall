@@ -7,6 +7,7 @@ import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.ScheduleJobEntity;
 import com.glume.glumemall.admin.scheduled.quartz.schedule.CronUtils;
 import com.glume.glumemall.admin.service.ScheduleJobService;
+import com.glume.glumemall.admin.vo.TaskGroup;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -128,6 +130,12 @@ public class ScheduleJobController {
             LOGGER.error("执行一次定时任务失败：{}",e);
         }
         return R.ok("执行成功！");
+    }
+
+    @GetMapping("/group/all")
+    public R groupAll() {
+         List<TaskGroup> taskGroup = scheduleJobService.groupAll();
+         return R.ok().put("data",taskGroup);
     }
 
 }

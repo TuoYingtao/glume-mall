@@ -16,4 +16,7 @@
         <result property="remark" column="remark"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
+    <select id="groupAll" resultType="java.lang.String">
+        SELECT job_group FROM schedule_job GROUP BY job_group
+    </select>
 </mapper>

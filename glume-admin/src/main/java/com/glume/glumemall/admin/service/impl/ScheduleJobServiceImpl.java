@@ -14,6 +14,7 @@ import com.glume.glumemall.admin.scheduled.quartz.constants.ScheduleConstants;
 import com.glume.glumemall.admin.scheduled.quartz.schedule.CronUtils;
 import com.glume.glumemall.admin.scheduled.quartz.schedule.ScheduleUtils;
 import com.glume.glumemall.admin.service.ScheduleJobService;
+import com.glume.glumemall.admin.vo.TaskGroup;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -164,5 +166,16 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, Schedule
             scheduleJobEntity.setNextValidTime(nextExecution);
         }
         return scheduleJobEntity;
+    }
+
+    @Override
+    public List<TaskGroup> groupAll() {
+        List<String> list = baseMapper.groupAll();
+        List<TaskGroup> taskGroups = new ArrayList<TaskGroup>();
+        for (int i = 0; i < list.size(); i++) {
+            Long id = Integer.valueOf(i).longValue();
+            taskGroups.add(new TaskGroup(id + 1L,list.get(i)));
+        }
+        return taskGroups;
     }
 }

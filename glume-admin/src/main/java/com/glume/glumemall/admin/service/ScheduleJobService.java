@@ -3,6 +3,7 @@ package com.glume.glumemall.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glume.common.mybatis.PageUtils;
 import com.glume.glumemall.admin.entity.ScheduleJobEntity;
+import com.glume.glumemall.admin.vo.TaskGroup;
 import org.quartz.SchedulerException;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface ScheduleJobService extends IService<ScheduleJobEntity> {
     void runJob(Long jobId) throws SchedulerException;
 
     ScheduleJobEntity getInfoById(Long jobId);
+
+    List<TaskGroup> groupAll();
 }

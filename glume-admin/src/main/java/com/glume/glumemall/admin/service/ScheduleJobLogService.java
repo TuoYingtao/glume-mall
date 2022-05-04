@@ -17,4 +17,6 @@ public interface ScheduleJobLogService extends IService<ScheduleJobLogEntity> {
     PageUtils queryPage(Map<String,Object> params);
 
     void emptyLog();
+
+    ScheduleJobLogEntity getInfoById(Long logId);
 }

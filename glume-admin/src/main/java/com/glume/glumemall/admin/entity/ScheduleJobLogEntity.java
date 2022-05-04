@@ -1,5 +1,6 @@
 package com.glume.glumemall.admin.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -61,11 +62,21 @@ public class ScheduleJobLogEntity implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss",timezone = "GMT+8")
     private Date createTime;
+    /**
+     * 任务名称
+     */
+    @TableField(exist = false)
+    private String jobName;
+    /**
+     * 任务分组
+     */
+    @TableField(exist = false)
+    private String jobGroup;
 
     public ScheduleJobLogEntity() {
     }
 
-    public ScheduleJobLogEntity(Long logId, Long jobId, Integer status, String jobMessage, String exceptionInfo, Long times, Date stringTime, Date stopTime, Date createTime) {
+    public ScheduleJobLogEntity(Long logId, Long jobId, Integer status, String jobMessage, String exceptionInfo, Long times, Date stringTime, Date stopTime, Date createTime, String jobName, String jobGroup) {
         this.logId = logId;
         this.jobId = jobId;
         this.status = status;
@@ -75,6 +86,8 @@ public class ScheduleJobLogEntity implements Serializable {
         this.startTime = stringTime;
         this.stopTime = stopTime;
         this.createTime = createTime;
+        this.jobName = jobName;
+        this.jobGroup = jobGroup;
     }
 
     public static long getSerialVersionUID() {
@@ -153,17 +166,33 @@ public class ScheduleJobLogEntity implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public String getJobGroup() {
+        return jobGroup;
+    }
+
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduleJobLogEntity that = (ScheduleJobLogEntity) o;
-        return logId.equals(that.logId) && Objects.equals(jobId, that.jobId) && Objects.equals(status, that.status) && Objects.equals(jobMessage, that.jobMessage) && Objects.equals(exceptionInfo, that.exceptionInfo) && Objects.equals(times, that.times) && Objects.equals(startTime, that.startTime) && Objects.equals(stopTime, that.stopTime) && Objects.equals(createTime, that.createTime);
+        return logId.equals(that.logId) && jobId.equals(that.jobId) && Objects.equals(status, that.status) && Objects.equals(jobMessage, that.jobMessage) && Objects.equals(exceptionInfo, that.exceptionInfo) && Objects.equals(times, that.times) && Objects.equals(startTime, that.startTime) && Objects.equals(stopTime, that.stopTime) && Objects.equals(createTime, that.createTime) && Objects.equals(jobName, that.jobName) && Objects.equals(jobGroup, that.jobGroup);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(logId, jobId, status, jobMessage, exceptionInfo, times, startTime, stopTime, createTime);
+        return Objects.hash(logId, jobId, status, jobMessage, exceptionInfo, times, startTime, stopTime, createTime, jobName, jobGroup);
     }
 
     @Override
@@ -178,6 +207,8 @@ public class ScheduleJobLogEntity implements Serializable {
                 ", startTime=" + startTime +
                 ", stopTime=" + stopTime +
                 ", createTime=" + createTime +
+                ", jobName='" + jobName + '\'' +
+                ", jobGroup='" + jobGroup + '\'' +
                 '}';
     }
 }

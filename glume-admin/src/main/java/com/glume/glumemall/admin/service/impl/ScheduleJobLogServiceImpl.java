@@ -24,6 +24,10 @@ public class ScheduleJobLogServiceImpl extends ServiceImpl<ScheduleJobLogDao, Sc
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         QueryWrapper<ScheduleJobLogEntity> wrapper = new QueryWrapper<>();
+        String jobName = (String) params.get("jobName");
+        if (StringUtils.isNotEmpty(jobName)) wrapper.like("job_name", jobName);
+        String jobGroup = (String) params.get("jobGroup");
+        if (StringUtils.isNotEmpty(jobGroup)) wrapper.eq("job_group", jobGroup);
         String jobId = (String) params.get("jobId");
         if (StringUtils.isNotEmpty(jobId)) wrapper.eq("job_id",jobId);
         String jobMessage = (String) params.get("jobMessage");
@@ -38,9 +42,14 @@ public class ScheduleJobLogServiceImpl extends ServiceImpl<ScheduleJobLogDao, Sc
             String[] split = dateTime.split(",");
             if (StringUtils.isNotEmpty(split) && split.length > 1) wrapper.between("start_time",split[0],split[1]);
         }
-        IPage<ScheduleJobLogEntity> page = this.page(
-                new Query<ScheduleJobLogEntity>().getPage(params), wrapper);
-        return new PageUtils(page);
+        IPage<ScheduleJobLogEntity> pageList = baseMapper.myPageList(new Query<ScheduleJobLogEntity>().getPage(params),wrapper);
+        return new PageUtils(pageList);
+    }
+
+    @Override
+    public ScheduleJobLogEntity getInfoById(Long logId) {
+        ScheduleJobLogEntity scheduleJobLogEntity = baseMapper.getInfoById(logId);
+        return scheduleJobLogEntity;
     }
 
     @Override
